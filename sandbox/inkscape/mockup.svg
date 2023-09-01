@@ -25,17 +25,31 @@
      inkscape:document-units="px"
      showborder="false"
      inkscape:zoom="1"
-     inkscape:cx="604.5"
-     inkscape:cy="302.5"
+     inkscape:cx="564"
+     inkscape:cy="334.5"
      inkscape:window-width="1920"
      inkscape:window-height="1009"
      inkscape:window-x="1912"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
      inkscape:current-layer="layer1"
-     showgrid="false" />
+     showgrid="false"
+     showguides="true" />
   <defs
-     id="defs1" />
+     id="defs1">
+    <inkscape:path-effect
+       effect="bspline"
+       id="path-effect38"
+       is_visible="true"
+       lpeversion="1.3"
+       weight="33.333333"
+       steps="2"
+       helper_size="0"
+       apply_no_weight="true"
+       apply_with_weight="true"
+       only_selected="false"
+       uniform="false" />
+  </defs>
   <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
@@ -61,7 +75,8 @@
     <g
        id="g28"
        inkscape:label="Saturday"
-       transform="translate(225.87857)">
+       transform="translate(225.87857)"
+       sodipodi:insensitive="true">
       <rect
          style="fill:#1f1f53;fill-opacity:1;stroke:none;stroke-width:0.264583;stroke-dasharray:none;stroke-opacity:1"
          id="rect25"
@@ -116,7 +131,8 @@
     <g
        id="g25"
        inkscape:label="Friday"
-       transform="translate(188.23214)">
+       transform="translate(188.23214)"
+       sodipodi:insensitive="true">
       <rect
          style="fill:#1f1f53;fill-opacity:1;stroke:none;stroke-width:0.264583;stroke-dasharray:none;stroke-opacity:1"
          id="rect22"
@@ -171,7 +187,8 @@
     <g
        id="g22"
        inkscape:label="Thursday"
-       transform="translate(150.58571)">
+       transform="translate(150.58571)"
+       sodipodi:insensitive="true">
       <rect
          style="fill:#1f1f53;fill-opacity:1;stroke:none;stroke-width:0.264583;stroke-dasharray:none;stroke-opacity:1"
          id="rect18"
@@ -226,7 +243,8 @@
     <g
        id="g18"
        inkscape:label="Wednesday"
-       transform="translate(112.93928)">
+       transform="translate(112.93928)"
+       sodipodi:insensitive="true">
       <rect
          style="fill:#1f1f53;fill-opacity:1;stroke:none;stroke-width:0.264583;stroke-dasharray:none;stroke-opacity:1"
          id="rect15"
@@ -281,7 +299,8 @@
     <g
        id="g15"
        inkscape:label="Tuesday"
-       transform="translate(75.292854)">
+       transform="translate(75.292854)"
+       sodipodi:insensitive="true">
       <rect
          style="fill:#1f1f53;fill-opacity:1;stroke:none;stroke-width:0.264583;stroke-dasharray:none;stroke-opacity:1"
          id="rect12"
@@ -336,7 +355,8 @@
     <g
        id="g12"
        inkscape:label="Monday"
-       transform="translate(37.646427)">
+       transform="translate(37.646427)"
+       sodipodi:insensitive="true">
       <rect
          style="fill:#1f1f53;fill-opacity:1;stroke:none;stroke-width:0.264583;stroke-dasharray:none;stroke-opacity:1"
          id="rect9"
@@ -390,7 +410,8 @@
     </g>
     <g
        id="g5"
-       inkscape:label="Sunday">
+       inkscape:label="Sunday"
+       sodipodi:insensitive="true">
       <rect
          style="fill:#1f1f53;fill-opacity:1;stroke:none;stroke-width:0.264583;stroke-dasharray:none;stroke-opacity:1"
          id="rect4"
@@ -400,7 +421,7 @@
          y="24.341667"
          inkscape:label="pre-dawn" />
       <rect
-         style="fill:#cdcdff;stroke:none;stroke-width:0.264583;stroke-dasharray:none;stroke-opacity:1;fill-opacity:1"
+         style="fill:#cdcdff;fill-opacity:1;stroke:none;stroke-width:0.264583;stroke-dasharray:none;stroke-opacity:1"
          id="rect3"
          width="21.278414"
          height="131.49791"
@@ -443,13 +464,13 @@
            y="61.182728">19:51</tspan></text>
     </g>
     <path
-       style="fill:#ff7f2a;stroke:#000000;stroke-width:0.79375;stroke-dasharray:none"
+       style="fill:#ff7f2a;stroke:#757575;stroke-width:0.79375;stroke-dasharray:none;stroke-opacity:1"
        d="M 29.36875,24.341666 V 155.83958"
        id="path2"
        inkscape:label="y-axis"
        sodipodi:insensitive="true" />
     <path
-       style="fill:#ff7f2a;stroke:#000000;stroke-width:0.79375;stroke-dasharray:none"
+       style="fill:#ff7f2a;stroke:#757575;stroke-width:0.79375;stroke-dasharray:none;stroke-opacity:1"
        d="M 29.236459,155.70729 H 292.76145"
        id="path3"
        inkscape:label="x-axis"
@@ -514,47 +535,56 @@
     <g
        id="g1"
        inkscape:label="x-axis-day-ticks"
-       style="stroke:#767676;stroke-opacity:1">
+       style="stroke:#767676;stroke-opacity:1"
+       sodipodi:insensitive="true">
       <path
          style="fill:#ff7f2a;stroke:#767676;stroke-width:0.264583;stroke-dasharray:none;stroke-opacity:1"
-         d="M 292.89374,24.341666 V 155.83958"
+         d="M 292.89374,22.092707 V 155.83958"
          id="path9"
-         inkscape:label="x-tick-7" />
+         inkscape:label="x-tick-7"
+         sodipodi:nodetypes="cc" />
       <path
          style="fill:#ff7f2a;stroke:#767676;stroke-width:0.264583;stroke-dasharray:none;stroke-opacity:1"
-         d="M 255.24731,24.341666 V 155.83958"
+         d="M 255.24731,22.092707 V 155.83958"
          id="path10"
-         inkscape:label="x-tick-6" />
+         inkscape:label="x-tick-6"
+         sodipodi:nodetypes="cc" />
       <path
          style="fill:#ff7f2a;stroke:#767676;stroke-width:0.264583;stroke-dasharray:none;stroke-opacity:1"
-         d="M 217.60089,24.341666 V 155.83958"
+         d="M 217.60089,22.092707 V 155.83958"
          id="path11"
-         inkscape:label="x-tick-5" />
+         inkscape:label="x-tick-5"
+         sodipodi:nodetypes="cc" />
       <path
          style="fill:#ff7f2a;stroke:#767676;stroke-width:0.264583;stroke-dasharray:none;stroke-opacity:1"
-         d="M 179.95446,24.341666 V 155.83958"
+         d="M 179.95446,22.092707 V 155.83958"
          id="path12"
-         inkscape:label="x-tick-4" />
+         inkscape:label="x-tick-4"
+         sodipodi:nodetypes="cc" />
       <path
          style="fill:#ff7f2a;stroke:#767676;stroke-width:0.264583;stroke-dasharray:none;stroke-opacity:1"
-         d="M 142.30803,24.341666 V 155.83958"
+         d="M 142.30803,22.092707 V 155.83958"
          id="path13"
-         inkscape:label="x-tick-3" />
+         inkscape:label="x-tick-3"
+         sodipodi:nodetypes="cc" />
       <path
          style="fill:#ff7f2a;stroke:#767676;stroke-width:0.264583;stroke-dasharray:none;stroke-opacity:1"
-         d="M 104.6616,24.341666 V 155.83958"
+         d="M 104.6616,22.092707 V 155.83958"
          id="path14"
-         inkscape:label="x-tick-2" />
+         inkscape:label="x-tick-2"
+         sodipodi:nodetypes="cc" />
       <path
          style="fill:#ff7f2a;stroke:#767676;stroke-width:0.264583;stroke-dasharray:none;stroke-opacity:1"
-         d="M 67.015177,24.341666 V 155.83958"
+         d="M 67.015177,22.092707 V 155.83958"
          id="path15"
-         inkscape:label="x-tick-1" />
+         inkscape:label="x-tick-1"
+         sodipodi:nodetypes="cc" />
       <path
          style="fill:#ff7f2a;stroke:#767676;stroke-width:0.264583;stroke-dasharray:none;stroke-opacity:1"
-         d="M 29.36875,24.341666 V 155.83958"
+         d="M 29.36875,22.092707 V 155.83958"
          id="path8"
-         inkscape:label="x-tick-0" />
+         inkscape:label="x-tick-0"
+         sodipodi:nodetypes="cc" />
     </g>
     <g
        id="g21"
@@ -681,6 +711,268 @@
          d="M 29.36875,24.341666 V 155.83958"
          id="path21"
          inkscape:label="x-tick-0" />
+    </g>
+    <g
+       id="g49"
+       inkscape:label="tides"
+       sodipodi:insensitive="true">
+      <path
+         style="fill:none;fill-opacity:1;stroke:#00e1ec;stroke-width:0.79375;stroke-dasharray:none;stroke-opacity:1"
+         d="m 32.54375,67.204166 c 8.11389,34.307644 16.227616,68.614594 22.930527,60.412354 6.70291,-8.20225 11.994366,-58.912037 19.226456,-60.45547 7.23209,-1.543433 16.403947,46.07966 23.415548,54.94338 7.011599,8.86372 11.862199,-21.0336 18.785549,-20.46003 6.92335,0.57358 15.91883,31.61678 23.72419,23.19404 7.80536,-8.42273 14.41968,-56.3104 23.1952,-53.664515 8.77552,2.645886 19.7112,55.825005 28.17803,55.119435 8.46684,-0.70557 14.46382,-55.295734 23.41573,-56.354089 8.95192,-1.058355 20.85769,51.415239 28.79535,47.755089 7.93766,-3.66014 11.90626,-63.453582 18.78556,-70.553377 6.87931,-7.099795 16.66869,38.495816 26.45827,84.092347"
+         id="path38"
+         inkscape:path-effect="#path-effect38"
+         inkscape:original-d="M 32.54375,67.204166 C 40.657639,101.51181 48.771367,135.81876 56.885416,170.12708 62.177187,119.41427 67.468643,68.704483 72.760415,17.991667 c 9.172407,47.62595 18.344264,95.249043 27.516675,142.875003 4.85079,-29.89852 9.70139,-59.79584 14.55208,-89.693754 8.99601,31.045064 17.99148,62.088264 26.9875,93.133334 6.61471,-47.89054 13.22903,-95.77821 19.84374,-143.66875 10.93633,53.182311 21.87201,106.36143 32.80834,159.54375 5.99734,-54.59346 11.99432,-109.183624 17.99166,-163.777083 11.90649,52.476749 23.81226,104.950343 35.71875,157.427073 3.96883,-59.79702 7.93743,-119.590462 11.90626,-179.3874893 9.78977,45.5974383 19.57916,91.1930483 29.36874,136.7895793"
+         sodipodi:nodetypes="cccccccccccc"
+         inkscape:label="tide sine wave" />
+      <circle
+         style="fill:#00e1ec;fill-opacity:1;stroke:#00e1ec;stroke-width:0.79375;stroke-dasharray:none;stroke-opacity:1"
+         id="path39"
+         cx="32.676041"
+         cy="67.071877"
+         r="1.4552083"
+         inkscape:label="marker" />
+      <circle
+         style="fill:#00e1ec;fill-opacity:1;stroke:#00e1ec;stroke-width:0.79375;stroke-dasharray:none;stroke-opacity:1"
+         id="circle39"
+         cx="53.313541"
+         cy="128.45522"
+         r="1.4552083"
+         inkscape:label="marker" />
+      <circle
+         style="fill:#00e1ec;fill-opacity:1;stroke:#00e1ec;stroke-width:0.79375;stroke-dasharray:none;stroke-opacity:1"
+         id="circle40"
+         cx="74.744789"
+         cy="67.601051"
+         r="1.4552083"
+         inkscape:label="marker" />
+      <circle
+         style="fill:#00e1ec;fill-opacity:1;stroke:#00e1ec;stroke-width:0.79375;stroke-dasharray:none;stroke-opacity:1"
+         id="circle41"
+         cx="100.67396"
+         cy="122.89896"
+         r="1.4552083"
+         inkscape:label="marker" />
+      <circle
+         style="fill:#00e1ec;fill-opacity:1;stroke:#00e1ec;stroke-width:0.79375;stroke-dasharray:none;stroke-opacity:1"
+         id="circle42"
+         cx="116.81355"
+         cy="101.73229"
+         r="1.4552083"
+         inkscape:label="marker" />
+      <circle
+         style="fill:#00e1ec;fill-opacity:1;stroke:#00e1ec;stroke-width:0.79375;stroke-dasharray:none;stroke-opacity:1"
+         id="circle43"
+         cx="137.98021"
+         cy="126.33854"
+         r="1.4552083"
+         inkscape:label="marker" />
+      <circle
+         style="fill:#00e1ec;fill-opacity:1;stroke:#00e1ec;stroke-width:0.79375;stroke-dasharray:none;stroke-opacity:1"
+         id="circle44"
+         cx="162.85104"
+         cy="70.776039"
+         r="1.4552083"
+         inkscape:label="marker" />
+      <circle
+         style="fill:#00e1ec;fill-opacity:1;stroke:#00e1ec;stroke-width:0.79375;stroke-dasharray:none;stroke-opacity:1"
+         id="circle45"
+         cx="191.42604"
+         cy="125.80937"
+         r="1.4552083"
+         inkscape:label="marker" />
+      <circle
+         style="fill:#00e1ec;fill-opacity:1;stroke:#00e1ec;stroke-width:0.79375;stroke-dasharray:none;stroke-opacity:1"
+         id="circle46"
+         cx="215.50311"
+         cy="70.24688"
+         r="1.4552083"
+         inkscape:label="marker" />
+      <circle
+         style="fill:#00e1ec;fill-opacity:1;stroke:#00e1ec;stroke-width:0.79375;stroke-dasharray:none;stroke-opacity:1"
+         id="circle47"
+         cx="243.54895"
+         cy="117.60729"
+         r="1.4552083"
+         inkscape:label="marker" />
+      <circle
+         style="fill:#00e1ec;fill-opacity:1;stroke:#00e1ec;stroke-width:0.79375;stroke-dasharray:none;stroke-opacity:1"
+         id="circle48"
+         cx="264.71561"
+         cy="47.228127"
+         r="1.4552083"
+         inkscape:label="marker" />
+      <circle
+         style="fill:#00e1ec;fill-opacity:1;stroke:#00e1ec;stroke-width:0.79375;stroke-dasharray:none;stroke-opacity:1"
+         id="circle49"
+         cx="289.58643"
+         cy="130.57187"
+         r="1.4552083"
+         inkscape:label="marker" />
+    </g>
+    <g
+       id="g2"
+       inkscape:label="Day of Week Labels"
+       sodipodi:insensitive="true">
+      <text
+         xml:space="preserve"
+         style="font-size:3.175px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.79375;stroke-dasharray:none;stroke-opacity:1"
+         x="43.92083"
+         y="17.991667"
+         id="text49"><tspan
+           sodipodi:role="line"
+           id="tspan49"
+           style="fill:#000000;stroke:none;stroke-width:0.79375"
+           x="43.92083"
+           y="17.991667">Sunday</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-size:3.175px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.79375;stroke-dasharray:none;stroke-opacity:1"
+         x="79.110413"
+         y="17.991667"
+         id="text50"><tspan
+           sodipodi:role="line"
+           id="tspan50"
+           style="fill:#000000;stroke:none;stroke-width:0.79375"
+           x="79.110413"
+           y="17.991667">Monday</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-size:3.175px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.79375;stroke-dasharray:none;stroke-opacity:1"
+         x="117.475"
+         y="17.991667"
+         id="text51"><tspan
+           sodipodi:role="line"
+           id="tspan51"
+           style="fill:#000000;stroke:none;stroke-width:0.79375"
+           x="117.475"
+           y="17.991667">Tuesday</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-size:3.175px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.79375;stroke-dasharray:none;stroke-opacity:1"
+         x="152.66458"
+         y="17.991667"
+         id="text52"><tspan
+           sodipodi:role="line"
+           id="tspan52"
+           style="fill:#000000;stroke:none;stroke-width:0.79375"
+           x="152.66458"
+           y="17.991667">Wednesday</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-size:3.175px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.79375;stroke-dasharray:none;stroke-opacity:1"
+         x="189.97083"
+         y="17.991667"
+         id="text53"><tspan
+           sodipodi:role="line"
+           id="tspan53"
+           style="fill:#000000;stroke:none;stroke-width:0.79375"
+           x="189.97083"
+           y="17.991667">Thursday</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-size:3.175px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.79375;stroke-dasharray:none;stroke-opacity:1"
+         x="229.12915"
+         y="17.991667"
+         id="text54"><tspan
+           sodipodi:role="line"
+           id="tspan54"
+           style="fill:#000000;stroke:none;stroke-width:0.79375"
+           x="229.12915"
+           y="17.991667">Friday</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-size:3.175px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.79375;stroke-dasharray:none;stroke-opacity:1"
+         x="265.90625"
+         y="17.991667"
+         id="text55"><tspan
+           sodipodi:role="line"
+           id="tspan55"
+           style="fill:#000000;stroke:none;stroke-width:0.79375"
+           x="265.90625"
+           y="17.991667">Saturday</tspan></text>
+    </g>
+    <g
+       id="g19"
+       inkscape:label="Date Labels"
+       transform="translate(0,3.9687499)"
+       sodipodi:insensitive="true">
+      <text
+         xml:space="preserve"
+         style="font-size:3.175px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.79375;stroke-dasharray:none;stroke-opacity:1"
+         x="47.88958"
+         y="17.991667"
+         id="text2"><tspan
+           sodipodi:role="line"
+           id="tspan2"
+           style="fill:#000000;stroke:none;stroke-width:0.79375"
+           x="47.88958"
+           y="17.991667">9/3</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-size:3.175px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.79375;stroke-dasharray:none;stroke-opacity:1"
+         x="82.285416"
+         y="17.991667"
+         id="text3"><tspan
+           sodipodi:role="line"
+           id="tspan3"
+           style="fill:#000000;stroke:none;stroke-width:0.79375"
+           x="82.285416"
+           y="17.991667">9/4</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-size:3.175px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.79375;stroke-dasharray:none;stroke-opacity:1"
+         x="120.65"
+         y="17.991667"
+         id="text4"><tspan
+           sodipodi:role="line"
+           id="tspan4"
+           style="fill:#000000;stroke:none;stroke-width:0.79375"
+           x="120.65"
+           y="17.991667">9/5</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-size:3.175px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.79375;stroke-dasharray:none;stroke-opacity:1"
+         x="158.22083"
+         y="17.991667"
+         id="text10"><tspan
+           sodipodi:role="line"
+           id="tspan10"
+           style="fill:#000000;stroke:none;stroke-width:0.79375"
+           x="158.22083"
+           y="17.991667">9/6</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-size:3.175px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.79375;stroke-dasharray:none;stroke-opacity:1"
+         x="193.67499"
+         y="17.991667"
+         id="text13"><tspan
+           sodipodi:role="line"
+           id="tspan13"
+           style="fill:#000000;stroke:none;stroke-width:0.79375"
+           x="193.67499"
+           y="17.991667">9/7</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-size:3.175px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.79375;stroke-dasharray:none;stroke-opacity:1"
+         x="231.24582"
+         y="17.991667"
+         id="text16"><tspan
+           sodipodi:role="line"
+           id="tspan16"
+           style="fill:#000000;stroke:none;stroke-width:0.79375"
+           x="231.24582"
+           y="17.991667">9/8</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-size:3.175px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.79375;stroke-dasharray:none;stroke-opacity:1"
+         x="270.40417"
+         y="17.991667"
+         id="text19"><tspan
+           sodipodi:role="line"
+           id="tspan19"
+           style="fill:#000000;stroke:none;stroke-width:0.79375"
+           x="270.40417"
+           y="17.991667">9/9</tspan></text>
     </g>
   </g>
 </svg>
