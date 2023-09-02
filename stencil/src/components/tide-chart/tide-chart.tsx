@@ -78,11 +78,39 @@ export class TideChart {
 		return result;
 	}
 
+	_getExpandedUnixDate(input: Date) : number {
+		input.setHours(23);
+		input.setMinutes(59);
+		input.setSeconds(59);
+		input.setMilliseconds(999);
+		return input.valueOf();
+	}
+
+	_getFlattenedUnixDate(input: Date) : number {
+		input.setHours(0);
+		input.setMinutes(0);
+		input.setSeconds(0);
+		input.setMilliseconds(0);
+		return input.valueOf();
+	}
+
+
+	_getXForDate(input: Date): number {
+		const expandedMaxDate = this._getExpandedUnixDate(this.maxDate);
+		const flattenedMinDate = this._getFlattenedUnixDate(this.minDate);
+		const chartDateDiff = expandedMaxDate - flattenedMinDate;
+
+		const thisRatio = (input.valueOf() - flattenedMinDate) / chartDateDiff;
+		console.log('getxfordate date', input.toLocaleDateString(), 'and ratio', thisRatio);
+		// const thisRatio = input.valueOf() / expandedMaxDate;
+		return thisRatio * this.chartWidth;
+	}
+
 	_getTideCoords() : {index: number, x: number, y: number}[] {
 		let i = 0;
 		let result = this.tides.map(tide => ({
 			index: i++,
-			x: 0,
+			x: this._getXForDate(tide.when),
 			y: 0
 		}));
 		return result;
@@ -143,6 +171,14 @@ export class TideChart {
 						{
 							this._getChartXAxisGridlines().map(i =>
 								<path class="xGridline" id={`x-tick-${i.index}`} d={`M ${i.x},0 V ${this.chartHeight}`} />
+							)
+						}
+					</g>
+
+					<g id="tides">
+						{
+							this._getTideCoords().map(i =>
+								<circle class="tideMarker" id={`tide-marker-${i.index}`} cx={i.x} cy={i.y} r="10" />
 							)
 						}
 					</g>

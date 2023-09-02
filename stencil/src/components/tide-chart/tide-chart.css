@@ -22,3 +22,7 @@ svg .chartDayDark {
 svg .xGridline {
 	stroke: lightcyan;
 }
+
+svg .tideMarker {
+	fill: lightcyan;
+}
