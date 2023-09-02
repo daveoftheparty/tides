@@ -10,3 +10,15 @@ div {
 	max-width: 100%;
 	border: 1px solid black;
 }
+
+svg #chartArea {
+	fill: white;
+}
+
+svg .chartDayDark {
+	fill: darkblue;
+}
+
+svg .xGridline {
+	stroke: lightcyan;
+}

@@ -13,18 +13,34 @@ export class TideChart {
 
 
 	@State() tides : TideResponse[] = [];
-	@State() tidesMinY: number;
-	@State() tidesMaxY: number;
+	tidesMinY: number;
+	tidesMaxY: number;
+
+	minDate: Date = new Date(2023, 8, 1);
+	maxDate: Date = new Date(2023, 8, 2);
+
+	chartWidth = 800;
+	chartHeight = 450;
 
 	_getTides() {
-		this.tides = GetTides();
+		const tides = GetTides();
 		console.log('getTides response:', this.tides);
-		this._getYAxisRange();
+
+		this._setTidesYAxisRange(tides);
+		this._setMinMaxDate(tides);
+
+		// assign state last after all calcs to avoid re-renders:
+		this.tides = tides;
 	}
 
-	_getYAxisRange() {
-		this.tidesMinY = this.tides.reduce((min, current) => current.level < min ? current.level : min, this.tides[0].level);
-		this.tidesMaxY = this.tides.reduce((max, current) => current.level > max ? current.level : max, this.tides[0].level);
+	_setTidesYAxisRange(tides: TideResponse[]) {
+		this.tidesMinY = tides.reduce((min, current) => current.level < min ? current.level : min, tides[0].level);
+		this.tidesMaxY = tides.reduce((max, current) => current.level > max ? current.level : max, tides[0].level);
+	}
+
+	_setMinMaxDate(tides: TideResponse[]) {
+		this.minDate = tides.reduce((min, current) => current.when < min ? current.when : min, tides[0].when);
+		this.maxDate = tides.reduce((max, current) => current.when > max ? current.when : max, tides[0].when);
 	}
 
 	_getChartDays(startDate: Date, endDate: Date): number {
@@ -35,6 +51,43 @@ export class TideChart {
 		) + 1;
 	}
 
+	// TODO: why bother passing in dates, maybe just use minDate, maxDate class attributes
+	_getChartDayRects(startDate: Date, endDate: Date): {index: number, x: number, width: number}[] {
+		const chartDays = this._getChartDays(startDate, endDate);
+		console.log('chart days', chartDays);
+		const dayWidth = this.chartWidth / chartDays;
+
+		let result = [...Array(chartDays).keys()].map(i => ({
+			index: i,
+			x: i * dayWidth,
+			width: dayWidth
+		}));
+
+		return result;
+	}
+
+	_getChartXAxisGridlines(): {index: number, x: number}[] {
+		const chartDays = this._getChartDays(this.minDate, this.maxDate);
+		const dayWidth = this.chartWidth / chartDays;
+
+		let result = [...Array(chartDays + 1).keys()].map(i => ({
+			index: i,
+			x: i * dayWidth
+		}));
+
+		return result;
+	}
+
+	_getTideCoords() : {index: number, x: number, y: number}[] {
+		let i = 0;
+		let result = this.tides.map(tide => ({
+			index: i++,
+			x: 0,
+			y: 0
+		}));
+		return result;
+	}
+
 	render() {
 		let content = <ul>{this.tides.map(result =>
 			<li><strong>{result.when.toDateString()}</strong> - Ms since 1970: {result.when.getTime()} Level: {result.level}</li>
@@ -42,8 +95,7 @@ export class TideChart {
 
 		/****** BEGIN items that may need to transfer to state later ******/
 
-		const chartWidth = 800;
-		const chartHeight = 450;
+
 
 		// gonna try to do without a separate chart background, chart area, and instead, put the chart in a div and specify padding/margin
 		// const chartAreaXOffset = 40;
@@ -53,7 +105,7 @@ export class TideChart {
 		const endDate = new Date('2023-09-07 15:31');
 		const chartDays = this._getChartDays(beginDate, endDate);
 
-		console.log('chart days', chartDays);
+		// console.log('chart days', chartDays);
 		/****** END items that may need to transfer to state later ******/
 
 		return (
@@ -80,8 +132,20 @@ export class TideChart {
 				<p>Min Y: {this.tidesMinY}</p>
 				<h2>let's rock this chart:</h2>
 
-				<svg id="chart" viewBox={`0 0 ${chartWidth} ${chartHeight}`}>
+				<svg id="chart" viewBox={`0 0 ${this.chartWidth} ${this.chartHeight}`}>
 					<rect id="chartArea" width="100%" height="100%" />
+					<g id="days">
+						{this._getChartDayRects(this.minDate, this.maxDate).map(day =>
+							<rect class="chartDayDark" id={`${day.index}`} width={day.width} height={this.chartHeight} x={day.x} y="0" />
+						)}
+					</g>
+					<g id="x-axis-day-ticks">
+						{
+							this._getChartXAxisGridlines().map(i =>
+								<path class="xGridline" id={`x-tick-${i.index}`} d={`M ${i.x},0 V ${this.chartHeight}`} />
+							)
+						}
+					</g>
 				</svg>
 			</Host>
 		);
