@@ -7,7 +7,7 @@ API response docs: https://api.tidesandcurrents.noaa.gov/api/prod/responseHelp.h
 
 ## Sample API calls
 ### two days
-https://tidesandcurrents.noaa.gov/api/datagetter?product=predictions&application=NOS.COOPS.TAC.WL&begin_date=20230906&end_date=20230907&datum=MLLW&station=8775870&time_zone=lst_ldt&units=english&interval=hilo&format=json
+https://tidesandcurrents.noaa.gov/api/datagetter?product=predictions&application=NOS.COOPS.TAC.WL&begin_date=20230906&end_date=20230907&datum=MLLW&station=8775870&time_zone=gmt&units=english&interval=hilo&format=json
 
 result:
 ```json

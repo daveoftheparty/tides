@@ -24,7 +24,7 @@ export class TideChart {
 
 	_getTides() {
 		const tides = GetTides();
-		console.log('getTides response:', this.tides);
+		console.log('getTides response:', tides);
 
 		this._setTidesYAxisRange(tides);
 		this._setMinMaxDate(tides);
@@ -79,18 +79,18 @@ export class TideChart {
 	}
 
 	_getExpandedUnixDate(input: Date) : number {
-		input.setHours(23);
-		input.setMinutes(59);
-		input.setSeconds(59);
-		input.setMilliseconds(999);
+		input.setUTCHours(23);
+		input.setUTCMinutes(59);
+		input.setUTCSeconds(59);
+		input.setUTCMilliseconds(999);
 		return input.valueOf();
 	}
 
 	_getFlattenedUnixDate(input: Date) : number {
-		input.setHours(0);
-		input.setMinutes(0);
-		input.setSeconds(0);
-		input.setMilliseconds(0);
+		input.setUTCHours(0);
+		input.setUTCMinutes(0);
+		input.setUTCSeconds(0);
+		input.setUTCMilliseconds(0);
 		return input.valueOf();
 	}
 
@@ -101,7 +101,15 @@ export class TideChart {
 		const chartDateDiff = expandedMaxDate - flattenedMinDate;
 
 		const thisRatio = (input.valueOf() - flattenedMinDate) / chartDateDiff;
-		console.log('getxfordate date', input.toLocaleDateString(), 'and ratio', thisRatio);
+		console.log(
+			'getxfordate input:', input.toISOString(),
+			'input valueOf():', input.valueOf(),
+			'flattenedMinDate:', new Date(flattenedMinDate).toISOString(),
+			'flattenedMinDate valueOf():', new Date(flattenedMinDate).valueOf(),
+			'expandedMaxDate:', new Date(expandedMaxDate).toISOString(),
+			'expandedMaxDate valueOf():', new Date(expandedMaxDate).valueOf(),
+			'ratio:', thisRatio);
+
 		// const thisRatio = input.valueOf() / expandedMaxDate;
 		return thisRatio * this.chartWidth;
 	}
@@ -113,12 +121,22 @@ export class TideChart {
 			x: this._getXForDate(tide.when),
 			y: 0
 		}));
+
+		if(this.tides[0]) {
+			console.log('how is a date interpreted?',
+				'tide level:', this.tides[0].level,
+				'utc string', this.tides[0].when.toUTCString(),
+				'locale string', this.tides[0].when.toLocaleString(),
+				'tostring', this.tides[0].when.toString(),
+				'json', this.tides[0].when.toJSON(),
+				);
+		}
 		return result;
 	}
 
 	render() {
 		let content = <ul>{this.tides.map(result =>
-			<li><strong>{result.when.toDateString()}</strong> - Ms since 1970: {result.when.getTime()} Level: {result.level}</li>
+			<li><strong>{result.when.toISOString()}</strong> - Ms since 1970: {result.when.getTime()} Level: {result.level}</li>
 		)}</ul>;
 
 		/****** BEGIN items that may need to transfer to state later ******/
