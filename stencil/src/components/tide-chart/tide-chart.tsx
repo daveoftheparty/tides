@@ -39,8 +39,10 @@ export class TideChart {
 	}
 
 	_setMinMaxDate(tides: TideResponse[]) {
-		this.minDate = tides.reduce((min, current) => current.when < min ? current.when : min, tides[0].when);
-		this.maxDate = tides.reduce((max, current) => current.when > max ? current.when : max, tides[0].when);
+		// new Date() around the reduce here because otherwise this.min/maxDate refer to same object as in tides array,
+		// and later when we calculate coordinates our source data has been corrupted
+		this.minDate = new Date(tides.reduce((min, current) => current.when < min ? current.when : min, tides[0].when));
+		this.maxDate = new Date(tides.reduce((max, current) => current.when > max ? current.when : max, tides[0].when));
 	}
 
 	_getChartDays(startDate: Date, endDate: Date): number {
