@@ -16,7 +16,12 @@ svg #chartArea {
 }
 
 svg .chartDayDark {
-	fill: darkblue;
+	fill: rgb(31, 31, 83);
+}
+
+svg .chartDaylight {
+	/* fill: rgb(205, 205, 255); */
+	fill: rgb(151, 151, 190);
 }
 
 svg .xGridline {
@@ -24,10 +29,12 @@ svg .xGridline {
 }
 
 svg .tideMarker {
-	fill: lightcyan;
+	fill: rgb(0, 255, 236);
+	/* fill: rgb(255, 198, 124); */
 }
 
 svg .tideSineWave {
-	stroke: lightcyan;
+	stroke: rgb(0, 255, 236);
+	stroke-width: 3px;
 	fill: none;
 }

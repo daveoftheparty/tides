@@ -1,5 +1,6 @@
 import { Component, h, Host } from "@stencil/core";
 import { GetTides, TideResponse } from '../../services/TideApi';
+import { GetDaylight, DaylightResponse } from '../../services/DaylightApi';
 import { State } from "@stencil/core";
 
 @Component({
@@ -16,21 +17,36 @@ export class TideChart {
 	tidesMinY: number;
 	tidesMaxY: number;
 
+	@State() daylight : DaylightResponse[] = [];
+
+
 	minDate: Date = new Date(2023, 8, 1);
 	maxDate: Date = new Date(2023, 8, 2);
 
 	chartWidth = 800;
 	chartHeight = 450;
 
-	_getTides() {
+	_getChartData() {
+		const tides = this._getTides();
+		const daylight = this._getDaylight();
+
+		// assign state last after all calcs to avoid re-renders:
+		this.tides = tides;
+		this.daylight = daylight;
+	}
+
+	_getDaylight() : DaylightResponse[] {
+		return GetDaylight();
+	}
+
+	_getTides() : TideResponse[] {
 		const tides = GetTides();
 		console.log('getTides response:', tides);
 
 		this._setTidesYAxisRange(tides);
 		this._setMinMaxDate(tides);
 
-		// assign state last after all calcs to avoid re-renders:
-		this.tides = tides;
+		return tides;
 	}
 
 	_setTidesYAxisRange(tides: TideResponse[]) {
@@ -62,6 +78,16 @@ export class TideChart {
 		return Math.round(
 			Math.abs(Number(endDate) - Number(startDate)) / msInDay
 		) + 1;
+	}
+
+	_getDaylightRects() : {index: number, x: number, width: number}[] {
+		let result = this.daylight.map((daylight, i) => ({
+			index: i,
+			x: this._getXForDate(daylight.rise),
+			width: this._getXForDate(daylight.set) - this._getXForDate(daylight.rise)
+		}));
+		console.log('getDaylightRects result', result);
+		return result;
 	}
 
 	// TODO: why bother passing in dates, maybe just use minDate, maxDate class attributes
@@ -215,7 +241,7 @@ export class TideChart {
 							value={this.endDate}
 						/>
 					</p> */}
-					<button onClick={this._getTides.bind(this)}>Get Tides</button>
+					<button onClick={this._getChartData.bind(this)}>Get Tides</button>
 
 				</div>
 				<h2>debug stuff after here, would be the chart</h2>
@@ -230,6 +256,9 @@ export class TideChart {
 						{this._getChartDayRects(this.minDate, this.maxDate).map(day =>
 							<rect class="chartDayDark" id={`${day.index}`} width={day.width} height={this.chartHeight} x={day.x} y="0" />
 						)}
+						{this._getDaylightRects().map(day =>
+							<rect class="chartDaylight" id={`${day.index}`} width={day.width} height={this.chartHeight} x={day.x} y="0" />
+						)}
 					</g>
 					<g id="x-axis-day-ticks">
 						{
@@ -242,7 +271,7 @@ export class TideChart {
 					<g id="tides">
 						{
 							this._getTideCoords().map(i =>
-								<circle class="tideMarker" id={`tide-marker-${i.index}`} cx={i.x} cy={i.y} r="3" />
+								<circle class="tideMarker" id={`tide-marker-${i.index}`} cx={i.x} cy={i.y} r="7" />
 							)
 						}
 						<path class="tideSineWave" id="tideSineWave" d={this._getTideSineWave()} />
