@@ -217,10 +217,6 @@ export class TideChart {
 		// const chartAreaXOffset = 40;
 		// const chartAreaYOffset = 20;
 
-		const beginDate = new Date('2023-09-06 14:27');
-		const endDate = new Date('2023-09-07 15:31');
-		const chartDays = this._getChartDays(beginDate, endDate);
-
 		// console.log('chart days', chartDays);
 		/****** END items that may need to transfer to state later ******/
 
