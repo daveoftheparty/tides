@@ -172,16 +172,17 @@ export class TideChart {
 		return transform;
 	}
 
-	_getYAxisYPos(): {index: number, y: number, label: string}[] {
+	_getYAxis(): {index: number, y: number, label: string}[] {
 		// just output 3 Y gridlines: 25%, 50%, 75%
 		const gridlines = 5;
 		const gridSpace = this.chartHeight / (gridlines - 1);
+		const labelIncrement = (this.maxY - this.minY) / (gridlines - 1);
 
 		let result = [...Array(gridlines).keys()].map(i => {
 			return {
 				index: i,
 				y: i * gridSpace,
-				label: 'hi'
+				label: `${this.maxY - labelIncrement * i}`
 			};
 		});
 
@@ -238,6 +239,8 @@ export class TideChart {
 		// console.log('chart days', chartDays);
 		/****** END items that may need to transfer to state later ******/
 
+		const yAxis = this._getYAxis();
+
 		this._getTideSineWave();
 
 		return (
@@ -293,8 +296,13 @@ export class TideChart {
 
 					<g id="y-axis-ticks-and-labels">
 						{
-							this._getYAxisYPos().map(i =>
+							yAxis.map(i =>
 								<path class="yGridline" id={`y-tick-${i.index}`} d={`M 0,${i.y} H ${this.chartWidth}`} />
+							)
+						}
+						{
+							yAxis.slice(1, yAxis.length - 1).map(i =>
+								<text class="yTickLabel" id={`y-tick-${i.index}`} text-anchor="start" alignment-baseline="middle" x="0" y={i.y} >({i.label})</text>
 							)
 						}
 					</g>

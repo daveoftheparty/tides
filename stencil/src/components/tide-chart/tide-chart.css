@@ -39,3 +39,7 @@ svg .tideSineWave {
 	stroke-width: 3px;
 	fill: none;
 }
+
+svg .yTickLabel {
+	fill: orange;
+}
