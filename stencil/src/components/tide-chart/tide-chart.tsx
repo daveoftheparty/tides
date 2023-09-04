@@ -298,7 +298,7 @@ export class TideChart {
 					<g id="y-axis-ticks-and-labels">
 						{
 							yAxis.map(i =>
-								<path class="yGridline" id={`y-tick-${i.index}`} d={`M 0,${i.y} H ${this.chartWidth}`} />
+								<path class="yGridline" id={`y-tick-${i.index}`} d={`M ${this.chartAreaXOffset},${i.y} H ${this.chartWidth}`} />
 							)
 						}
 						{
