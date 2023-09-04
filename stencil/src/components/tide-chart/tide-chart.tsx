@@ -27,6 +27,7 @@ export class TideChart {
 
 	chartWidth = 800;
 	chartHeight = 450;
+	chartAreaXOffset = 40;
 
 	_getChartData() {
 		const tides = this._getTides();
@@ -98,11 +99,11 @@ export class TideChart {
 	_getChartDayRects(startDate: Date, endDate: Date): {index: number, x: number, width: number}[] {
 		const chartDays = this._getChartDays(startDate, endDate);
 		console.log('chart days', chartDays);
-		const dayWidth = this.chartWidth / chartDays;
+		const dayWidth = (this.chartWidth - this.chartAreaXOffset) / chartDays;
 
 		let result = [...Array(chartDays).keys()].map(i => ({
 			index: i,
-			x: i * dayWidth,
+			x: i * dayWidth + this.chartAreaXOffset,
 			width: dayWidth
 		}));
 
@@ -111,11 +112,11 @@ export class TideChart {
 
 	_getChartXAxisGridlines(): {index: number, x: number}[] {
 		const chartDays = this._getChartDays(this.minDate, this.maxDate);
-		const dayWidth = this.chartWidth / chartDays;
+		const dayWidth = (this.chartWidth - this.chartAreaXOffset) / chartDays;
 
 		let result = [...Array(chartDays + 1).keys()].map(i => ({
 			index: i,
-			x: i * dayWidth
+			x: i * dayWidth + this.chartAreaXOffset
 		}));
 
 		return result;
@@ -160,7 +161,7 @@ export class TideChart {
 		// 	'ratio:', thisRatio);
 
 		// const thisRatio = input.valueOf() / expandedMaxDate;
-		return thisRatio * this.chartWidth;
+		return thisRatio * (this.chartWidth - this.chartAreaXOffset);
 	}
 
 	_getYCoord(y: number): number {
@@ -302,7 +303,7 @@ export class TideChart {
 						}
 						{
 							yAxis.slice(1, yAxis.length - 1).map(i =>
-								<text class="yTickLabel" id={`y-tick-${i.index}`} text-anchor="start" alignment-baseline="middle" x="0" y={i.y} >({i.label})</text>
+								<text class="yTickLabel" id={`y-tick-${i.index}`} text-anchor="end" alignment-baseline="middle" x={this.chartAreaXOffset - 5} y={i.y}>{i.label}</text>
 							)
 						}
 					</g>

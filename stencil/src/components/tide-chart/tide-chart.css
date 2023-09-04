@@ -13,6 +13,8 @@ div {
 
 svg #chartArea {
 	fill: white;
+	/* debug */
+	stroke: black;
 }
 
 svg .chartDayDark {
@@ -41,5 +43,5 @@ svg .tideSineWave {
 }
 
 svg .yTickLabel {
-	fill: orange;
+	fill: black;
 }
