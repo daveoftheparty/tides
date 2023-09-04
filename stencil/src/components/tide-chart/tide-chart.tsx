@@ -22,6 +22,8 @@ export class TideChart {
 
 	minDate: Date = new Date(2023, 8, 1);
 	maxDate: Date = new Date(2023, 8, 2);
+	minY: number = -3;
+	maxY: number = 3;
 
 	chartWidth = 800;
 	chartHeight = 450;
@@ -29,6 +31,8 @@ export class TideChart {
 	_getChartData() {
 		const tides = this._getTides();
 		const daylight = this._getDaylight();
+
+		// TODO calc minY, maxY based on data later
 
 		// assign state last after all calcs to avoid re-renders:
 		this.tides = tides;
@@ -160,15 +164,29 @@ export class TideChart {
 	}
 
 	_getYCoord(y: number): number {
-		// TODO: calc Y bounds on the fly later with "good increments"
-		const maxY = 3;
-		const minY = -3;
-		const totalHeight = maxY - minY;
+		const totalHeight = this.maxY - this.minY;
 
 		const thisRatio = y / totalHeight;
 		const transform = -1 * thisRatio * this.chartHeight + (this.chartHeight / 2);
 
 		return transform;
+	}
+
+	_getYAxisYPos(): {index: number, y: number, label: string}[] {
+		// just output 3 Y gridlines: 25%, 50%, 75%
+		const gridlines = 5;
+		const gridSpace = this.chartHeight / (gridlines - 1);
+
+		let result = [...Array(gridlines).keys()].map(i => {
+			return {
+				index: i,
+				y: i * gridSpace,
+				label: 'hi'
+			};
+		});
+
+		console.log('_getYAxisYPos result', result);
+		return result;
 	}
 
 	_getTideCoords() : {index: number, x: number, y: number}[] {
@@ -271,7 +289,14 @@ export class TideChart {
 							)
 						}
 						<path class="tideSineWave" id="tideSineWave" d={this._getTideSineWave()} />
+					</g>
 
+					<g id="y-axis-ticks-and-labels">
+						{
+							this._getYAxisYPos().map(i =>
+								<path class="yGridline" id={`y-tick-${i.index}`} d={`M 0,${i.y} H ${this.chartWidth}`} />
+							)
+						}
 					</g>
 				</svg>
 			</Host>

@@ -24,7 +24,8 @@ svg .chartDaylight {
 	fill: rgb(151, 151, 190);
 }
 
-svg .xGridline {
+svg .xGridline,
+svg .yGridline {
 	stroke: lightcyan;
 }
 
