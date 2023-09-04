@@ -103,17 +103,29 @@ export class TideChart {
 		const chartDateDiff = expandedMaxDate - flattenedMinDate;
 
 		const thisRatio = (input.valueOf() - flattenedMinDate) / chartDateDiff;
-		console.log(
-			'getxfordate input:', input.toISOString(),
-			'input valueOf():', input.valueOf(),
-			'flattenedMinDate:', new Date(flattenedMinDate).toISOString(),
-			'flattenedMinDate valueOf():', new Date(flattenedMinDate).valueOf(),
-			'expandedMaxDate:', new Date(expandedMaxDate).toISOString(),
-			'expandedMaxDate valueOf():', new Date(expandedMaxDate).valueOf(),
-			'ratio:', thisRatio);
+		// console.log(
+		// 	'getxfordate input:', input.toISOString(),
+		// 	'input valueOf():', input.valueOf(),
+		// 	'flattenedMinDate:', new Date(flattenedMinDate).toISOString(),
+		// 	'flattenedMinDate valueOf():', new Date(flattenedMinDate).valueOf(),
+		// 	'expandedMaxDate:', new Date(expandedMaxDate).toISOString(),
+		// 	'expandedMaxDate valueOf():', new Date(expandedMaxDate).valueOf(),
+		// 	'ratio:', thisRatio);
 
 		// const thisRatio = input.valueOf() / expandedMaxDate;
 		return thisRatio * this.chartWidth;
+	}
+
+	_getYCoord(y: number): number {
+		// TODO: calc Y bounds on the fly later with "good increments"
+		const maxY = 3;
+		const minY = -3;
+		const totalHeight = maxY - minY;
+
+		const thisRatio = y / totalHeight;
+		const transform = -1 * thisRatio * this.chartHeight + (this.chartHeight / 2);
+
+		return transform;
 	}
 
 	_getTideCoords() : {index: number, x: number, y: number}[] {
@@ -121,18 +133,27 @@ export class TideChart {
 		let result = this.tides.map(tide => ({
 			index: i++,
 			x: this._getXForDate(tide.when),
-			y: 0
+			y: this._getYCoord(tide.level)
 		}));
 
-		if(this.tides[0]) {
-			console.log('how is a date interpreted?',
-				'tide level:', this.tides[0].level,
-				'utc string', this.tides[0].when.toUTCString(),
-				'locale string', this.tides[0].when.toLocaleString(),
-				'tostring', this.tides[0].when.toString(),
-				'json', this.tides[0].when.toJSON(),
-				);
-		}
+		// if(this.tides[0]) {
+		// 	console.log('how is a date interpreted?',
+		// 		'tide level:', this.tides[0].level,
+		// 		'utc string', this.tides[0].when.toUTCString(),
+		// 		'locale string', this.tides[0].when.toLocaleString(),
+		// 		'tostring', this.tides[0].when.toString(),
+		// 		'json', this.tides[0].when.toJSON(),
+		// 		);
+		// }
+		return result;
+	}
+
+	_getTideSineWave() : string {
+		let points = this._getTideCoords().map(i =>
+			(i.index === 0 ? 'M ' : 'L ') + i.x + ',' + i.y
+		);
+		let result = points.join(' ');
+		console.log(result);
 		return result;
 	}
 
@@ -155,6 +176,8 @@ export class TideChart {
 
 		// console.log('chart days', chartDays);
 		/****** END items that may need to transfer to state later ******/
+
+		this._getTideSineWave();
 
 		return (
 			<Host>
@@ -198,9 +221,11 @@ export class TideChart {
 					<g id="tides">
 						{
 							this._getTideCoords().map(i =>
-								<circle class="tideMarker" id={`tide-marker-${i.index}`} cx={i.x} cy={i.y} r="10" />
+								<circle class="tideMarker" id={`tide-marker-${i.index}`} cx={i.x} cy={i.y} r="3" />
 							)
 						}
+						<path class="tideSineWave" id="tideSineWave" d={this._getTideSineWave()} />
+
 					</g>
 				</svg>
 			</Host>

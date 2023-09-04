@@ -26,3 +26,8 @@ svg .xGridline {
 svg .tideMarker {
 	fill: lightcyan;
 }
+
+svg .tideSineWave {
+	stroke: lightcyan;
+	fill: none;
+}

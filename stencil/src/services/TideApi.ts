@@ -36,10 +36,26 @@ export function GetTides(): TideResponse[] {
 		{when: new Date('2023-09-07T16:00:00.000Z'), level: +'0.121'},
 	];
 	*/
+
+
 	return [
 		{when: new Date(Date.UTC(2023, 8, 6, 12, 0, 0, 0)), level: +'0.093'},
 		{when: new Date(Date.UTC(2023, 8, 7, 8, 0, 0, 0)), level: +'2.078'},
 		{when: new Date(Date.UTC(2023, 8, 7, 16, 0, 0, 0)), level: +'0.121'},
 	];
+
+	/*
+	return [
+		{when: new Date(Date.UTC(2023, 8, 6, 12, 0, 0, 0)), level: +'3'},
+
+		{when: new Date(Date.UTC(2023, 8, 6, 12, 0, 0, 0)), level: +'0'},
+		{when: new Date(Date.UTC(2023, 8, 7, 8, 0, 0, 0)), level: +'1.5'},
+		{when: new Date(Date.UTC(2023, 8, 7, 16, 0, 0, 0)), level: +'-1.5'},
+
+		{when: new Date(Date.UTC(2023, 8, 7, 16, 0, 0, 0)), level: +'-3'},
+
+
+	];
+	*/
 };
 
