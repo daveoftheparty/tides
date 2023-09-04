@@ -46,6 +46,17 @@ export class TideChart {
 	}
 
 	_getChartDays(startDate: Date, endDate: Date): number {
+		// console.log('_getChartDays startDate', startDate.toISOString(), 'endDate', endDate.toISOString(), 'this.minDate', this.minDate.toISOString(), 'this.maxdate', this.maxDate.toISOString());
+		/*
+			TODO
+			this rounding function does not actually work. For startDate
+				2023-09-06T00:00:00.000Z
+			, all of the following erroneously return a value of 3:
+				2023-09-07T23:59:59.999Z
+				2023-09-07T23:59:59.699Z
+				2023-09-07T23:59:58.000Z
+		*/
+
 		const msInDay = 24 * 60 * 60 * 1000;
 
 		return Math.round(
@@ -81,19 +92,25 @@ export class TideChart {
 	}
 
 	_getExpandedUnixDate(input: Date) : number {
-		input.setUTCHours(23);
-		input.setUTCMinutes(59);
-		input.setUTCSeconds(59);
-		input.setUTCMilliseconds(999);
-		return input.valueOf();
+		// do not mutate incoming obj!
+		const localDate = new Date(input);
+
+		localDate.setUTCHours(23);
+		localDate.setUTCMinutes(59);
+		localDate.setUTCSeconds(59);
+		localDate.setUTCMilliseconds(999);
+		return localDate.valueOf();
 	}
 
 	_getFlattenedUnixDate(input: Date) : number {
-		input.setUTCHours(0);
-		input.setUTCMinutes(0);
-		input.setUTCSeconds(0);
-		input.setUTCMilliseconds(0);
-		return input.valueOf();
+		// do not mutate incoming obj!
+		const localDate = new Date(input);
+
+		localDate.setUTCHours(0);
+		localDate.setUTCMinutes(0);
+		localDate.setUTCSeconds(0);
+		localDate.setUTCMilliseconds(0);
+		return localDate.valueOf();
 	}
 
 
@@ -150,7 +167,11 @@ export class TideChart {
 
 	_getTideSineWave() : string {
 		let points = this._getTideCoords().map(i =>
+			// this gives straight line path:
 			(i.index === 0 ? 'M ' : 'L ') + i.x + ',' + i.y
+
+			// this gives sine wave, if i'm lucky:
+			// (i.index === 0 ? 'm ' : (i.index === 1 ? 'c ' : '') ) + i.x + ',' + i.y
 		);
 		let result = points.join(' ');
 		console.log(result);
