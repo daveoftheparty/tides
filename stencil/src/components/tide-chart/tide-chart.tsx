@@ -224,6 +224,26 @@ export class TideChart {
 		return result;
 	}
 
+	_getCalendarLabels() : {day: string, date: string}[] {
+		const days = this._getChartDays(this.minDate, this.maxDate);
+		let currentDate = this.minDate;
+
+		let result = [...Array(days).keys()].map(i => {
+			const msInDay = 24 * 60 * 60 * 1000;
+			let offset = msInDay * i;
+			currentDate = new Date(currentDate.getTime() + offset);
+
+			currentDate = new Date()
+			return {
+				day: 'asfd',
+				date: `${currentDate.getUTCDate()}`
+
+			};
+		});
+
+		return result;
+	}
+
 	render() {
 		let content = <ul>{this.tides.map(result =>
 			<li><strong>{result.when.toISOString()}</strong> - Ms since 1970: {result.when.getTime()} Level: {result.level}</li>
