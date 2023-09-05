@@ -302,7 +302,7 @@ export class TideChart {
 					<g id="x-axis-day-ticks">
 						{
 							this._getChartXAxisGridlines().map(i =>
-								<path class="xGridline" id={`x-tick-${i.index}`} d={`M ${i.x},${this.chartAreaYOffsetTop / 2} V ${this.chartAreaHeight}`} />
+								<path class="xGridline" id={`x-tick-${i.index}`} d={`M ${i.x},${this.chartAreaYOffsetTop / 2} V ${this.chartHeight - this.chartAreaYOffsetBottom / 2}`} />
 							)
 						}
 					</g>
