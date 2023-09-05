@@ -14,7 +14,7 @@ div {
 svg #chartArea {
 	fill: white;
 	/* debug */
-	stroke: black;
+	stroke: red;
 }
 
 svg .chartDayDark {
@@ -28,7 +28,7 @@ svg .chartDaylight {
 
 svg .xGridline,
 svg .yGridline {
-	stroke: lightcyan;
+	stroke: gray;
 }
 
 svg .tideMarker {

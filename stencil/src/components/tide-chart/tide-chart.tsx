@@ -27,7 +27,8 @@ export class TideChart {
 
 	chartWidth = 800;
 	chartHeight = 450;
-	chartAreaXOffset = 40;
+	chartAreaXOffset = 40; // TODO this should be based on the font size of the y-axis labels
+	chartAreaYOffsetTop = 35; // TODO this should be based on the font size of the x-axis top series labels
 
 	_getChartData() {
 		const tides = this._getTides();
@@ -170,7 +171,7 @@ export class TideChart {
 		const thisRatio = y / totalHeight;
 		const transform = -1 * thisRatio * this.chartHeight + (this.chartHeight / 2);
 
-		return transform;
+		return transform + this.chartAreaYOffsetTop;
 	}
 
 	_getYAxis(): {index: number, y: number, label: string}[] {
@@ -182,7 +183,7 @@ export class TideChart {
 		let result = [...Array(gridlines).keys()].map(i => {
 			return {
 				index: i,
-				y: i * gridSpace,
+				y: i * gridSpace + this.chartAreaYOffsetTop,
 				label: `${this.maxY - labelIncrement * i}`
 			};
 		});
@@ -295,16 +296,16 @@ export class TideChart {
 					<rect id="chartArea" width="100%" height="100%" />
 					<g id="days">
 						{this._getChartDayRects(this.minDate, this.maxDate).map(day =>
-							<rect class="chartDayDark" id={`${day.index}`} width={day.width} height={this.chartHeight} x={day.x} y="0" />
+							<rect class="chartDayDark" id={`${day.index}`} width={day.width} height={this.chartHeight} x={day.x} y={this.chartAreaYOffsetTop} />
 						)}
 						{this._getDaylightRects().map(day =>
-							<rect class="chartDaylight" id={`${day.index}`} width={day.width} height={this.chartHeight} x={day.x} y="0" />
+							<rect class="chartDaylight" id={`${day.index}`} width={day.width} height={this.chartHeight} x={day.x} y={this.chartAreaYOffsetTop} />
 						)}
 					</g>
 					<g id="x-axis-day-ticks">
 						{
 							this._getChartXAxisGridlines().map(i =>
-								<path class="xGridline" id={`x-tick-${i.index}`} d={`M ${i.x},0 V ${this.chartHeight}`} />
+								<path class="xGridline" id={`x-tick-${i.index}`} d={`M ${i.x},${this.chartAreaYOffsetTop / 2} V ${this.chartHeight}`} />
 							)
 						}
 					</g>
@@ -333,7 +334,7 @@ export class TideChart {
 					<g id="x-axis-top-series-labels">
 						{
 							this._getCalendarLabels().map(i =>
-								<text class="xAxisTopSeriesLabel" id={`x-top-label-${i.index}`} text-anchor="middle" alignment-baseline="middle"  y="10">
+								<text class="xAxisTopSeriesLabel" id={`x-top-label-${i.index}`} text-anchor="middle" dominant-baseline="hanging"  y="0">
 									<tspan x={i.x} text-anchor="middle">{i.day}</tspan>
 									<tspan x={i.x} dy="1.2em" text-anchor="middle">{i.date}</tspan>
 								</text>
