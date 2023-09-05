@@ -31,6 +31,8 @@ export class TideChart {
 	chartAreaYOffsetTop = 35; // TODO this should be based on the font size of the x-axis top series labels
 	chartAreaYOffsetBottom = 40; // TODO this should be based on the font size of the x-axis-daylight-labels
 
+	chartAreaHeight = this.chartHeight - this.chartAreaYOffsetTop - this.chartAreaYOffsetBottom;
+
 	_getChartData() {
 		const tides = this._getTides();
 		const daylight = this._getDaylight();
@@ -189,7 +191,7 @@ export class TideChart {
 		const totalHeight = this.maxY - this.minY;
 
 		const thisRatio = y / totalHeight;
-		const transform = -1 * thisRatio * this.chartHeight + (this.chartHeight / 2);
+		const transform = -1 * thisRatio * this.chartAreaHeight + (this.chartAreaHeight / 2);
 
 		return transform + this.chartAreaYOffsetTop;
 	}
@@ -197,7 +199,7 @@ export class TideChart {
 	_getYAxis(): {index: number, y: number, label: string}[] {
 		// just output 3 Y gridlines: 25%, 50%, 75%
 		const gridlines = 5;
-		const gridSpace = this.chartHeight / (gridlines - 1);
+		const gridSpace = this.chartAreaHeight / (gridlines - 1);
 		const labelIncrement = (this.maxY - this.minY) / (gridlines - 1);
 
 		let result = [...Array(gridlines).keys()].map(i => {
@@ -316,16 +318,16 @@ export class TideChart {
 					<rect id="chartArea" width="100%" height="100%" />
 					<g id="days">
 						{this._getChartDayRects(this.minDate, this.maxDate).map(day =>
-							<rect class="chartDayDark" id={`${day.index}`} width={day.width} height={this.chartHeight} x={day.x} y={this.chartAreaYOffsetTop} />
+							<rect class="chartDayDark" id={`${day.index}`} width={day.width} height={this.chartAreaHeight} x={day.x} y={this.chartAreaYOffsetTop} />
 						)}
 						{this._getDaylightRects().map(day =>
-							<rect class="chartDaylight" id={`${day.index}`} width={day.width} height={this.chartHeight} x={day.x} y={this.chartAreaYOffsetTop} />
+							<rect class="chartDaylight" id={`${day.index}`} width={day.width} height={this.chartAreaHeight} x={day.x} y={this.chartAreaYOffsetTop} />
 						)}
 					</g>
 					<g id="x-axis-day-ticks">
 						{
 							this._getChartXAxisGridlines().map(i =>
-								<path class="xGridline" id={`x-tick-${i.index}`} d={`M ${i.x},${this.chartAreaYOffsetTop / 2} V ${this.chartHeight}`} />
+								<path class="xGridline" id={`x-tick-${i.index}`} d={`M ${i.x},${this.chartAreaYOffsetTop / 2} V ${this.chartAreaHeight}`} />
 							)
 						}
 					</g>
