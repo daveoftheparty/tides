@@ -6,10 +6,18 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
+    interface DsDebugTideApi {
+    }
     interface DsTideChart {
     }
 }
 declare global {
+    interface HTMLDsDebugTideApiElement extends Components.DsDebugTideApi, HTMLStencilElement {
+    }
+    var HTMLDsDebugTideApiElement: {
+        prototype: HTMLDsDebugTideApiElement;
+        new (): HTMLDsDebugTideApiElement;
+    };
     interface HTMLDsTideChartElement extends Components.DsTideChart, HTMLStencilElement {
     }
     var HTMLDsTideChartElement: {
@@ -17,13 +25,17 @@ declare global {
         new (): HTMLDsTideChartElement;
     };
     interface HTMLElementTagNameMap {
+        "ds-debug-tide-api": HTMLDsDebugTideApiElement;
         "ds-tide-chart": HTMLDsTideChartElement;
     }
 }
 declare namespace LocalJSX {
+    interface DsDebugTideApi {
+    }
     interface DsTideChart {
     }
     interface IntrinsicElements {
+        "ds-debug-tide-api": DsDebugTideApi;
         "ds-tide-chart": DsTideChart;
     }
 }
@@ -31,6 +43,7 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "ds-debug-tide-api": LocalJSX.DsDebugTideApi & JSXBase.HTMLAttributes<HTMLDsDebugTideApiElement>;
             "ds-tide-chart": LocalJSX.DsTideChart & JSXBase.HTMLAttributes<HTMLDsTideChartElement>;
         }
     }

@@ -14,7 +14,7 @@ export type TideResponse = {
 	level: number
 };
 
-export function GetTides(start: Date, end: Date): TideResponse[] {
+export function GetTides(start: Date, end: Date): Promise<TideResponse[]> {
 	return _getTides(start, end);
 	// return _mockTides();
 }
@@ -30,26 +30,25 @@ function _yyyymmdd(input: Date) : string {
 	].join('');
 }
 
-function _getTides(start: Date, end: Date): TideResponse[] {
-	let results: TideResponse[] = [];
-    fetch(`https://tidesandcurrents.noaa.gov/api/datagetter?product=predictions&application=NOS.COOPS.TAC.WL&begin_date=${_yyyymmdd(start)}&end_date=${_yyyymmdd(end)}&datum=MLLW&station=8775870&time_zone=gmt&units=english&interval=hilo&format=json`,
-	{mode: 'no-cors'})
+function _getTides(start: Date, end: Date): Promise<TideResponse[]> {
+    return fetch(`https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=predictions&application=NOS.COOPS.TAC.WL&begin_date=${_yyyymmdd(start)}&end_date=${_yyyymmdd(end)}&datum=MLLW&station=8775870&time_zone=gmt&units=english&interval=hilo&format=json`,
+	{mode: 'cors'})
 		.then(res => res.json())
 		.then(parsedRes => {
 			console.log('parsed json is ', parsedRes);
-			results = parsedRes['predictions'].map(tide => {
+			let results = parsedRes['predictions'].map(tide => {
 				return {
 					when: _noaaStringToDate(tide.t),
 					level: +tide.v
 				};
 			});
 			console.log('tide api results', results);
+			return results;
 		})
 		.catch(err => {
 			console.log('we caught one');
 			console.log(err);
 		})
-		return results;
 }
 
 function _noaaStringToDate(input: string) : Date {

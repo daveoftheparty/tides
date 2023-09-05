@@ -34,29 +34,31 @@ export class TideChart {
 	chartAreaHeight = this.chartHeight - this.chartAreaYOffsetTop - this.chartAreaYOffsetBottom;
 
 	_getChartData() {
-		const tides = this._getTides();
+		this._getTides()
+			.then(tides => {
+				this.tides = tides;
+				this.loaded = true;
+			});
 		const daylight = this._getDaylight();
 
 		// TODO calc minY, maxY based on data later
 
 		// assign state last after all calcs to avoid re-renders:
-		this.tides = tides;
 		this.daylight = daylight;
-		this.loaded = true;
 	}
 
 	_getDaylight() : DaylightResponse[] {
 		return GetDaylight();
 	}
 
-	_getTides() : TideResponse[] {
-		const tides = GetTides(new Date(this.beginDateInput.valueAsNumber), new Date(this.endDateInput.valueAsNumber));
-		console.log('getTides response:', tides);
-
-		this._setTidesYAxisRange(tides);
-		this._setMinMaxDate(tides);
-
-		return tides;
+	_getTides() : Promise<TideResponse[]> {
+		return GetTides(new Date(this.beginDateInput.valueAsNumber), new Date(this.endDateInput.valueAsNumber))
+			.then(tides => {
+				console.log('getTides response:', tides);
+				this._setTidesYAxisRange(tides);
+				this._setMinMaxDate(tides);
+				return tides;
+			});
 	}
 
 	_setTidesYAxisRange(tides: TideResponse[]) {
