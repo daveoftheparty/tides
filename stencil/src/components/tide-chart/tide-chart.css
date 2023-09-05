@@ -3,10 +3,18 @@
 	display: block;
 }
 
-div {
+#userInput {
 	padding: 1rem;
 	margin: 1rem;
 	width: 20rem;
+	max-width: 100%;
+	border: 1px solid black;
+}
+
+#chartContainer {
+	padding: 1rem;
+	margin: 1rem;
+	width: 50rem;
 	max-width: 100%;
 	border: 1px solid black;
 }

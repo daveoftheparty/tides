@@ -18,7 +18,7 @@ export class TideChart {
 	tidesMaxY: number;
 
 	@State() daylight : DaylightResponse[] = [];
-
+	@State() loaded = false;
 
 	minDate: Date = new Date(2023, 8, 1);
 	maxDate: Date = new Date(2023, 8, 2);
@@ -42,6 +42,7 @@ export class TideChart {
 		// assign state last after all calcs to avoid re-renders:
 		this.tides = tides;
 		this.daylight = daylight;
+		this.loaded = true;
 	}
 
 	_getDaylight() : DaylightResponse[] {
@@ -271,49 +272,23 @@ export class TideChart {
 	}
 
 	render() {
-		let content = <ul>{this.tides.map(result =>
-			<li><strong>{result.when.toISOString()}</strong> - Ms since 1970: {result.when.getTime()} Level: {result.level}</li>
-		)}</ul>;
+		let chart = '';
 
-		/****** BEGIN items that may need to transfer to state later ******/
+		if(this.loaded) {
+			let content = <ul>{this.tides.map(result =>
+				<li><strong>{result.when.toISOString()}</strong> - Ms since 1970: {result.when.getTime()} Level: {result.level}</li>
+			)}</ul>;
 
+			const yAxis = this._getYAxis();
+			this._getTideSineWave();
 
-
-		// gonna try to do without a separate chart background, chart area, and instead, put the chart in a div and specify padding/margin
-		// const chartAreaXOffset = 40;
-		// const chartAreaYOffset = 20;
-
-		// console.log('chart days', chartDays);
-		/****** END items that may need to transfer to state later ******/
-
-		const yAxis = this._getYAxis();
-
-		this._getTideSineWave();
-
-		return (
-			<Host>
-				<div>
-					{/* <p>
-						Begin Date: <input
-							id="begin-date"
-							value={this.beginDate}
-						/>
-					</p>
-					<p>
-						End Date: <input
-							id="end-date"
-							value={this.endDate}
-						/>
-					</p> */}
-					<button onClick={this._getChartData.bind(this)}>Get Tides</button>
-
-				</div>
+			chart =
+			<div id="chartContainer">
 				<h2>debug stuff after here, would be the chart</h2>
 				{content}
 				<p>Max Y: {this.tidesMaxY}</p>
 				<p>Min Y: {this.tidesMinY}</p>
 				<h2>let's rock this chart:</h2>
-
 				<svg id="chart" viewBox={`0 0 ${this.chartWidth} ${this.chartHeight}`}>
 					<rect id="chartArea" width="100%" height="100%" />
 					<g id="days">
@@ -373,6 +348,28 @@ export class TideChart {
 						}
 					</g>
 				</svg>
+			</div>
+		}
+
+
+		return (
+			<Host>
+				<div id="userInput">
+					{/* <p>
+						Begin Date: <input
+							id="begin-date"
+							value={this.beginDate}
+						/>
+					</p>
+					<p>
+						End Date: <input
+							id="end-date"
+							value={this.endDate}
+						/>
+					</p> */}
+					<button onClick={this._getChartData.bind(this)}>Get Tides</button>
+				</div>
+				{chart}
 			</Host>
 		);
 	}
