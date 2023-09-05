@@ -29,6 +29,7 @@ export class TideChart {
 	chartHeight = 450;
 	chartAreaXOffset = 40; // TODO this should be based on the font size of the y-axis labels
 	chartAreaYOffsetTop = 35; // TODO this should be based on the font size of the x-axis top series labels
+	chartAreaYOffsetBottom = 40; // TODO this should be based on the font size of the x-axis-daylight-labels
 
 	_getChartData() {
 		const tides = this._getTides();
@@ -92,6 +93,25 @@ export class TideChart {
 			x: this._getXForDate(daylight.rise),
 			width: this._getXForDate(daylight.set) - this._getXForDate(daylight.rise)
 		}));
+		console.log('getDaylightRects result', result);
+		return result;
+	}
+
+	_getDaylightLabels() : {index: number, x: number, y: number, label: string}[] {
+		const result: {index: number, x: number, y: number, label: string}[]= [];
+
+		this.daylight.forEach((daylight, i) => {
+			[daylight.rise, daylight.set].map(day => {
+				result.push(
+				{
+					index: i,
+					x: this._getXForDate(day),
+					y: this.chartHeight - this.chartAreaYOffsetBottom,
+					label: `${day.getUTCHours()}:${day.getUTCMinutes()}`
+				});
+			})
+		});
+
 		console.log('getDaylightRects result', result);
 		return result;
 	}
@@ -337,6 +357,15 @@ export class TideChart {
 								<text class="xAxisTopSeriesLabel" id={`x-top-label-${i.index}`} text-anchor="middle" dominant-baseline="hanging"  y="0">
 									<tspan x={i.x} text-anchor="middle">{i.day}</tspan>
 									<tspan x={i.x} dy="1.2em" text-anchor="middle">{i.date}</tspan>
+								</text>
+							)
+						}
+					</g>
+					<g id="x-axis-daylight-labels">
+						{
+							this._getDaylightLabels().map(i =>
+								<text class="xAxisDaylightLabel" id={`x-axis-daylight-label-${i.index}`} text-anchor="end" dominant-baseline="middle" transform={`rotate(270, ${i.x}, ${i.y})`} x={i.x} y={i.y}>
+									{i.label}
 								</text>
 							)
 						}
