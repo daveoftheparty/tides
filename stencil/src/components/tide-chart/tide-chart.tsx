@@ -11,7 +11,8 @@ import { State } from "@stencil/core";
 export class TideChart {
 	beginDateInput : HTMLInputElement;
 	endDateInput : HTMLInputElement;
-
+	beginDate: Date;
+	endDate: Date;
 
 	@State() tides : TideResponse[] = [];
 	tidesMinY: number;
@@ -20,8 +21,6 @@ export class TideChart {
 	@State() daylight : DaylightResponse[] = [];
 	@State() loaded = false;
 
-	minDate: Date = new Date(2023, 8, 1);
-	maxDate: Date = new Date(2023, 8, 2);
 	minY: number = -3;
 	maxY: number = 3;
 
@@ -34,6 +33,9 @@ export class TideChart {
 	chartAreaHeight = this.chartHeight - this.chartAreaYOffsetTop - this.chartAreaYOffsetBottom;
 
 	_getChartData() {
+		this.beginDate = this.beginDateInput.valueAsDate;
+		this.endDate = this.endDateInput.valueAsDate;
+
 		this._getTides()
 			.then(tides => {
 				this.tides = tides;
@@ -52,11 +54,10 @@ export class TideChart {
 	}
 
 	_getTides() : Promise<TideResponse[]> {
-		return GetTides(new Date(this.beginDateInput.valueAsNumber), new Date(this.endDateInput.valueAsNumber))
+		return GetTides(this.beginDate, this.endDate)
 			.then(tides => {
 				console.log('getTides response:', tides);
 				this._setTidesYAxisRange(tides);
-				this._setMinMaxDate(tides);
 				return tides;
 			});
 	}
@@ -66,14 +67,7 @@ export class TideChart {
 		this.tidesMaxY = tides.reduce((max, current) => current.level > max ? current.level : max, tides[0].level);
 	}
 
-	_setMinMaxDate(tides: TideResponse[]) {
-		// new Date() around the reduce here because otherwise this.min/maxDate refer to same object as in tides array,
-		// and later when we calculate coordinates our source data has been corrupted
-		this.minDate = new Date(tides.reduce((min, current) => current.when < min ? current.when : min, tides[0].when));
-		this.maxDate = new Date(tides.reduce((max, current) => current.when > max ? current.when : max, tides[0].when));
-	}
-
-	_getChartDays(startDate: Date, endDate: Date): number {
+	_getChartDays(): number {
 		// console.log('_getChartDays startDate', startDate.toISOString(), 'endDate', endDate.toISOString(), 'this.minDate', this.minDate.toISOString(), 'this.maxdate', this.maxDate.toISOString());
 		/*
 			TODO
@@ -88,7 +82,7 @@ export class TideChart {
 		const msInDay = 24 * 60 * 60 * 1000;
 
 		return Math.round(
-			Math.abs(Number(endDate) - Number(startDate)) / msInDay
+			Math.abs(Number(this.beginDate) - Number(this.endDate)) / msInDay
 		) + 1;
 	}
 
@@ -121,9 +115,8 @@ export class TideChart {
 		return result;
 	}
 
-	// TODO: why bother passing in dates, maybe just use minDate, maxDate class attributes
-	_getChartDayRects(startDate: Date, endDate: Date): {index: number, x: number, width: number}[] {
-		const chartDays = this._getChartDays(startDate, endDate);
+	_getChartDayRects(): {index: number, x: number, width: number}[] {
+		const chartDays = this._getChartDays();
 		console.log('chart days', chartDays);
 		const dayWidth = (this.chartWidth - this.chartAreaXOffset) / chartDays;
 
@@ -137,7 +130,7 @@ export class TideChart {
 	}
 
 	_getChartXAxisGridlines(): {index: number, x: number}[] {
-		const chartDays = this._getChartDays(this.minDate, this.maxDate);
+		const chartDays = this._getChartDays();
 		const dayWidth = (this.chartWidth - this.chartAreaXOffset) / chartDays;
 
 		let result = [...Array(chartDays + 1).keys()].map(i => ({
@@ -172,8 +165,8 @@ export class TideChart {
 
 
 	_getXForDate(input: Date): number {
-		const expandedMaxDate = this._getExpandedUnixDate(this.maxDate);
-		const flattenedMinDate = this._getFlattenedUnixDate(this.minDate);
+		const expandedMaxDate = this._getExpandedUnixDate(this.endDate);
+		const flattenedMinDate = this._getFlattenedUnixDate(this.beginDate);
 		const chartDateDiff = expandedMaxDate - flattenedMinDate;
 
 		const thisRatio = (input.valueOf() - flattenedMinDate) / chartDateDiff;
@@ -187,7 +180,7 @@ export class TideChart {
 		// 	'ratio:', thisRatio);
 
 		// const thisRatio = input.valueOf() / expandedMaxDate;
-		return thisRatio * (this.chartWidth - this.chartAreaXOffset);
+		return thisRatio * (this.chartWidth - this.chartAreaXOffset) + this.chartAreaXOffset;
 	}
 
 	_getYCoord(y: number): number {
@@ -252,15 +245,13 @@ export class TideChart {
 
 	_getCalendarLabels() : {index: number, x: number, day: string, date: string}[] {
 		const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-		const days = this._getChartDays(this.minDate, this.maxDate);
-		const chartRects = this._getChartDayRects(this.minDate, this.maxDate);
-
-		let currentDate = this.minDate;
+		const days = this._getChartDays();
+		const chartRects = this._getChartDayRects();
 
 		let result = [...Array(days).keys()].map(i => {
 			const msInDay = 24 * 60 * 60 * 1000;
 			let offset = msInDay * i;
-			currentDate = new Date(currentDate.getTime() + offset);
+			let currentDate = new Date(this.beginDate.getTime() + offset);
 
 			return {
 				index: i,
@@ -287,8 +278,8 @@ export class TideChart {
 			chart =
 			<div id="chartContainer">
 				<h2>debug begin/enddate state</h2>
-				<p>BeginDate: {new Date(this.beginDateInput.valueAsNumber).toISOString()}</p>
-				<p>EndDate: {new Date(this.endDateInput.valueAsNumber).toISOString()}</p>
+				<p>BeginDate: {this.beginDate.toISOString()}</p>
+				<p>EndDate: {this.endDate.toISOString()}</p>
 
 				<h2>debug tide response</h2>
 				{content}
@@ -298,7 +289,7 @@ export class TideChart {
 				<svg id="chart" viewBox={`0 0 ${this.chartWidth} ${this.chartHeight}`}>
 					<rect id="chartArea" width="100%" height="100%" />
 					<g id="days">
-						{this._getChartDayRects(this.minDate, this.maxDate).map(day =>
+						{this._getChartDayRects().map(day =>
 							<rect class="chartDayDark" id={`${day.index}`} width={day.width} height={this.chartAreaHeight} x={day.x} y={this.chartAreaYOffsetTop} />
 						)}
 						{this._getDaylightRects().map(day =>
