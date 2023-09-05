@@ -9,8 +9,8 @@ import { State } from "@stencil/core";
 	shadow: true
 })
 export class TideChart {
-	@State() beginDate : string;
-	@State() endDate : string;
+	beginDateInput : HTMLInputElement;
+	endDateInput : HTMLInputElement;
 
 
 	@State() tides : TideResponse[] = [];
@@ -50,7 +50,7 @@ export class TideChart {
 	}
 
 	_getTides() : TideResponse[] {
-		const tides = GetTides();
+		const tides = GetTides(new Date(this.beginDateInput.valueAsNumber), new Date(this.endDateInput.valueAsNumber));
 		console.log('getTides response:', tides);
 
 		this._setTidesYAxisRange(tides);
@@ -284,7 +284,11 @@ export class TideChart {
 
 			chart =
 			<div id="chartContainer">
-				<h2>debug stuff after here, would be the chart</h2>
+				<h2>debug begin/enddate state</h2>
+				<p>BeginDate: {new Date(this.beginDateInput.valueAsNumber).toISOString()}</p>
+				<p>EndDate: {new Date(this.endDateInput.valueAsNumber).toISOString()}</p>
+
+				<h2>debug tide response</h2>
 				{content}
 				<p>Max Y: {this.tidesMaxY}</p>
 				<p>Min Y: {this.tidesMinY}</p>
@@ -355,18 +359,20 @@ export class TideChart {
 		return (
 			<Host>
 				<div id="userInput">
-					{/* <p>
+					<p>
 						Begin Date: <input
 							id="begin-date"
-							value={this.beginDate}
+							type="date"
+							ref={el => this.beginDateInput = el}
 						/>
 					</p>
 					<p>
 						End Date: <input
 							id="end-date"
-							value={this.endDate}
+							type="date"
+							ref={el => this.endDateInput = el}
 						/>
-					</p> */}
+					</p>
 					<button onClick={this._getChartData.bind(this)}>Get Tides</button>
 				</div>
 				{chart}

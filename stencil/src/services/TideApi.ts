@@ -14,7 +14,7 @@ export type TideResponse = {
 	level: number
 };
 
-export function GetTides(): TideResponse[] {
+export function GetTides(start: Date, end: Date): TideResponse[] {
 	return _mockTides();
 }
 
