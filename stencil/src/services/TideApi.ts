@@ -15,6 +15,10 @@ export type TideResponse = {
 };
 
 export function GetTides(): TideResponse[] {
+	return _mockTides();
+}
+
+function _mockTides(): TideResponse[] {
 	/*
 	return [
 		{when: new Date('2023-09-06 14:27'), level: +'0.093'},
