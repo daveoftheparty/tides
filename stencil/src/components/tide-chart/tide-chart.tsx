@@ -224,8 +224,11 @@ export class TideChart {
 		return result;
 	}
 
-	_getCalendarLabels() : {day: string, date: string}[] {
+	_getCalendarLabels() : {index: number, x: number, day: string, date: string}[] {
+		const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 		const days = this._getChartDays(this.minDate, this.maxDate);
+		const chartRects = this._getChartDayRects(this.minDate, this.maxDate);
+
 		let currentDate = this.minDate;
 
 		let result = [...Array(days).keys()].map(i => {
@@ -233,11 +236,11 @@ export class TideChart {
 			let offset = msInDay * i;
 			currentDate = new Date(currentDate.getTime() + offset);
 
-			currentDate = new Date()
 			return {
-				day: 'asfd',
-				date: `${currentDate.getUTCDate()}`
-
+				index: i,
+				x: (chartRects[i].width / 2) + chartRects[i].x,
+				day: dayNames[currentDate.getUTCDay()],
+				date: `${currentDate.getUTCMonth() + 1}/${currentDate.getUTCDate()}`
 			};
 		});
 
@@ -324,6 +327,16 @@ export class TideChart {
 						{
 							yAxis.slice(1, yAxis.length - 1).map(i =>
 								<text class="yTickLabel" id={`y-tick-${i.index}`} text-anchor="end" alignment-baseline="middle" x={this.chartAreaXOffset - 5} y={i.y}>{i.label}</text>
+							)
+						}
+					</g>
+					<g id="x-axis-top-series-labels">
+						{
+							this._getCalendarLabels().map(i =>
+								<text class="xAxisTopSeriesLabel" id={`x-top-label-${i.index}`} text-anchor="middle" alignment-baseline="middle"  y="10">
+									<tspan x={i.x} text-anchor="middle">{i.day}</tspan>
+									<tspan x={i.x} dy="1.2em" text-anchor="middle">{i.date}</tspan>
+								</text>
 							)
 						}
 					</g>
