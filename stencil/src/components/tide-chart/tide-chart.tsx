@@ -2,6 +2,7 @@ import { Component, h, Host } from "@stencil/core";
 import { GetTides, TideResponse } from '../../services/TideApi';
 import { GetDaylight, DaylightResponse } from '../../services/DaylightApi';
 import { State } from "@stencil/core";
+import { UtcToLocal } from "../../services/DateUtils";
 
 @Component({
 	tag: 'ds-tide-chart',
@@ -91,8 +92,8 @@ export class TideChart {
 	_getDaylightRects() : {index: number, x: number, width: number}[] {
 		let result = this.daylight.map((daylight, i) => ({
 			index: i,
-			x: this._getXForDate(daylight.rise),
-			width: this._getXForDate(daylight.set) - this._getXForDate(daylight.rise)
+			x: this._getXForDate(UtcToLocal(daylight.rise)),
+			width: this._getXForDate(UtcToLocal(daylight.set)) - this._getXForDate(UtcToLocal(daylight.rise))
 		}));
 		console.log('getDaylightRects result', result);
 		return result;
@@ -106,7 +107,7 @@ export class TideChart {
 				result.push(
 				{
 					index: i,
-					x: this._getXForDate(day),
+					x: this._getXForDate(UtcToLocal(day)),
 					y: this.chartHeight - this.chartAreaYOffsetBottom,
 					label: `${day.getHours()}:${day.getMinutes()}`
 				});
@@ -166,20 +167,22 @@ export class TideChart {
 	}
 
 
-	_getXForDate(input: Date): number {
+	_getXForDate(input: Date, log: boolean = false): number {
 		const expandedMaxDate = this._getExpandedUnixDate(this.endDate);
 		const flattenedMinDate = this._getFlattenedUnixDate(this.beginDate);
 		const chartDateDiff = expandedMaxDate - flattenedMinDate;
 
 		const thisRatio = (input.valueOf() - flattenedMinDate) / chartDateDiff;
-		// console.log(
-		// 	'getxfordate input:', input.toISOString(),
-		// 	'input valueOf():', input.valueOf(),
-		// 	'flattenedMinDate:', new Date(flattenedMinDate).toISOString(),
-		// 	'flattenedMinDate valueOf():', new Date(flattenedMinDate).valueOf(),
-		// 	'expandedMaxDate:', new Date(expandedMaxDate).toISOString(),
-		// 	'expandedMaxDate valueOf():', new Date(expandedMaxDate).valueOf(),
-		// 	'ratio:', thisRatio);
+		if(log) {
+			console.log(
+				'getxfordate input:', input.toISOString(),
+				'input valueOf():', input.valueOf(),
+				'flattenedMinDate:', new Date(flattenedMinDate).toISOString(),
+				'flattenedMinDate valueOf():', new Date(flattenedMinDate).valueOf(),
+				'expandedMaxDate:', new Date(expandedMaxDate).toISOString(),
+				'expandedMaxDate valueOf():', new Date(expandedMaxDate).valueOf(),
+				'ratio:', thisRatio);
+		}
 
 		// const thisRatio = input.valueOf() / expandedMaxDate;
 		return thisRatio * (this.chartWidth - this.chartAreaXOffset) + this.chartAreaXOffset;
