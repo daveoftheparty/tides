@@ -6,12 +6,20 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
+    interface DsDebugDaylightApi {
+    }
     interface DsDebugTideApi {
     }
     interface DsTideChart {
     }
 }
 declare global {
+    interface HTMLDsDebugDaylightApiElement extends Components.DsDebugDaylightApi, HTMLStencilElement {
+    }
+    var HTMLDsDebugDaylightApiElement: {
+        prototype: HTMLDsDebugDaylightApiElement;
+        new (): HTMLDsDebugDaylightApiElement;
+    };
     interface HTMLDsDebugTideApiElement extends Components.DsDebugTideApi, HTMLStencilElement {
     }
     var HTMLDsDebugTideApiElement: {
@@ -25,16 +33,20 @@ declare global {
         new (): HTMLDsTideChartElement;
     };
     interface HTMLElementTagNameMap {
+        "ds-debug-daylight-api": HTMLDsDebugDaylightApiElement;
         "ds-debug-tide-api": HTMLDsDebugTideApiElement;
         "ds-tide-chart": HTMLDsTideChartElement;
     }
 }
 declare namespace LocalJSX {
+    interface DsDebugDaylightApi {
+    }
     interface DsDebugTideApi {
     }
     interface DsTideChart {
     }
     interface IntrinsicElements {
+        "ds-debug-daylight-api": DsDebugDaylightApi;
         "ds-debug-tide-api": DsDebugTideApi;
         "ds-tide-chart": DsTideChart;
     }
@@ -43,6 +55,7 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "ds-debug-daylight-api": LocalJSX.DsDebugDaylightApi & JSXBase.HTMLAttributes<HTMLDsDebugDaylightApiElement>;
             "ds-debug-tide-api": LocalJSX.DsDebugTideApi & JSXBase.HTMLAttributes<HTMLDsDebugTideApiElement>;
             "ds-tide-chart": LocalJSX.DsTideChart & JSXBase.HTMLAttributes<HTMLDsTideChartElement>;
         }

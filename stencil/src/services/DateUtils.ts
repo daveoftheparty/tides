@@ -10,3 +10,10 @@ export function DateRangeToArray(start: Date, end: Date) : Date[] {
 
 	return result;
 }
+
+
+export function UtcToLocal(date: Date): Date {
+    var newDate = new Date(date);
+    newDate.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+    return newDate;
+}

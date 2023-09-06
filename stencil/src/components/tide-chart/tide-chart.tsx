@@ -241,7 +241,7 @@ export class TideChart {
 			// (i.index === 0 ? 'm ' : (i.index === 1 ? 'c ' : '') ) + i.x + ',' + i.y
 		);
 		let result = points.join(' ');
-		console.log(result);
+		// console.log(result);
 		return result;
 	}
 
