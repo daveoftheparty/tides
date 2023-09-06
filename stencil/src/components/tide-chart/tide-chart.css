@@ -22,7 +22,7 @@
 svg #chartArea {
 	fill: white;
 	/* debug */
-	stroke: red;
+	/* stroke: red; */
 }
 
 svg .chartDayDark {

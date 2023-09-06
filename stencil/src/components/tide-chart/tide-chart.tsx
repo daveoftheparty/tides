@@ -26,7 +26,7 @@ export class TideChart {
 	maxY: number = 3;
 
 	chartWidth = 800;
-	chartHeight = 450;
+	chartHeight = 200;
 	chartAreaXOffset = 40; // TODO this should be based on the font size of the y-axis labels
 	chartAreaYOffsetTop = 35; // TODO this should be based on the font size of the x-axis top series labels
 	chartAreaYOffsetBottom = 40; // TODO this should be based on the font size of the x-axis-daylight-labels
