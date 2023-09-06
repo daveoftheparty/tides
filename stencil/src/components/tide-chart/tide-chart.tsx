@@ -2,7 +2,7 @@ import { Component, h, Host } from "@stencil/core";
 import { GetTides, TideResponse } from '../../services/TideApi';
 import { GetDaylight, DaylightResponse } from '../../services/DaylightApi';
 import { State } from "@stencil/core";
-import { UtcToLocal } from "../../services/DateUtils";
+import { GetExpandedUnixDate, GetFlattenedUnixDate, UtcToLocal } from "../../services/DateUtils";
 
 @Component({
 	tag: 'ds-tide-chart',
@@ -37,8 +37,10 @@ export class TideChart {
 	chartAreaHeight = this.chartHeight - this.chartAreaYOffsetTop - this.chartAreaYOffsetBottom;
 
 	componentDidLoad() {
-		this.beginDateInput.valueAsDate = new Date('2023-09-06T00:00:00.000Z');
-		this.endDateInput.valueAsDate = new Date('2023-09-11T00:00:00.000Z');
+		const today = new Date(GetFlattenedUnixDate(new Date()));
+		const toOneWeek = new Date(today.getTime() + 6 * 24 * 60 * 60 * 1000);
+		this.beginDateInput.valueAsDate = today;
+		this.endDateInput.valueAsDate = toOneWeek;
 	}
 
 	_getChartData() {
@@ -152,33 +154,10 @@ export class TideChart {
 		return result;
 	}
 
-	_getExpandedUnixDate(input: Date) : number {
-		// do not mutate incoming obj!
-		const localDate = new Date(input);
-
-		localDate.setUTCHours(23);
-		localDate.setUTCMinutes(59);
-		localDate.setUTCSeconds(59);
-		localDate.setUTCMilliseconds(999);
-		return localDate.valueOf();
-	}
-
-	_getFlattenedUnixDate(input: Date) : number {
-		// do not mutate incoming obj!
-		const localDate = new Date(input);
-
-		localDate.setUTCHours(0);
-		localDate.setUTCMinutes(0);
-		localDate.setUTCSeconds(0);
-		localDate.setUTCMilliseconds(0);
-		return localDate.valueOf();
-	}
-
-
 	_getXForDate(input: Date, log: boolean = false): number {
 		const inputLocal = UtcToLocal(input);
-		const expandedMaxDate = this._getExpandedUnixDate(this.endDate);
-		const flattenedMinDate = this._getFlattenedUnixDate(this.beginDate);
+		const expandedMaxDate = GetExpandedUnixDate(this.endDate);
+		const flattenedMinDate = GetFlattenedUnixDate(this.beginDate);
 		const chartDateDiff = expandedMaxDate - flattenedMinDate;
 
 		const thisRatio = (inputLocal.valueOf() - flattenedMinDate) / chartDateDiff;
