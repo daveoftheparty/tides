@@ -22,6 +22,7 @@ export class TideChart {
 	@State() daylight : DaylightResponse[] = [];
 	@State() loaded = false;
 
+	@State() showDebug = false;
 	minY: number = -3;
 	maxY: number = 3;
 
@@ -270,10 +271,16 @@ export class TideChart {
 		return result;
 	}
 
+	_toggleDebug() {
+		this.showDebug = !this.showDebug;
+	}
+	
 	render() {
 		let chart = '';
 
 		if(this.loaded) {
+			let debugContent = '';
+
 			let tideDebug = <ul>{this.tides.map(result =>
 				<li><strong>{result.when.toISOString()}</strong> - Ms since 1970: {result.when.getTime()} Level: {result.level}</li>
 			)}</ul>;
@@ -282,25 +289,31 @@ export class TideChart {
 				<li><strong>{result.when.toISOString()}</strong> Rise: {result.rise.toLocaleString()} Set: {result.set.toLocaleString()}</li>
 			)}</ul>;
 
+			if(this.showDebug) {
+				debugContent =
+					<div>
+						<h2>debug begin/enddate state</h2>
+						<p>BeginDate: {this.beginDate.toISOString()}</p>
+						<p>EndDate: {this.endDate.toISOString()}</p>
+
+						<h2>debug tide response</h2>
+						{tideDebug}
+						<p>Max Y: {this.tidesMaxY}</p>
+						<p>Min Y: {this.tidesMinY}</p>
+
+						<h2>debug daylight response</h2>
+						{daylightDebug}
+
+					</div>
+			}
+
 			const yAxis = this._getYAxis();
 			this._getTideSineWave();
 
 			chart =
 			<div id="chartContainer">
-				<h2>debug begin/enddate state</h2>
-				<p>BeginDate: {this.beginDate.toISOString()}</p>
-				<p>EndDate: {this.endDate.toISOString()}</p>
-
-				<h2>debug tide response</h2>
-				{tideDebug}
-				<p>Max Y: {this.tidesMaxY}</p>
-				<p>Min Y: {this.tidesMinY}</p>
-
-				<h2>debug daylight response</h2>
-				{daylightDebug}
-
-
-				<h2>let's rock this chart:</h2>
+				<button onClick={this._toggleDebug.bind(this)}>Toggle Debug Info</button>
+				{debugContent}
 				<svg id="chart" viewBox={`0 0 ${this.chartWidth} ${this.chartHeight}`}>
 					<rect id="chartArea" width="100%" height="100%" />
 					<g id="days">
