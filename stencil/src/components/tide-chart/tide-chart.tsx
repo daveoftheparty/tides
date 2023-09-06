@@ -92,8 +92,8 @@ export class TideChart {
 	_getDaylightRects() : {index: number, x: number, width: number}[] {
 		let result = this.daylight.map((daylight, i) => ({
 			index: i,
-			x: this._getXForDate(UtcToLocal(daylight.rise)),
-			width: this._getXForDate(UtcToLocal(daylight.set)) - this._getXForDate(UtcToLocal(daylight.rise))
+			x: this._getXForDate(daylight.rise),
+			width: this._getXForDate(daylight.set) - this._getXForDate(daylight.rise)
 		}));
 		console.log('getDaylightRects result', result);
 		return result;
@@ -107,7 +107,7 @@ export class TideChart {
 				result.push(
 				{
 					index: i,
-					x: this._getXForDate(UtcToLocal(day)),
+					x: this._getXForDate(day),
 					y: this.chartHeight - this.chartAreaYOffsetBottom,
 					label: `${day.getHours()}:${day.getMinutes()}`
 				});
@@ -168,15 +168,16 @@ export class TideChart {
 
 
 	_getXForDate(input: Date, log: boolean = false): number {
+		const inputLocal = UtcToLocal(input);
 		const expandedMaxDate = this._getExpandedUnixDate(this.endDate);
 		const flattenedMinDate = this._getFlattenedUnixDate(this.beginDate);
 		const chartDateDiff = expandedMaxDate - flattenedMinDate;
 
-		const thisRatio = (input.valueOf() - flattenedMinDate) / chartDateDiff;
+		const thisRatio = (inputLocal.valueOf() - flattenedMinDate) / chartDateDiff;
 		if(log) {
 			console.log(
-				'getxfordate input:', input.toISOString(),
-				'input valueOf():', input.valueOf(),
+				'getxfordate input:', inputLocal.toISOString(),
+				'input valueOf():', inputLocal.valueOf(),
 				'flattenedMinDate:', new Date(flattenedMinDate).toISOString(),
 				'flattenedMinDate valueOf():', new Date(flattenedMinDate).valueOf(),
 				'expandedMaxDate:', new Date(expandedMaxDate).toISOString(),
@@ -319,12 +320,14 @@ export class TideChart {
 					</g>
 
 					<g id="tides">
+						<path class="tideSineWave" id="tideSineWave" d={this._getTideSineWave()} />
 						{
 							this._getTideCoords().map(i =>
-								<circle class="tideMarker" id={`tide-marker-${i.index}`} cx={i.x} cy={i.y} r="7" />
+								<circle class="tideMarker" id={`tide-marker-${i.index}`} cx={i.x} cy={i.y} r="4">
+									<title>{this.tides[i.index].level} ft at {this.tides[i.index].when.toLocaleTimeString()}</title>
+								</circle>
 							)
 						}
-						<path class="tideSineWave" id="tideSineWave" d={this._getTideSineWave()} />
 					</g>
 
 					<g id="y-axis-ticks-and-labels">
