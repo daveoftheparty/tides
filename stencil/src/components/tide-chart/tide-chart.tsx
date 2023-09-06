@@ -28,11 +28,18 @@ export class TideChart {
 
 	chartWidth = 800;
 	chartHeight = 200;
-	chartAreaXOffset = 40; // TODO this should be based on the font size of the y-axis labels
-	chartAreaYOffsetTop = 35; // TODO this should be based on the font size of the x-axis top series labels
-	chartAreaYOffsetBottom = 40; // TODO this should be based on the font size of the x-axis-daylight-labels
+
+	chartFontSize = 9; // TODO this should be relative to/calculated by chart width/height
+	chartAreaXOffset = 25; // TODO this should be based on the font size of the y-axis labels
+	chartAreaYOffsetTop = 25; // TODO this should be based on the font size of the x-axis top series labels
+	chartAreaYOffsetBottom = 35; // TODO this should be based on the font size of the x-axis-daylight-labels
 
 	chartAreaHeight = this.chartHeight - this.chartAreaYOffsetTop - this.chartAreaYOffsetBottom;
+
+	componentDidLoad() {
+		this.beginDateInput.valueAsDate = new Date('2023-09-06T00:00:00.000Z');
+		this.endDateInput.valueAsDate = new Date('2023-09-11T00:00:00.000Z');
+	}
 
 	_getChartData() {
 		this.beginDate = this.beginDateInput.valueAsDate;
@@ -109,7 +116,7 @@ export class TideChart {
 				{
 					index: i,
 					x: this._getXForDate(day),
-					y: this.chartHeight - this.chartAreaYOffsetBottom,
+					y: this.chartHeight - this.chartAreaYOffsetBottom + 3,
 					label: `${day.getHours()}:${day.getMinutes()}`
 				});
 			})
@@ -274,7 +281,7 @@ export class TideChart {
 	_toggleDebug() {
 		this.showDebug = !this.showDebug;
 	}
-	
+
 	render() {
 		let chart = '';
 
@@ -312,7 +319,7 @@ export class TideChart {
 
 			chart =
 			<div id="chartContainer">
-				<button onClick={this._toggleDebug.bind(this)}>Toggle Debug Info</button>
+				<p><button onClick={this._toggleDebug.bind(this)}>Toggle Debug Info</button></p>
 				{debugContent}
 				<svg id="chart" viewBox={`0 0 ${this.chartWidth} ${this.chartHeight}`}>
 					<rect id="chartArea" width="100%" height="100%" />
@@ -351,14 +358,26 @@ export class TideChart {
 						}
 						{
 							yAxis.slice(1, yAxis.length - 1).map(i =>
-								<text class="yTickLabel" id={`y-tick-${i.index}`} text-anchor="end" alignment-baseline="middle" x={this.chartAreaXOffset - 5} y={i.y}>{i.label}</text>
+								<text
+									class="yTickLabel" id={`y-tick-${i.index}`}
+									text-anchor="end" alignment-baseline="middle"
+									x={this.chartAreaXOffset - 5} y={i.y}
+									font-size={this.chartFontSize * 1.25}
+								>
+									{i.label}
+								</text>
 							)
 						}
 					</g>
 					<g id="x-axis-top-series-labels">
 						{
 							this._getCalendarLabels().map(i =>
-								<text class="xAxisTopSeriesLabel" id={`x-top-label-${i.index}`} text-anchor="middle" dominant-baseline="hanging"  y="0">
+								<text
+									class="xAxisTopSeriesLabel" id={`x-top-label-${i.index}`}
+									text-anchor="middle" dominant-baseline="hanging"
+									y="5"
+									font-size={this.chartFontSize}
+								>
 									<tspan x={i.x} text-anchor="middle">{i.day}</tspan>
 									<tspan x={i.x} dy="1.2em" text-anchor="middle">{i.date}</tspan>
 								</text>
@@ -368,7 +387,12 @@ export class TideChart {
 					<g id="x-axis-daylight-labels">
 						{
 							this._getDaylightLabels().map(i =>
-								<text class="xAxisDaylightLabel" id={`x-axis-daylight-label-${i.index}`} text-anchor="end" dominant-baseline="middle" transform={`rotate(270, ${i.x}, ${i.y})`} x={i.x} y={i.y}>
+								<text
+									class="xAxisDaylightLabel" id={`x-axis-daylight-label-${i.index}`}
+									text-anchor="end" dominant-baseline="middle" transform={`rotate(270, ${i.x}, ${i.y})`}
+									x={i.x} y={i.y}
+									font-size={this.chartFontSize}
+								>
 									{i.label}
 								</text>
 							)
