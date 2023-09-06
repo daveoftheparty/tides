@@ -36,6 +36,7 @@ export class TideChart {
 		this.beginDate = this.beginDateInput.valueAsDate;
 		this.endDate = this.endDateInput.valueAsDate;
 
+		// currently hard coded to "Bob Hall Pier, Corpus Christi", StationId 8775870, lat/long: 27.58,-97.216
 		this._getTides()
 			.then(tides => {
 				this.tides = tides;
@@ -46,11 +47,12 @@ export class TideChart {
 		// TODO calc minY, maxY based on data later
 
 		// assign state last after all calcs to avoid re-renders:
+		// TODO: make only this.loaded state? could avoid the re-render problem...
 		this.daylight = daylight;
 	}
 
 	_getDaylight() : DaylightResponse[] {
-		return GetDaylight();
+		return GetDaylight(this.beginDate, this.endDate);
 	}
 
 	_getTides() : Promise<TideResponse[]> {
@@ -106,7 +108,7 @@ export class TideChart {
 					index: i,
 					x: this._getXForDate(day),
 					y: this.chartHeight - this.chartAreaYOffsetBottom,
-					label: `${day.getUTCHours()}:${day.getUTCMinutes()}`
+					label: `${day.getHours()}:${day.getMinutes()}`
 				});
 			})
 		});
@@ -247,7 +249,7 @@ export class TideChart {
 		const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 		const days = this._getChartDays();
 		const chartRects = this._getChartDayRects();
-
+		// TODO: replace this date stuff with DateRangeToArray()
 		let result = [...Array(days).keys()].map(i => {
 			const msInDay = 24 * 60 * 60 * 1000;
 			let offset = msInDay * i;
@@ -268,8 +270,12 @@ export class TideChart {
 		let chart = '';
 
 		if(this.loaded) {
-			let content = <ul>{this.tides.map(result =>
+			let tideDebug = <ul>{this.tides.map(result =>
 				<li><strong>{result.when.toISOString()}</strong> - Ms since 1970: {result.when.getTime()} Level: {result.level}</li>
+			)}</ul>;
+
+			let daylightDebug = <ul>{this.daylight.map(result =>
+				<li><strong>{result.when.toISOString()}</strong> Rise: {result.rise.toLocaleString()} Set: {result.set.toLocaleString()}</li>
 			)}</ul>;
 
 			const yAxis = this._getYAxis();
@@ -282,9 +288,14 @@ export class TideChart {
 				<p>EndDate: {this.endDate.toISOString()}</p>
 
 				<h2>debug tide response</h2>
-				{content}
+				{tideDebug}
 				<p>Max Y: {this.tidesMaxY}</p>
 				<p>Min Y: {this.tidesMinY}</p>
+
+				<h2>debug daylight response</h2>
+				{daylightDebug}
+
+
 				<h2>let's rock this chart:</h2>
 				<svg id="chart" viewBox={`0 0 ${this.chartWidth} ${this.chartHeight}`}>
 					<rect id="chartArea" width="100%" height="100%" />
