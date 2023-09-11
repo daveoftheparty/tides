@@ -78,5 +78,38 @@ public class YTick
 			.ToList();
 	}
 
+	public IReadOnlyList<(double Y, double label)> GetYAxisTicks(IReadOnlyList<SvgComboChartData> data, int height, int tickCount)
+	{
+		var tickYs = GetYCoordinates(data, height, tickCount);
+
+		var tickLabels = new double[tickCount];
+
+		var max = data.Max(d => d.Value);
+		var min = data.Min(d => d.Value);
+
+		// TODO: write a better algorithm so that we don't have to repeat common divisors (ie, if 20 is in this list, there is no need for 40, 60, 120, etc.)
+		var increments = new List<double>
+		{
+			.1d,
+			.33d,
+			.5d,
+			1,
+		};
+
+#warning gonna need some abs() logic here later...
+		var candidate = increments.Last(x => x >= min && (tickCount - 1) * x >= max);
+		if(candidate == 0)
+			throw new Exception("no increment found!");
+
+
+		for (int i = 0; i < tickCount; i++)
+			tickLabels[i] = i * candidate;
+
+		return tickYs
+			.Zip(tickLabels)
+			.Select(x => (x.First, (double)x.Second))
+			.ToList();
+	}
+
 
 }

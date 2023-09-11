@@ -9,6 +9,19 @@ public class YTickTests
 		_out = @out;
 	}
 
+	[Theory]
+	[InlineData(5, .33, new[] { 0d, 25d, 50d, 75d, 100d })]
+	public void GetYAxisTicksLabelTests(int ticks, double expectedMin, double[] data)
+	{
+		var tick = new YTick();
+		var actual = tick.GetYAxisTicks(
+			data
+				.Select((d, i) => new SvgComboChartData { Index = i, Value = d})
+				.ToList(),
+			100,
+			ticks
+		);
+	}
 
 	[Theory]
 	[InlineData(17, 5)]
