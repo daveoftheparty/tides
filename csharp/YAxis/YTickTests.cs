@@ -11,8 +11,10 @@ public class YTickTests
 
 
 	[Theory]
-	[InlineData(100)]
-	public void YCoordTests(int chartHeight)
+	[InlineData(17, 5)]
+	[InlineData(13, 7)]
+	[InlineData(100, 7)]
+	public void YCoordTests(int chartHeight, int ticks)
 	{
 		var tick = new YTick();
 		var actual = tick.GetYAxisTicks(
@@ -22,10 +24,11 @@ public class YTickTests
 				new SvgComboChartData { Index = 1, Value = -1.25 },
 			},
 			0,
-			chartHeight
+			chartHeight,
+			ticks
 		);
 
-		Assert.Equal(5, actual.Count);
+		Assert.Equal(ticks, actual.Count);
 
 		// assert exactly one element has Y coord 0 and one element has Y coord == chartHeight
 		Assert.Equal(1, actual.Count(x => x.Y == 0));
@@ -52,7 +55,7 @@ public class YTickTests
 			})
 			.ToList();
 
-		var actual = svg.GetYAxisTicks(input, width, height).ToList();
+		var actual = svg.GetYAxisTicks(input, width, height, 5).ToList();
 
 		_out.WriteLine("debugging values:");
 		foreach(var item in actual)
