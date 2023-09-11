@@ -117,12 +117,36 @@ public class YTick
 		--------
 		*/
 
-#warning gonna need some abs() logic here later...
-		var candidate = 197;
+		// let's first just cut some basic logic that works without worry about "nice increments" or wasted space:
+
+		var spread = maxVal - minVal;
+		// var spread = maxVal - minVal + 0.25d;
+
+		// OK, we HAVE to add some number to the spread to come up with a distribution that will encompass the max,
+		// so let's calculate that "some number"
+		var baseIncrement = spread / tickCount;
+
+		var candidates = increments
+			.Select(i => new {
+				minLabel = baseIncrement + i,
+				maxLabel = (baseIncrement + i) * tickCount
+			});
+
+
+		var increment = spread / (tickCount - 1);
+		// var increment = spread / tickCount + 0.25d;
+		// var increment = spread / tickCount;
 
 
 		for (int i = 0; i < tickCount; i++)
-			tickLabels[i] = i * candidate;
+		{
+			// if (i == 0)
+			// 	tickLabels[i] = minVal;
+			// else if (i == tickCount - 1)
+			// 	tickLabels[i] = maxVal;
+			// else
+				tickLabels[i] = (i * increment) + minVal;
+		}
 
 		return tickYs
 			.Zip(tickLabels)

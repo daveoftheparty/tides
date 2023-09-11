@@ -10,7 +10,9 @@ public class YTickTests
 	}
 
 	[Theory]
+	[InlineData(5, -1.5d, 1.5d, 13, 69)]
 	[InlineData(5, .353d, 1.934d, 13, 69)]
+	[InlineData(5, .442d, 1.743d, 13, 69)]
 	public void GetYAxisTicksLabelTests(int ticks, double minVal, double maxVal, double expectedMinLabel, double expectedMaxLabel)
 	{
 		var tick = new YTick();
@@ -21,7 +23,7 @@ public class YTickTests
 			maxVal
 		);
 
-		_out.WriteLine($"{nameof(GetYAxisTicksLabelTests)} debug label values");
+		_out.WriteLine($"{nameof(GetYAxisTicksLabelTests)} debug label values for incoming min/max {minVal}/{maxVal}");
 		foreach(var item in actual)
 		{
 			_out.WriteLine($"tick {item.label}");
