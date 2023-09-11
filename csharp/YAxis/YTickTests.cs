@@ -10,17 +10,22 @@ public class YTickTests
 	}
 
 	[Theory]
-	[InlineData(5, .33, new[] { 0d, 25d, 50d, 75d, 100d })]
-	public void GetYAxisTicksLabelTests(int ticks, double expectedMin, double[] data)
+	[InlineData(5, .353d, 1.934d, 13, 69)]
+	public void GetYAxisTicksLabelTests(int ticks, double minVal, double maxVal, double expectedMinLabel, double expectedMaxLabel)
 	{
 		var tick = new YTick();
 		var actual = tick.GetYAxisTicks(
-			data
-				.Select((d, i) => new SvgComboChartData { Index = i, Value = d})
-				.ToList(),
+			ticks,
 			100,
-			ticks
+			minVal,
+			maxVal
 		);
+
+		_out.WriteLine($"{nameof(GetYAxisTicksLabelTests)} debug label values");
+		foreach(var item in actual)
+		{
+			_out.WriteLine($"tick {item.label}");
+		}
 	}
 
 	[Theory]
