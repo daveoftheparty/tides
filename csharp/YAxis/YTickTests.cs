@@ -17,7 +17,7 @@ public class YTickTests
 	public void YCoordTests(int chartHeight, int ticks)
 	{
 		var tick = new YTick();
-		var actual = tick.GetYAxisTicks(
+		var actual = tick.GetPositiveYAxisTicksStartingAtZero(
 			new List<SvgComboChartData>
 			{
 				new SvgComboChartData { Index = 0, Value = 1.5 },
@@ -54,7 +54,7 @@ public class YTickTests
 			})
 			.ToList();
 
-		var actual = svg.GetYAxisTicks(input, height, 5).ToList();
+		var actual = svg.GetPositiveYAxisTicksStartingAtZero(input, height, 5).ToList();
 
 		_out.WriteLine("debugging values:");
 		foreach(var item in actual)
