@@ -2,14 +2,14 @@ namespace YAxis;
 
 public interface ISvgComboChartData
 {
-	int Key { get; }
+	int Index { get; }
 	double ColumnValue { get; }
 	double LineValue { get; }
 }
 
 public class SvgComboChartData : ISvgComboChartData
 {
-	public int Key { get; init; }
+	public int Index { get; init; }
 	public double ColumnValue { get; init; }
 	public double LineValue { get; init; }
 }

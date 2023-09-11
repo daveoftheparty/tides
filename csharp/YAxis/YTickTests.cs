@@ -23,7 +23,7 @@ public class YTickTests
 		var input = data
 			.Select((d, index) => new SvgComboChartData
 			{
-				Key = index,
+				Index = index,
 				ColumnValue = d
 			})
 			.ToList();
