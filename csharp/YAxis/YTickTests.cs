@@ -21,14 +21,14 @@ public class YTickTests
 		var svg = new YTick();
 
 		var input = data
-			.Select((d, index) => new SvgComboChartData
+			.Select((d, i) => new SvgComboChartData
 			{
-				Index = index,
-				ColumnValue = d
+				Index = i,
+				Value = d
 			})
 			.ToList();
 
-		var actual = svg.GetYAxisTicks(input, width, height, true).ToList();
+		var actual = svg.GetYAxisTicks(input, width, height).ToList();
 
 		_out.WriteLine("debugging values:");
 		foreach(var item in actual)

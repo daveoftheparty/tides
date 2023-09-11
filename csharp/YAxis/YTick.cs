@@ -3,22 +3,20 @@ namespace YAxis;
 public interface ISvgComboChartData
 {
 	int Index { get; }
-	double ColumnValue { get; }
-	double LineValue { get; }
+	double Value { get; }
 }
 
 public class SvgComboChartData : ISvgComboChartData
 {
 	public int Index { get; init; }
-	public double ColumnValue { get; init; }
-	public double LineValue { get; init; }
+	public double Value { get; init; }
 }
 
 public class YTick
 {
 	private int _tickCount = 5;
 
-	public IReadOnlyList<(double Y, int label)> GetYAxisTicks(IReadOnlyList<ISvgComboChartData> data, int width, int height, bool isColumn)
+	public IReadOnlyList<(double Y, int label)> GetYAxisTicks(IReadOnlyList<ISvgComboChartData> data, int width, int height)
 	{
 		/*
 			technically, we probably only have room for say 5 ticks. can make this
@@ -39,8 +37,8 @@ public class YTick
 		// next, calc tickLabels: the integer values that will display on svg Y axis
 		var tickLabels = new int[_tickCount];
 
-		var max = data.Max(d => isColumn ? d.ColumnValue : d.LineValue);
-		var min = data.Min(d => isColumn ? d.ColumnValue : d.LineValue);
+		var max = data.Max(d => d.Value);
+		var min = data.Min(d => d.Value);
 
 		var increments = new List<int>
 		{
