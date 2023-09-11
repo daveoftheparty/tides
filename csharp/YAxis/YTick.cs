@@ -8,7 +8,7 @@ public class SvgComboChartData
 
 public class YTick
 {
-	public IReadOnlyList<(double Y, int label)> GetPositiveYAxisTicksStartingAtZero(IReadOnlyList<SvgComboChartData> data, int height, int tickCount)
+	private double[] GetYCoordinates(IReadOnlyList<SvgComboChartData> data, int height, int tickCount)
 	{
 		// first, calc tickHeights: the double value that will translate to svg Y coordinates
 		var tickYs = new double[tickCount];
@@ -18,12 +18,20 @@ public class YTick
 		for (int i = 0; i < tickCount; i++)
 			tickYs[i] = i * tickHeight;
 
+		return tickYs;
+	}
+
+	public IReadOnlyList<(double Y, int label)> GetPositiveYAxisTicksStartingAtZero(IReadOnlyList<SvgComboChartData> data, int height, int tickCount)
+	{
+		var tickYs = GetYCoordinates(data, height, tickCount);
+
 		// next, calc tickLabels: the integer values that will display on svg Y axis
 		var tickLabels = new int[tickCount];
 
 		var max = data.Max(d => d.Value);
 		var min = data.Min(d => d.Value);
 
+		// TODO: write a better algorithm so that we don't have to repeat common divisors (ie, if 20 is in this list, there is no need for 40, 60, 120, etc.)
 		var increments = new List<int>
 		{
 			5,
