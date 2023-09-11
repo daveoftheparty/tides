@@ -4,6 +4,10 @@ import { GetDaylight, DaylightResponse } from '../../services/DaylightApi';
 import { State } from "@stencil/core";
 import { GetExpandedUnixDate, GetFlattenedUnixDate, UtcToLocal } from "../../services/DateUtils";
 
+
+// TODO: station (Bob Hall Pier) is hard coded, need station selector
+// TODO: is the tide data what we really want? MLLW type? explore other types?
+
 @Component({
 	tag: 'ds-tide-chart',
 	styleUrl: './tide-chart.css',
