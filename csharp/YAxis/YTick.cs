@@ -119,7 +119,10 @@ public class YTick
 
 		// let's first just cut some basic logic that works without worry about "nice increments" or wasted space:
 
-		var spread = maxVal - minVal;
+		// hmm, I think the spread is wrong. let's increase and decrease the max value to the next .25:
+
+		var spread = QuarterCeiling(maxVal) - QuarterCeiling(minVal);
+		// var spread = maxVal - minVal;
 		// var spread = maxVal - minVal + 0.25d;
 
 		// OK, we HAVE to add some number to the spread to come up with a distribution that will encompass the max,
@@ -133,19 +136,19 @@ public class YTick
 			});
 
 
-		var increment = spread / (tickCount - 1);
+		// var increment = spread / (tickCount - 1);
 		// var increment = spread / tickCount + 0.25d;
-		// var increment = spread / tickCount;
+		var increment = spread / tickCount;
 
-
-		for (int i = 0; i < tickCount; i++)
+		// var currValue = QuarterCeiling(minVal);
+		for (int i = 1; i <= tickCount; i++)
 		{
 			// if (i == 0)
 			// 	tickLabels[i] = minVal;
 			// else if (i == tickCount - 1)
 			// 	tickLabels[i] = maxVal;
 			// else
-				tickLabels[i] = (i * increment) + minVal;
+				tickLabels[i-1] = (i * increment) + QuarterCeiling(minVal);
 		}
 
 		return tickYs
@@ -154,5 +157,28 @@ public class YTick
 			.ToList();
 	}
 
+	public double QuarterCeiling(double value)
+	{
+		var baseValue = (int)Math.Abs(value);
+		var fraction = Math.Abs(value) - baseValue;
+
+		var newFraction = 0d;
+		// TODO see if Math.round can do this for us:
+		if(fraction == 0)
+			newFraction = 0.0;
+		else if(fraction > 0.0 && fraction < 0.25)
+			newFraction = 0.25;
+		else if (fraction >= 0.25 && fraction < 0.5)
+			newFraction = 0.5;
+		else if (fraction >= 0.5 && fraction < 0.75)
+			newFraction = 0.75;
+		else if (fraction >= 0.75)
+			newFraction = 1.0;
+
+		var result = newFraction + baseValue;
+		if(value < 0)
+			result = result * -1;
+		return result;
+	}
 
 }

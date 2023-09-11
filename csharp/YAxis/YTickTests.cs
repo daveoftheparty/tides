@@ -10,6 +10,22 @@ public class YTickTests
 	}
 
 	[Theory]
+	[InlineData(-0.24d, -0.25d)]
+	[InlineData(-0.25d, -0.5d)]
+	[InlineData(-0.26d, -0.5d)]
+	[InlineData(-1.25d, -1.5d)]
+	[InlineData(-1.03d, -1.25d)]
+	[InlineData(-1.5d, -1.75d)]
+	[InlineData(0.24d, .25d)]
+	[InlineData(0.25d, .5d)]
+	[InlineData(0.26d, .5d)]
+	public void QuarterCeilingTests(double value, double expected)
+	{
+		var tick = new YTick();
+		Assert.Equal(expected, tick.QuarterCeiling(value));
+	}
+
+	[Theory]
 	[InlineData(5, -1.5d, 1.5d, 13, 69)]
 	[InlineData(5, .353d, 1.934d, 13, 69)]
 	[InlineData(5, .442d, 1.743d, 13, 69)]
