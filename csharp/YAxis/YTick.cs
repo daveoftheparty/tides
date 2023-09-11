@@ -8,7 +8,7 @@ public class SvgComboChartData
 
 public class YTick
 {
-	public IReadOnlyList<(double Y, int label)> GetYAxisTicks(IReadOnlyList<SvgComboChartData> data, int width, int height, int tickCount)
+	public IReadOnlyList<(double Y, int label)> GetYAxisTicks(IReadOnlyList<SvgComboChartData> data, int height, int tickCount)
 	{
 		// first, calc tickHeights: the double value that will translate to svg Y coordinates
 		var tickYs = new double[tickCount];
