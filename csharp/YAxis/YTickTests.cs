@@ -9,6 +9,30 @@ public class YTickTests
 		_out = @out;
 	}
 
+
+	[Theory]
+	[InlineData(100)]
+	public void YCoordTests(int chartHeight)
+	{
+		var tick = new YTick();
+		var actual = tick.GetYAxisTicks(
+			new List<SvgComboChartData>
+			{
+				new SvgComboChartData { Index = 0, Value = 1.5 },
+				new SvgComboChartData { Index = 1, Value = -1.25 },
+			},
+			0,
+			chartHeight
+		);
+
+		Assert.Equal(5, actual.Count);
+
+		// assert exactly one element has Y coord 0 and one element has Y coord == chartHeight
+		Assert.Equal(1, actual.Count(x => x.Y == 0));
+		Assert.Equal(1, actual.Count(x => x.Y == chartHeight));
+	}
+
+	// TODO: this test is either testing too many things (or not enough)-- the inputs/expecteds are kinda large, break down
 	[Theory]
 	[InlineData(0, 100, new[] { 4, }, new[] { 0d, 25d, 50d, 75d, 100d }, new[] { 0, 5, 10, 15, 20 })] // yeah, width doesn't matter with current implementation
 	[InlineData(140, 20, new[] { 5, 10, 15 }, new[] { 0d, 5d, 10d, 15d, 20d }, new[] { 0, 5, 10, 15, 20 })]
@@ -16,7 +40,7 @@ public class YTickTests
 	[InlineData(140, 20, new[] { 18, 94, 326 }, new[] { 0d, 5d, 10d, 15d, 20d }, new[] { 0, 100, 200, 300, 400 })]
 	[InlineData(140, 20, new[] { 89, 71, 117, 265, 280, }, new[] { 0d, 5d, 10d, 15d, 20d }, new[] { 0, 75, 150, 225, 300 })]
 	[InlineData(140, 20, new[] { 17, 15, 21, 32, 41, }, new[] { 0d, 5d, 10d, 15d, 20d }, new[] { 0, 15, 30, 45, 60 })]
-	public void TickTests(int width, int height, int[] data, double[] expectedTickHeights, int[] expectedTickLabels)
+	public void LegacyTickTests(int width, int height, int[] data, double[] expectedTickHeights, int[] expectedTickLabels)
 	{
 		var svg = new YTick();
 
