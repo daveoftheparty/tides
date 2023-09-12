@@ -65,6 +65,10 @@ public class YTickExplorationTests
 			new ExplorationData(5, 0, 100),
 			new ExplorationData(5, .353, 1.934),
 			new ExplorationData(5, -1.5, 1.5),
+
+			new ExplorationData(4, 0, 100),
+			new ExplorationData(4, .353, 1.934),
+			new ExplorationData(4, -1.5, 1.5),
 		};
 
 		var algorithms = new []
@@ -72,6 +76,7 @@ public class YTickExplorationTests
 			Alg0,
 			Alg1,
 			Alg2,
+			Alg3,
 		};
 
 		_out.WriteLine("");
@@ -135,6 +140,19 @@ public class YTickExplorationTests
 
 		for (int i = 0; i < ticks; i++)
 			tickLabels[i] = i * increment;
+
+		return new AlgorithmResponse(spread, spread, tickLabels);
+	}
+
+	private AlgorithmResponse Alg3(int ticks, double min, double max)
+	{
+		var tickLabels = new double[ticks];
+
+		var spread = max - min;
+		var increment = spread / (ticks - 1);
+
+		for (int i = 0; i < ticks; i++)
+			tickLabels[i] = i * increment + min;
 
 		return new AlgorithmResponse(spread, spread, tickLabels);
 	}
