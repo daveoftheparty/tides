@@ -115,6 +115,9 @@ public class YTick
 		or, think of this another way. what we want to do is minimize wasted space (above max or below min). so maybe, we calculate the wasted space for all increments,
 		and choose the one with the least amount of wasted space?
 		--------
+
+		rounding to the nearest X (does it work for fracions, like round to nearest .25 or nearest .05? or only x when x is int? what about negative numbers?)
+		https://stackoverflow.com/questions/1531695/round-to-nearest-five
 		*/
 
 		// let's first just cut some basic logic that works without worry about "nice increments" or wasted space:
