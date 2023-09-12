@@ -64,42 +64,78 @@ public class YTickExplorationTests
 		{
 			new ExplorationData(5, 0, 100),
 			new ExplorationData(5, .353, 1.934),
+			new ExplorationData(5, -1.5, 1.5),
 		};
 
 		var algorithms = new []
 		{
-			Go
+			Alg0,
+			Alg1,
+			Alg2,
 		};
 
 		_out.WriteLine("");
 		foreach(var test in tests)
 		{
-			_out.WriteLine($"ticks: {test.Ticks,-3}   min: {test.MinValue,5}   max: {test.MinValue,5}");
+			_out.WriteLine($"ticks: {test.Ticks,-3}   min: {test.MinValue,-5}   max: {test.MaxValue,-5}");
 			_out.WriteLine( "------------------------------------------------------------------------");
-			_out.WriteLine( "     Alg   Spread   Spread+   Ticks");
-			_out.WriteLine( "     ---   ------   -------   -------------------------------");
+			_out.WriteLine( "     Alg   P/F    Spread   Spread+   Ticks");
+			_out.WriteLine( "     ---   ----   ------   -------   -------------------------------");
 
 			var i = 0;
 			foreach(var algorithm in algorithms)
 			{
 
 				var result = algorithm(test.Ticks, test.MinValue, test.MaxValue);
-				_out.WriteLine($"     {i,3}   {result.NaturalSpread,6}   {result.EnhancedSpread,7}   {string.Join(',', result.Ticks)}");
+				var success = result.Ticks.Min() <= test.MinValue && result.Ticks.Max() >= test.MaxValue
+					? "Pass"
+					: "Fail";
+
+				_out.WriteLine($"     {i,3}   {success}   {result.NaturalSpread,6}   {result.EnhancedSpread,7}   {string.Join(", ", result.Ticks)}");
+				i++;
 			}
 			_out.WriteLine("");
 			_out.WriteLine("");
 		}
 	}
 
-	// [Theory]
-	// [InlineData(1)]
-	// public void GoDataOriented(int actual)
-	// {
-	// 	Assert.True(actual == actual);
-	// }
 
-	private AlgorithmResponse Go(int ticks, double min, double max)
+	private AlgorithmResponse Alg0(int ticks, double min, double max)
 	{
-		return new AlgorithmResponse(20, 20, new[] {0d,5d,10d});
+		var tickLabels = new double[ticks];
+
+		var spread = max - min;
+		var increment = spread / ticks;
+
+		for (int i = 1; i <= ticks; i++)
+			tickLabels[i-1] = i * increment;
+
+		return new AlgorithmResponse(spread, spread, tickLabels);
+	}
+
+	private AlgorithmResponse Alg1(int ticks, double min, double max)
+	{
+		var tickLabels = new double[ticks];
+
+		var spread = max - min;
+		var increment = spread / ticks;
+
+		for (int i = 0; i < ticks; i++)
+			tickLabels[i] = i * increment;
+
+		return new AlgorithmResponse(spread, spread, tickLabels);
+	}
+
+	private AlgorithmResponse Alg2(int ticks, double min, double max)
+	{
+		var tickLabels = new double[ticks];
+
+		var spread = max - min;
+		var increment = spread / (ticks - 1);
+
+		for (int i = 0; i < ticks; i++)
+			tickLabels[i] = i * increment;
+
+		return new AlgorithmResponse(spread, spread, tickLabels);
 	}
 }
