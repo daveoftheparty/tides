@@ -66,18 +66,18 @@ public class YTickExplorationTests
 			new ExplorationData(5, .353, 1.934),
 			new ExplorationData(5, -1.5, 1.5),
 
-			// new ExplorationData(4, 0, 100),
-			// new ExplorationData(4, .353, 1.934),
-			// new ExplorationData(4, -1.5, 1.5),
+			new ExplorationData(4, 0, 100),
+			new ExplorationData(4, .353, 1.934),
+			new ExplorationData(4, -1.5, 1.5),
 		};
 
 		var algorithms = new []
 		{
-			Alg0,
-			Alg1,
-			Alg2,
+			// Alg0,
+			// Alg1,
+			// Alg2,
 			Alg3,
-			Alg4,
+			// Alg4,
 		};
 
 		_out.WriteLine("");
