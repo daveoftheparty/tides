@@ -1,0 +1,1 @@
+https://tidesandcurrents.noaa.gov/api/datagetter?product=predictions&application=NOS.COOPS.TAC.WL&begin_date=20230914&end_date=20240913&datum=MLLW&station=8775870&time_zone=gmt&units=english&interval=hilo&format=json
