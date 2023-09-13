@@ -1,4 +1,4 @@
-namespace YTick;
+namespace YAxis;
 
 public class YTickExplorationTests
 {
@@ -66,9 +66,9 @@ public class YTickExplorationTests
 			new ExplorationData(5, .353, 1.934),
 			new ExplorationData(5, -1.5, 1.5),
 
-			new ExplorationData(4, 0, 100),
-			new ExplorationData(4, .353, 1.934),
-			new ExplorationData(4, -1.5, 1.5),
+			// new ExplorationData(4, 0, 100),
+			// new ExplorationData(4, .353, 1.934),
+			// new ExplorationData(4, -1.5, 1.5),
 		};
 
 		var algorithms = new []
@@ -77,6 +77,7 @@ public class YTickExplorationTests
 			Alg1,
 			Alg2,
 			Alg3,
+			Alg4,
 		};
 
 		_out.WriteLine("");
@@ -155,5 +156,21 @@ public class YTickExplorationTests
 			tickLabels[i] = i * increment + min;
 
 		return new AlgorithmResponse(spread, spread, tickLabels);
+	}
+
+	private AlgorithmResponse Alg4(int ticks, double min, double max)
+	{
+		var tickLabels = new double[ticks];
+
+		var spread = max - min;
+		var newMin = YTick.QuarterCeiling(min);
+		var enhancedSpread = YTick.QuarterCeiling(max) - newMin;
+
+		var increment = enhancedSpread / (ticks - 1);
+
+		for (int i = 0; i < ticks; i++)
+			tickLabels[i] = i * increment + newMin;
+
+		return new AlgorithmResponse(spread, enhancedSpread, tickLabels);
 	}
 }

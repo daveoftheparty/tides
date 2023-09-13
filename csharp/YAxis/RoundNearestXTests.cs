@@ -11,12 +11,14 @@ public class RoundNearestXTests
 	private record RoundData(double value, double roundTo);
 
 	[Fact]
-	public void TestName()
+	public void RoundNearest()
 	{
 		var tests = new []
 		{
 			new RoundData(1.25, .5),
+			new RoundData(-1.25, .5),
 			new RoundData(1.26, .5),
+			new RoundData(-1.26, .5),
 			new RoundData(1.45, .5),
 			new RoundData(1.5, .5),
 			new RoundData(1.51, .5),
@@ -31,7 +33,7 @@ public class RoundNearestXTests
 			_out.WriteLine($"{test.value, 10}   {test.roundTo, 10}   {RoundTo(test.value, test.roundTo), 10}");
 	}
 
-	private double RoundTo(double value, double roundTo)
+	public static double RoundTo(double value, double roundTo)
 	{
 		return Math.Round(value / roundTo) * roundTo;
 	}
