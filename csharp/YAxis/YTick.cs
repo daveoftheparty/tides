@@ -184,4 +184,30 @@ public class YTick
 		return result;
 	}
 
+	public static double SpreadFractional(double value, double increment, bool add)
+	{
+
+		// increment should always be a positive number, even if value isn't!
+		if(Math.Sign(increment) != 1)
+			throw new Exception("increment param should always be a positive number, regardless of whether value is and regardless of add setting");
+
+		if(increment >= 1)
+			throw new Exception("method is only implemented for fractional increments, anything less than 1");
+
+
+		/*
+			for increment = .25:
+				.24 should go to either up to .25 or down to 0
+				.25 should go to either up to .50 or down to 0
+
+				.49 should go either up to .50 or down to .25
+				.50 should go either up to .75 or down to .25
+
+				.74 should go either up to .75 or down to .50
+				.75 should go either up to 1.0 or down to .50
+		*/
+
+		return value;
+	}
+
 }

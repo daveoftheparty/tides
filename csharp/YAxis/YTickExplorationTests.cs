@@ -173,4 +173,26 @@ public class YTickExplorationTests
 
 		return new AlgorithmResponse(spread, enhancedSpread, tickLabels);
 	}
+
+	/*
+		new idea
+
+		instead of trying to create a spread algorithm to increase the spread to encapsulate min/max,
+		maybe more important than having the min value and max value land between upper and lower axes is that
+		the gridlines are "nice" values.
+
+		So yes, a spread algorithm, but not one generic algorithm that can spread by .25 or .5 or 500 or whatever.
+
+		Maybe instead, calculate the natural spread. then increase it (by decimal places, so sometimes adding integers, sometimes adding fractions)
+		in a loop until the gridline increments come out to a "nice" number. Which could be something like a number ending in
+			5
+			25
+			100
+
+		or: just no more decimal places than the max number of decimal places given in the input?
+		so for input min/max .353, 1.9158 anything that gives no more than 4 decimal places is ok?
+		or for that same input, with lots of values, the median number of decimal places rather than the max?
+		or the xTh percentile of decimal places?
+
+	*/
 }

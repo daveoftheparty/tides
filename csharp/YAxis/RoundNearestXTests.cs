@@ -11,6 +11,29 @@ public class RoundNearestXTests
 	private record RoundData(double value, double roundTo);
 
 	[Fact]
+	public void IncDecTests()
+	{
+		var tests = new []
+		{
+			new RoundData(1.25, .5),
+			new RoundData(-1.25, .5),
+			new RoundData(1.26, .5),
+			new RoundData(-1.26, .5),
+			new RoundData(1.45, .5),
+			new RoundData(1.5, .5),
+			new RoundData(1.51, .5),
+			new RoundData(1.75, .5),
+		};
+
+		_out.WriteLine("");
+		_out.WriteLine($"{"value", 10}   {"Inc", 10}   {"Dec", 10}");
+		_out.WriteLine($"---------------------------------------------------------");
+
+		foreach(var test in tests)
+			_out.WriteLine($"{test.value, 10}   {Math.BitIncrement(test.value), 10}   {Math.BitDecrement(test.value), 10}");
+	}
+
+	[Fact]
 	public void RoundNearest()
 	{
 		var tests = new []
