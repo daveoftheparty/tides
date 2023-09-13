@@ -27,8 +27,6 @@ export class TideChart {
 	@State() loaded = false;
 
 	@State() showDebug = false;
-	minY: number = -3;
-	maxY: number = 3;
 
 	chartWidth = 800;
 	chartHeight = 200;
@@ -181,25 +179,29 @@ export class TideChart {
 	}
 
 	_getYCoord(y: number): number {
-		const totalHeight = this.maxY - this.minY;
+		const spread = this.tidesMaxY - this.tidesMinY;
+		const basis = y - this.tidesMinY;
+		const thisRatio = basis / spread;
 
-		const thisRatio = y / totalHeight;
-		const transform = -1 * thisRatio * this.chartAreaHeight + (this.chartAreaHeight / 2);
+		const transform = (this.chartAreaHeight + this.chartAreaYOffsetTop)
+			- (thisRatio * this.chartAreaHeight);
 
-		return transform + this.chartAreaYOffsetTop;
+		if(y === this.tidesMinY)
+			console.log('_getYCoord for min', y, 'has basis', basis, 'and ratio', thisRatio, 'and is returning', transform);
+		return transform;
 	}
 
 	_getYAxis(): {index: number, y: number, label: string}[] {
-		// just output 3 Y gridlines: 25%, 50%, 75%
 		const gridlines = 5;
 		const gridSpace = this.chartAreaHeight / (gridlines - 1);
-		const labelIncrement = (this.maxY - this.minY) / (gridlines - 1);
+		const labelIncrement = (this.tidesMaxY - this.tidesMinY) / (gridlines - 1);
 
 		let result = [...Array(gridlines).keys()].map(i => {
+			let labelNumber = Math.round(( (this.tidesMaxY - labelIncrement * i) + Number.EPSILON) * 100) / 100;
 			return {
 				index: i,
 				y: i * gridSpace + this.chartAreaYOffsetTop,
-				label: `${this.maxY - labelIncrement * i}`
+				label: `${labelNumber}`
 			};
 		});
 
@@ -340,12 +342,13 @@ export class TideChart {
 							)
 						}
 						{
-							yAxis.slice(1, yAxis.length - 1).map(i =>
+							// yAxis.slice(1, yAxis.length - 1).map(i =>
+							yAxis.map(i =>
 								<text
 									class="yTickLabel" id={`y-tick-${i.index}`}
 									text-anchor="end" alignment-baseline="middle"
 									x={this.chartAreaXOffset - 5} y={i.y}
-									font-size={this.chartFontSize * 1.25}
+									font-size={this.chartFontSize}
 								>
 									{i.label}
 								</text>
