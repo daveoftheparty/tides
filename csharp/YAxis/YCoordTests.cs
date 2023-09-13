@@ -17,12 +17,16 @@ public class YCoordTests
 		var tests = new[]
 		{
 			new YTestData(-0.693d, 2.101d, 2.101d),
-
 			new YTestData(-0.693d, 2.101d, 1.402499d),
 			new YTestData(-0.693d, 2.101d, 0.704d),
 			new YTestData(-0.693d, 2.101d, 0.0055d),
-
 			new YTestData(-0.693d, 2.101d, -0.693d),
+
+			new YTestData(1.5d, 4d, 4d),
+			new YTestData(1.5d, 4d, 2.5d),
+			new YTestData(1.5d, 4d, 2.75d),
+			new YTestData(1.5d, 4d, 2.125d),
+			new YTestData(1.5d, 4d, 1.5d),
 		};
 
 		_out.WriteLine("");
