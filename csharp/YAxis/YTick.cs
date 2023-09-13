@@ -124,7 +124,7 @@ public class YTick
 
 		// hmm, I think the spread is wrong. let's increase and decrease the max value to the next .25:
 
-		var spread = QuarterCeiling(maxVal) - QuarterCeiling(minVal);
+		var spread = QuarterSpread(maxVal) - QuarterSpread(minVal);
 		// var spread = maxVal - minVal;
 		// var spread = maxVal - minVal + 0.25d;
 
@@ -151,7 +151,7 @@ public class YTick
 			// else if (i == tickCount - 1)
 			// 	tickLabels[i] = maxVal;
 			// else
-				tickLabels[i-1] = (i * increment) + QuarterCeiling(minVal);
+				tickLabels[i-1] = (i * increment) + QuarterSpread(minVal);
 		}
 
 		return tickYs
@@ -160,7 +160,7 @@ public class YTick
 			.ToList();
 	}
 
-	public static double QuarterCeiling(double value)
+	public static double QuarterSpread(double value)
 	{
 		var baseValue = (int)Math.Abs(value);
 		var fraction = Math.Abs(value) - baseValue;

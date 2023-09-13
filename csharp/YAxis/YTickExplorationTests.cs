@@ -163,8 +163,8 @@ public class YTickExplorationTests
 		var tickLabels = new double[ticks];
 
 		var spread = max - min;
-		var newMin = YTick.QuarterCeiling(min);
-		var enhancedSpread = YTick.QuarterCeiling(max) - newMin;
+		var newMin = YTick.QuarterSpread(min);
+		var enhancedSpread = YTick.QuarterSpread(max) - newMin;
 
 		var increment = enhancedSpread / (ticks - 1);
 
