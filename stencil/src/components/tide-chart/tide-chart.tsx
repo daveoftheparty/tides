@@ -157,6 +157,7 @@ export class TideChart {
 	}
 
 	_getXForDate(input: Date, log: boolean = false): number {
+		// TODO fix this for the tide series. I think the UtcToLocal is screwing this up and I added it when I added SunCalc maybe
 		const inputLocal = UtcToLocal(input);
 		const expandedMaxDate = GetExpandedUnixDate(this.endDate);
 		const flattenedMinDate = GetFlattenedUnixDate(this.beginDate);
