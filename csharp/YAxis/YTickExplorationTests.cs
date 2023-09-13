@@ -69,6 +69,9 @@ public class YTickExplorationTests
 			new ExplorationData(4, 0, 100),
 			new ExplorationData(4, .353, 1.934),
 			new ExplorationData(4, -1.5, 1.5),
+
+
+			new ExplorationData(5, -0.693, 2.101),
 		};
 
 		var algorithms = new []
