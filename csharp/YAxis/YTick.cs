@@ -160,7 +160,7 @@ public class YTick
 			.ToList();
 	}
 
-	public double QuarterCeiling(double value)
+	public static double QuarterCeiling(double value)
 	{
 		var baseValue = (int)Math.Abs(value);
 		var fraction = Math.Abs(value) - baseValue;
@@ -180,7 +180,7 @@ public class YTick
 
 		var result = newFraction + baseValue;
 		if(value < 0)
-			result = result * -1;
+			result *= -1;
 		return result;
 	}
 

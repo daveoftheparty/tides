@@ -21,8 +21,7 @@ public class YTickTests
 	[InlineData(0.26d, .5d)]
 	public void QuarterCeilingTests(double value, double expected)
 	{
-		var tick = new YTick();
-		Assert.Equal(expected, tick.QuarterCeiling(value));
+		Assert.Equal(expected, YTick.QuarterCeiling(value));
 	}
 
 	[Theory]
