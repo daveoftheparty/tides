@@ -396,3 +396,13 @@ full result:
 	]
 }
 ```
+
+
+# Metadata Api dox
+
+this call:
+https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/stations.json?type=tidepredictions
+gives the result in ./tidepredictions-stations.json
+
+
+https://api.tidesandcurrents.noaa.gov/mdapi/prod/

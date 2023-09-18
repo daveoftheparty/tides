@@ -53,3 +53,27 @@ svg .tideSineWave {
 svg .yTickLabel {
 	fill: black;
 }
+
+/*
+this should work below! except I suck at css
+https://codepen.io/c0un7z3r0/pen/LZWXEw
+*/
+
+.xAxisDaylightLabel span {
+	position: relative;
+	display: none;
+}
+.xAxisDaylightLabel:hover span {
+	position: absolute;
+	top: 0px;
+	left: 100px;
+	display: block;
+	background: red;
+	color: white;
+	padding: 6px;
+	z-index:100;
+}
+
+.xAxisDaylightLabel:hover {
+	color: red;
+}

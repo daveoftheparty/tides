@@ -7,6 +7,7 @@ import { GetExpandedUnixDate, GetFlattenedUnixDate, UtcToLocal } from "../../ser
 
 // TODO: station (Bob Hall Pier) is hard coded, need station selector
 // TODO: is the tide data what we really want? MLLW type? explore other types?
+// TODO: filter tide retrieval by local? since we are retrieving tides in UTC and graphing in local, we have some instances where an "early GMT" tide transitions to the day before and the left side of the tide sine wave/markers crosses the YAxis marker. Example: we want tides from 9/14 - 9/20 local, but we get a GMT tide for 9/14 2:07 am that tranlates into 9/13 9:07 pm
 
 @Component({
 	tag: 'ds-tide-chart',
@@ -49,7 +50,7 @@ export class TideChart {
 		this.beginDate = this.beginDateInput.valueAsDate;
 		this.endDate = this.endDateInput.valueAsDate;
 
-		// currently hard coded to "Bob Hall Pier, Corpus Christi", StationId 8775870, lat/long: 27.58,-97.216
+		// TODO currently hard coded to "Bob Hall Pier, Corpus Christi", StationId 8775870, lat/long: 27.58,-97.216
 		this._getTides()
 			.then(tides => {
 				this.tides = tides;
@@ -57,7 +58,6 @@ export class TideChart {
 			});
 		const daylight = this._getDaylight();
 
-		// TODO calc minY, maxY based on data later
 
 		// assign state last after all calcs to avoid re-renders:
 		// TODO: make only this.loaded state? could avoid the re-render problem...
@@ -157,7 +157,7 @@ export class TideChart {
 	}
 
 	_getXForDate(input: Date, log: boolean = false): number {
-		// TODO fix this for the tide series. I think the UtcToLocal is screwing this up and I added it when I added SunCalc maybe
+
 		const inputLocal = UtcToLocal(input);
 		const expandedMaxDate = GetExpandedUnixDate(this.endDate);
 		const flattenedMinDate = GetFlattenedUnixDate(this.beginDate);
@@ -381,6 +381,7 @@ export class TideChart {
 									font-size={this.chartFontSize}
 								>
 									{i.label}
+									<span>hi</span>
 								</text>
 							)
 						}
