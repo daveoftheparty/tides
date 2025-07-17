@@ -325,7 +325,15 @@ export class TideChart {
 						}
 					</g>
 
-					<g id="tides">
+					<clipPath
+						id="tideClip">
+						<rect
+							x={this.chartAreaXOffset}
+							y={this.chartAreaYOffsetTop}
+							width={this.chartWidth - this.chartAreaXOffset }
+							height={this.chartAreaHeight} />
+					</clipPath>
+					<g id="tides" clip-path="url(#tideClip)">
 						<path class="tideSineWave" id="tideSineWave" d={this._getTideSineWave()} />
 						{
 							this._getTideCoords().map(i =>
