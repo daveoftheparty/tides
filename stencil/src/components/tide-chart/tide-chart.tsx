@@ -307,7 +307,7 @@ export class TideChart {
 			<div id="chartContainer">
 				<p><button onClick={this._toggleDebug.bind(this)}>Toggle Debug Info</button></p>
 				{debugContent}
-				<svg id="chart" viewBox={`0 0 ${this.chartWidth} ${this.chartHeight}`}>
+				<svg id="chart" viewBox={`0 0 ${this.chartWidth} ${this.chartHeight}`} xmlns="http://www.w3.org/2000/svg">
 					<rect id="chartArea" width="100%" height="100%" />
 					<g id="days">
 						{this._getChartDayRects().map(day =>
