@@ -268,6 +268,39 @@ export class TideChart {
 		this.showDebug = !this.showDebug;
 	}
 
+	_getChartStyle() : string {
+		return `
+			#chartArea {
+				fill: white;
+			}
+
+			.chartDayDark {
+				fill: rgb(31, 31, 83);
+			}
+			.chartDaylight {
+				/* fill: rgb(205, 205, 255); */
+				fill: rgb(151, 151, 190);
+			}
+			.tideMarker {
+				fill: rgb(0, 255, 236);
+			}
+			.tideSineWave {
+				stroke: rgb(0, 255, 236);
+				stroke-width: 3px;
+				fill: none;
+			}
+
+			.xGridline,
+			.yGridline {
+				stroke: gray;
+			}
+
+			svg .yTickLabel {
+				fill: black;
+			}
+	`;
+	}
+
 	render() {
 		let chart = '';
 
@@ -308,6 +341,9 @@ export class TideChart {
 				<p><button onClick={this._toggleDebug.bind(this)}>Toggle Debug Info</button></p>
 				{debugContent}
 				<svg id="chart" viewBox={`0 0 ${this.chartWidth} ${this.chartHeight}`} xmlns="http://www.w3.org/2000/svg">
+					<style>
+						{this._getChartStyle()}
+					</style>
 					<rect id="chartArea" width="100%" height="100%" />
 					<g id="days">
 						{this._getChartDayRects().map(day =>
