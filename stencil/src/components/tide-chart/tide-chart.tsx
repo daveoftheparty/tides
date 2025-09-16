@@ -50,6 +50,7 @@ export class TideChart {
 		this.beginDate = this.beginDateInput.valueAsDate;
 		this.endDate = this.endDateInput.valueAsDate;
 
+		// TODO: extend dates since we are now clipping the svg to the chart area and we want to see the full sine wave
 		// TODO currently hard coded to "Bob Hall Pier, Corpus Christi", StationId 8775870, lat/long: 27.58,-97.216
 		this._getTides()
 			.then(tides => {
