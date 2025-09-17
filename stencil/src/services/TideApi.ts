@@ -61,6 +61,7 @@ function _noaaStringToDate(input: string) : Date {
 	return new Date(Date.UTC(year, month, day, hour, minute, 0, 0));
 }
 
+/*
 function _mockTides(): TideResponse[] {
 
 	// return [
@@ -104,4 +105,4 @@ function _mockTides(): TideResponse[] {
 	// ];
 
 };
-
+*/
