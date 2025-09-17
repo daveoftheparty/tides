@@ -42,6 +42,10 @@ jobs:
         with:
           path: './stencil/www'
 
+      - name: debug file list
+        working-directory: ./stencil
+        run: ls -alR
+
   deploy:
     environment:
       name: github-pages
