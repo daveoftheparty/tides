@@ -43,8 +43,7 @@ jobs:
           path: './stencil/www'
 
       - name: debug file list
-        working-directory: ./stencil
-        run: ls -alR
+        run: ls -alR ./stencil/www
 
   deploy:
     environment:
