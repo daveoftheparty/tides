@@ -45,6 +45,7 @@ function _getDaylight(start: Date, end: Date) : DaylightResponse[] {
 	return result;
 }
 
+/*
 function _getMockDaylight() : DaylightResponse[] {
 	return [
 		{
@@ -60,4 +61,4 @@ function _getMockDaylight() : DaylightResponse[] {
 	];
 
 }
-
+*/
