@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   build:
-    runs-on: CAI-Enterprise-Ubuntu-Latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
