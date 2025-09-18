@@ -40,7 +40,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
         with:
-          path: './stencil/www'
+          path: './stencil/www/tides'
 
       - name: debug file list
         run: ls -alR ./stencil/www
