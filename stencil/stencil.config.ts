@@ -1,5 +1,8 @@
 import { Config } from '@stencil/core';
 
+const devBaseUrl = '/';
+const prodBaseUrl = process.env.STENCIL_BASE_URL || devBaseUrl;
+
 export const config: Config = {
 	namespace: 'stencil',
 	outputTargets: [
@@ -16,11 +19,7 @@ export const config: Config = {
 		{
 			type: 'www',
 			serviceWorker: null, // disable service workers
-			baseUrl: '/',
-			buildDir: './build',
+			baseUrl: prodBaseUrl,
 		},
-	],
-	testing: {
-		browserHeadless: "new",
-	},
+	]
 };
