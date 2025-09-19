@@ -1,0 +1,52 @@
+
+{
+  "count": 3379,
+  "units": null,
+  "stations": [
+    {
+      "state": "HI",
+      "tidepredoffsets": {
+        "self": "https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/stations/1610367/tidepredoffsets.json"
+      },
+      "type": "S",
+      "timemeridian": -150,
+      "reference_id": "1612340",
+      "timezonecorr": -10,
+      "id": "1610367",
+      "name": "Nonopapa, Niihau Island",
+      "lat": 21.87,
+      "lng": -160.235,
+      "affiliations": "",
+      "portscode": "",
+      "products": null,
+      "disclaimers": null,
+      "notices": null,
+      "self": null,
+      "expand": null,
+      "tideType": ""
+    },
+    {
+      "state": "",
+      "tidepredoffsets": {
+        "self": "https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/stations/TWC2423/tidepredoffsets.json"
+      },
+      "type": "S",
+      "timemeridian": null,
+      "reference_id": "9457292",
+      "timezonecorr": -9,
+      "id": "TWC2423",
+      "name": "Flaxman Island",
+      "lat": 70.183333333333,
+      "lng": -145.83333333332993,
+      "affiliations": "",
+      "portscode": "",
+      "products": null,
+      "disclaimers": null,
+      "notices": null,
+      "self": null,
+      "expand": null,
+      "tideType": ""
+    }
+  ],
+  "self": null
+}

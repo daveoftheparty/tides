@@ -4,6 +4,9 @@ API dox: https://api.tidesandcurrents.noaa.gov/api/prod/
 
 API response docs: https://api.tidesandcurrents.noaa.gov/api/prod/responseHelp.html
 
+METADATA api dox
+- https://api.tidesandcurrents.noaa.gov/mdapi/prod/
+- see also [tide-metadata.md](./tide-metadata.md)
 
 potential higher tides/spread at Key Colony Beach, FL:
 https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=8723962&units=standard&bdate=20230913&edate=20230920&timezone=LST/LDT&clock=12hour&datum=MLLW&interval=hilo&action=dailychart

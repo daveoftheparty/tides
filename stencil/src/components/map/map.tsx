@@ -1,4 +1,4 @@
-import { Component, h, Element } from "@stencil/core";
+import { Component, h, Element, Host } from "@stencil/core";
 
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css'; // Make sure the CSS is imported
@@ -61,10 +61,14 @@ export class Map {
 
 	render() {
 		return (
-			<div id="map-container">
-				<h1>Choose your closest tide station</h1>
-				<div id="map"></div>
-			</div>
+			<Host>
+				<div id="map-container">
+					<h1>Choose your closest tide station</h1>
+					<div id="map"></div>
+				</div>
+
+				<ds-noaa></ds-noaa>
+			</Host>
 		);
 	}
 }
