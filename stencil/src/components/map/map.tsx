@@ -7,7 +7,8 @@ import 'leaflet/dist/leaflet.css'; // Make sure the CSS is imported
 
 @Component({
 	tag: 'ds-map',
-	shadow: false // Use light DOM so Leaflet CSS applies correctly
+	shadow: false, // Use light DOM so Leaflet CSS applies correctly
+	styleUrl: './map.css'
 })
 export class Map {
 
@@ -60,9 +61,9 @@ export class Map {
 
 	render() {
 		return (
-			<div style={{ width: '620px', margin: '0 auto', boxSizing: 'border-box' }}>
-				<h1>Hi dave, this is the map component...</h1>
-				<div id="map" style={{ width: '600px', height: '400px', boxSizing: 'border-box', margin: '0 auto' }}></div>
+			<div id="map-container">
+				<h1>Choose your closest tide station</h1>
+				<div id="map"></div>
 			</div>
 		);
 	}
