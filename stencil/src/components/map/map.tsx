@@ -18,6 +18,10 @@ export class Map {
 	map: L.Map;
 	tideStations: TideStationsResponse[];
 
+	_setStation(stationId: string) {
+		console.log('Station selected: ' + stationId);
+	}
+
 	async componentWillLoad(): Promise<void> {
 		// Example usage of GetTideStations
 		GetTideStations().then((stations: TideStationsResponse[]) => {
@@ -70,7 +74,16 @@ export class Map {
 			this.tideStations.forEach(station => {
 				L.marker([station.lat, station.lng])
 					.addTo(this.map)
-					.bindPopup(station.name);
+					.bindPopup(
+						station.name +
+						`<br><br><button id="use-station-${station.id}">Use Station</button>`
+					)
+					.on('popupopen', () => {
+						const btn = document.getElementById(`use-station-${station.id}`);
+						if (btn) {
+							btn.onclick = () => this._setStation(station.id);
+						}
+					});
 			});
 			this.map.invalidateSize();
 		}, 350);
