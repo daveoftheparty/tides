@@ -18,8 +18,9 @@ export class Map {
 	map: L.Map;
 	tideStations: TideStationsResponse[];
 
-	_setStation(stationId: string) {
-		console.log('Station selected: ' + stationId);
+	_setStation(station: TideStationsResponse) {
+		console.log('Station selected: ' + station.id);
+		console.log('lat, long: ' + station.lat + ', ' + station.lng);
 	}
 
 	async componentWillLoad(): Promise<void> {
@@ -81,7 +82,7 @@ export class Map {
 					.on('popupopen', () => {
 						const btn = document.getElementById(`use-station-${station.id}`);
 						if (btn) {
-							btn.onclick = () => this._setStation(station.id);
+							btn.onclick = () => this._setStation(station);
 						}
 					});
 			});
