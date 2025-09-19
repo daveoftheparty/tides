@@ -2,7 +2,7 @@ import { Component, h, Element, Host } from "@stencil/core";
 
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css'; // Make sure the CSS is imported
-
+import { GetTideStations, TideStationsResponse }  from "../../services/TideStationsApi";
 
 
 @Component({
@@ -16,6 +16,15 @@ export class Map {
 
 	@Element() hostElement: HTMLElement;
 	map: L.Map;
+	tideStations: TideStationsResponse[];
+
+	async componentWillLoad(): Promise<void> {
+		// Example usage of GetTideStations
+		GetTideStations().then((stations: TideStationsResponse[]) => {
+			console.log('Fetched tide stations:', stations);
+			this.tideStations = stations;
+		});
+	}
 
 	componentDidLoad() {
 
@@ -55,6 +64,14 @@ export class Map {
 			L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 				attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
 			}).addTo(this.map);
+
+			console.log('we have ' + this.tideStations.length + ' stations');
+			// Add tide stations to the map
+			this.tideStations.forEach(station => {
+				L.marker([station.lat, station.lng])
+					.addTo(this.map)
+					.bindPopup(station.name);
+			});
 			this.map.invalidateSize();
 		}, 350);
 	}
