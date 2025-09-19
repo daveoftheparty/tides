@@ -17,6 +17,10 @@ export class Map {
 	map: L.Map;
 
 				componentDidLoad() {
+
+					// packery channel beach: 27.616428, -97.201094
+					var packeryChannelBeach = L.latLng(27.616428, -97.201094);
+
 					// Use getElementById from document since shadow is disabled
 					const mapContainer = document.getElementById('map');
 					if (!mapContainer) return;
@@ -44,7 +48,7 @@ export class Map {
 						console.log('Map container size:', rect.width, rect.height);
 						console.log('Map container computed styles:', computed.width, computed.height, computed.display);
 
-						this.map = L.map(mapContainer).setView([51.505, -0.09], 13);
+						this.map = L.map(mapContainer).setView(packeryChannelBeach, 9);
 						// Store reference for cleanup
 						(mapContainer as any)._leaflet_map = this.map;
 						L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
