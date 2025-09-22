@@ -5,12 +5,21 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { TideStationsResponse } from "./services/TideStationsApi";
+export { TideStationsResponse } from "./services/TideStationsApi";
 export namespace Components {
     interface DsDebugDaylightApi {
     }
     interface DsDebugTideApi {
     }
+    interface DsMain {
+    }
+    interface DsMap {
+    }
+    interface DsNoaa {
+    }
     interface DsTideChart {
+        "station": TideStationsResponse;
     }
 }
 declare global {
@@ -26,6 +35,24 @@ declare global {
         prototype: HTMLDsDebugTideApiElement;
         new (): HTMLDsDebugTideApiElement;
     };
+    interface HTMLDsMainElement extends Components.DsMain, HTMLStencilElement {
+    }
+    var HTMLDsMainElement: {
+        prototype: HTMLDsMainElement;
+        new (): HTMLDsMainElement;
+    };
+    interface HTMLDsMapElement extends Components.DsMap, HTMLStencilElement {
+    }
+    var HTMLDsMapElement: {
+        prototype: HTMLDsMapElement;
+        new (): HTMLDsMapElement;
+    };
+    interface HTMLDsNoaaElement extends Components.DsNoaa, HTMLStencilElement {
+    }
+    var HTMLDsNoaaElement: {
+        prototype: HTMLDsNoaaElement;
+        new (): HTMLDsNoaaElement;
+    };
     interface HTMLDsTideChartElement extends Components.DsTideChart, HTMLStencilElement {
     }
     var HTMLDsTideChartElement: {
@@ -35,6 +62,9 @@ declare global {
     interface HTMLElementTagNameMap {
         "ds-debug-daylight-api": HTMLDsDebugDaylightApiElement;
         "ds-debug-tide-api": HTMLDsDebugTideApiElement;
+        "ds-main": HTMLDsMainElement;
+        "ds-map": HTMLDsMapElement;
+        "ds-noaa": HTMLDsNoaaElement;
         "ds-tide-chart": HTMLDsTideChartElement;
     }
 }
@@ -43,11 +73,21 @@ declare namespace LocalJSX {
     }
     interface DsDebugTideApi {
     }
+    interface DsMain {
+    }
+    interface DsMap {
+    }
+    interface DsNoaa {
+    }
     interface DsTideChart {
+        "station"?: TideStationsResponse;
     }
     interface IntrinsicElements {
         "ds-debug-daylight-api": DsDebugDaylightApi;
         "ds-debug-tide-api": DsDebugTideApi;
+        "ds-main": DsMain;
+        "ds-map": DsMap;
+        "ds-noaa": DsNoaa;
         "ds-tide-chart": DsTideChart;
     }
 }
@@ -57,6 +97,9 @@ declare module "@stencil/core" {
         interface IntrinsicElements {
             "ds-debug-daylight-api": LocalJSX.DsDebugDaylightApi & JSXBase.HTMLAttributes<HTMLDsDebugDaylightApiElement>;
             "ds-debug-tide-api": LocalJSX.DsDebugTideApi & JSXBase.HTMLAttributes<HTMLDsDebugTideApiElement>;
+            "ds-main": LocalJSX.DsMain & JSXBase.HTMLAttributes<HTMLDsMainElement>;
+            "ds-map": LocalJSX.DsMap & JSXBase.HTMLAttributes<HTMLDsMapElement>;
+            "ds-noaa": LocalJSX.DsNoaa & JSXBase.HTMLAttributes<HTMLDsNoaaElement>;
             "ds-tide-chart": LocalJSX.DsTideChart & JSXBase.HTMLAttributes<HTMLDsTideChartElement>;
         }
     }

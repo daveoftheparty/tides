@@ -12,14 +12,11 @@ export type DaylightResponse = {
 		could use this api but only returns results for one day, and needs attribution like this:
 		<p>* data for sunrise & set provided by <a href="https://sunrise-sunset.org/api">sunrise-sunset.org</a></p>
 */
-export function GetDaylight(start: Date, end: Date): DaylightResponse[] {
-	return _getDaylight(start, end);
+export function GetDaylight(start: Date, end: Date, lat: number, long: number): DaylightResponse[] {
+	return _getDaylight(start, end, lat, long);
 }
 
-function _getDaylight(start: Date, end: Date) : DaylightResponse[] {
-	const lat = 27.58;
-	const long = -97.216;
-
+function _getDaylight(start: Date, end: Date, lat: number, long: number) : DaylightResponse[] {
 
 	const result: DaylightResponse[] = [];
 	// [start].map(d => {

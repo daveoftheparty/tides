@@ -1,9 +1,9 @@
-import { Component, h, Host } from "@stencil/core";
+import { Component, h, Host, Prop, Element } from "@stencil/core";
 import { GetTides, TideResponse } from '../../services/TideApi';
 import { GetDaylight, DaylightResponse } from '../../services/DaylightApi';
 import { State } from "@stencil/core";
 import { GetExpandedUnixDate, GetFlattenedUnixDate, UtcToLocal } from "../../services/DateUtils";
-
+import { TideStationsResponse }  from "../../services/TideStationsApi";
 
 // TODO: station (Bob Hall Pier) is hard coded, need station selector
 // TODO: is the tide data what we really want? MLLW type? explore other types?
@@ -20,6 +20,8 @@ export class TideChart {
 	beginDate: Date;
 	endDate: Date;
 
+	@Element() hostElement: HTMLElement;
+	@Prop() station: TideStationsResponse;
 	@State() tides : TideResponse[] = [];
 	tidesMinY: number;
 	tidesMaxY: number;
@@ -51,7 +53,6 @@ export class TideChart {
 		this.endDate = this.endDateInput.valueAsDate;
 
 		// TODO: extend dates since we are now clipping the svg to the chart area and we want to see the full sine wave
-		// TODO currently hard coded to "Bob Hall Pier, Corpus Christi", StationId 8775870, lat/long: 27.58,-97.216
 		this._getTides()
 			.then(tides => {
 				this.tides = tides;
@@ -66,11 +67,11 @@ export class TideChart {
 	}
 
 	_getDaylight() : DaylightResponse[] {
-		return GetDaylight(this.beginDate, this.endDate);
+		return GetDaylight(this.beginDate, this.endDate, this.station.lat, this.station.lng);
 	}
 
 	_getTides() : Promise<TideResponse[]> {
-		return GetTides(this.beginDate, this.endDate)
+		return GetTides(this.beginDate, this.endDate, this.station.id)
 			.then(tides => {
 				console.log('getTides response:', tides);
 				this._setTidesYAxisRange(tides);
@@ -302,6 +303,14 @@ export class TideChart {
 	`;
 	}
 
+	_clearStationData() {
+		this.tides = [];
+		this.daylight = [];
+		this.loaded = false;
+		this.hostElement.dispatchEvent(new CustomEvent('resetStation', {bubbles: true }));
+		console.log('clearing station data and dispatching resetStation event');
+	}
+
 	render() {
 		let chart = '';
 
@@ -439,6 +448,10 @@ export class TideChart {
 		return (
 			<Host>
 				<div id="userInput">
+					<h2>Tide Predictions for {this.station.name}</h2>
+					<button onClick={this._clearStationData.bind(this)}>Choose Another Station</button>
+
+
 					<p>
 						Begin Date: <input
 							id="begin-date"
