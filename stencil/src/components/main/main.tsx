@@ -5,28 +5,42 @@ import { Component, h, State } from '@stencil/core';
   shadow: false
 })
 export class DsMain {
-  @State() showMap = true;
-  @State() selectedStation: any = null;
+	@State() showMap = true;
+	@State() selectedStation: any = null;
 
-  mapEl: HTMLDsMapElement;
+	mapEl: HTMLDsMapElement;
+	tideChartEl: HTMLDsTideChartElement;
 
-  componentDidLoad() {
-    // Listen for custom event from ds-map
-    this.mapEl?.addEventListener('stationSelected', (event: CustomEvent) => {
-      this.selectedStation = event.detail;
-      this.showMap = false;
-    });
-  }
 
-  render() {
-    return (
-      <div>
-        {this.showMap ? (
-          <ds-map ref={el => this.mapEl = el as HTMLDsMapElement} />
-        ) : (
-          <ds-tide-chart station={this.selectedStation} />
-        )}
-      </div>
-    );
-  }
+	render() {
+		return (
+		<div>
+			{this.showMap ? (
+			<ds-map ref={el => {
+				this.mapEl = el as HTMLDsMapElement;
+				if (this.mapEl) {
+					this.mapEl.addEventListener('stationSelected', (event: CustomEvent) => {
+						this.selectedStation = event.detail;
+						this.showMap = false;
+					});
+				}
+			}} />
+			) : (
+			<ds-tide-chart
+				ref={el => {
+					this.tideChartEl = el as HTMLDsTideChartElement;
+					if (this.tideChartEl) {
+						this.tideChartEl.addEventListener('resetStation', () => {
+							this.selectedStation = null;
+							this.showMap = true;
+							console.log('resetStation event received in ds-main');
+						});
+					}
+				}}
+				station={this.selectedStation}
+			/>
+			)}
+		</div>
+		);
+	}
 }

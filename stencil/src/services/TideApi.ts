@@ -14,8 +14,8 @@ export type TideResponse = {
 	level: number
 };
 
-export function GetTides(start: Date, end: Date): Promise<TideResponse[]> {
-	return _getTides(start, end);
+export function GetTides(start: Date, end: Date, station: string): Promise<TideResponse[]> {
+	return _getTides(start, end, station);
 	// return _mockTides();
 }
 
@@ -30,8 +30,8 @@ function _yyyymmdd(input: Date) : string {
 	].join('');
 }
 
-function _getTides(start: Date, end: Date): Promise<TideResponse[]> {
-    return fetch(`https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=predictions&application=NOS.COOPS.TAC.WL&begin_date=${_yyyymmdd(start)}&end_date=${_yyyymmdd(end)}&datum=MLLW&station=8775870&time_zone=gmt&units=english&interval=hilo&format=json`,
+function _getTides(start: Date, end: Date, station: string): Promise<TideResponse[]> {
+    return fetch(`https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=predictions&application=NOS.COOPS.TAC.WL&begin_date=${_yyyymmdd(start)}&end_date=${_yyyymmdd(end)}&datum=MLLW&station=${station}&time_zone=gmt&units=english&interval=hilo&format=json`,
 	{mode: 'cors'})
 		.then(res => res.json())
 		.then(parsedRes => {
