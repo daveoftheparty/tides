@@ -24,19 +24,27 @@ export class Map {
 	}
 
 	async componentWillLoad(): Promise<void> {
-		// Example usage of GetTideStations
-		GetTideStations().then((stations: TideStationsResponse[]) => {
-			console.log('Fetched tide stations:', stations);
-			this.tideStations = stations;
-		});
+		// Fetch tide stations and set them
+		this.tideStations = await GetTideStations();
 	}
 
 	componentDidLoad() {
+		// Only initialize the map if tideStations are loaded
+		if (this.tideStations && this.tideStations.length > 0) {
+			this.initializeMap();
+		} else {
+			// Optionally, retry after a short delay if data isn't loaded yet
+			setTimeout(() => {
+				if (this.tideStations && this.tideStations.length > 0) {
+					this.initializeMap();
+				}
+			}, 200);
+		}
+	}
 
+	initializeMap() {
 		// packery channel beach: 27.616428, -97.201094
 		var packeryChannelBeach = L.latLng(27.616428, -97.201094);
-
-		// Use getElementById from document since shadow is disabled
 		const mapContainer = document.getElementById('map');
 		if (!mapContainer) return;
 
