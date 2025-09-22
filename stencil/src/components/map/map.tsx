@@ -21,6 +21,10 @@ export class Map {
 	_setStation(station: TideStationsResponse) {
 		console.log('Station selected: ' + station.id);
 		console.log('lat, long: ' + station.lat + ', ' + station.lng);
+		// Emit custom event for parent
+		this.hostElement.dispatchEvent(
+			new CustomEvent('stationSelected', { detail: station, bubbles: true })
+		);
 	}
 
 	async componentWillLoad(): Promise<void> {
@@ -71,7 +75,7 @@ export class Map {
 			console.log('Map container size:', rect.width, rect.height);
 			console.log('Map container computed styles:', computed.width, computed.height, computed.display);
 
-			this.map = L.map(mapContainer).setView(packeryChannelBeach, 15);
+			this.map = L.map(mapContainer).setView(packeryChannelBeach, 10);
 			// Store reference for cleanup
 			(mapContainer as any)._leaflet_map = this.map;
 			L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -99,6 +103,7 @@ export class Map {
 	}
 
 	render() {
+		console.log('Rendering ds-map component');
 		return (
 			<Host>
 				<div id="map-container">

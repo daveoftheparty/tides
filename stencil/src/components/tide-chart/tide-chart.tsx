@@ -1,9 +1,9 @@
-import { Component, h, Host } from "@stencil/core";
+import { Component, h, Host, Prop } from "@stencil/core";
 import { GetTides, TideResponse } from '../../services/TideApi';
 import { GetDaylight, DaylightResponse } from '../../services/DaylightApi';
 import { State } from "@stencil/core";
 import { GetExpandedUnixDate, GetFlattenedUnixDate, UtcToLocal } from "../../services/DateUtils";
-
+import { TideStationsResponse }  from "../../services/TideStationsApi";
 
 // TODO: station (Bob Hall Pier) is hard coded, need station selector
 // TODO: is the tide data what we really want? MLLW type? explore other types?
@@ -20,6 +20,8 @@ export class TideChart {
 	beginDate: Date;
 	endDate: Date;
 
+
+	@Prop() station: TideStationsResponse;
 	@State() tides : TideResponse[] = [];
 	tidesMinY: number;
 	tidesMaxY: number;
