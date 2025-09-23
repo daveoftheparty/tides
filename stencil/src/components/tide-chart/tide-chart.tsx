@@ -4,6 +4,7 @@ import { GetDaylight, DaylightResponse } from '../../services/DaylightApi';
 import { State } from "@stencil/core";
 import { GetExpandedUnixDate, GetFlattenedUnixDate, UtcToLocal } from "../../services/DateUtils";
 import { TideStationsResponse }  from "../../services/TideStationsApi";
+import { GetMoonTimes, MoonRiseSet } from "../../services/Moon";
 
 // TODO: station (Bob Hall Pier) is hard coded, need station selector
 // TODO: is the tide data what we really want? MLLW type? explore other types?
@@ -30,6 +31,8 @@ export class TideChart {
 	@State() loaded = false;
 
 	@State() showDebug = false;
+
+	@State() moonData: MoonRiseSet[] = [];
 
 	chartWidth = 800;
 	chartHeight = 200;
@@ -58,6 +61,9 @@ export class TideChart {
 				this.tides = tides;
 				this.loaded = true;
 			});
+
+
+		this.moonData = GetMoonTimes(this.beginDate, this.endDate, this.station.lat, this.station.lng);
 		const daylight = this._getDaylight();
 
 
@@ -325,6 +331,10 @@ export class TideChart {
 				<li><strong>{result.when.toISOString()}</strong> Rise: {result.rise.toLocaleString()} Set: {result.set.toLocaleString()}</li>
 			)}</ul>;
 
+			let moonRiseSetDebug = <ul>{this.moonData.map(result =>
+					<li>Rise: {result.rise.toLocaleString()} Set: {result.set.toLocaleString()} Illumination: {result.illumination} </li>
+			)}</ul>;
+
 			if(this.showDebug) {
 				debugContent =
 					<div>
@@ -339,6 +349,9 @@ export class TideChart {
 
 						<h2>debug daylight response</h2>
 						{daylightDebug}
+
+						<h2>debug moonlight response</h2>
+						{moonRiseSetDebug}
 
 					</div>
 			}
