@@ -1,5 +1,6 @@
-import { Component, h, Element, Host } from "@stencil/core";
-import { GetMoonTimes } from "../../services/Moon";
+import { Component, h, Element, Host, State } from "@stencil/core";
+import { GetMoonTimes, MoonRiseSet } from "../../services/Moon";
+import { ToLocalISOString } from "../../services/DateUtils";
 
 
 @Component({
@@ -7,23 +8,32 @@ import { GetMoonTimes } from "../../services/Moon";
 	shadow: false // Use light DOM so Leaflet CSS applies correctly
 })
 export class Moon {
+	@State() moonRiseSet: MoonRiseSet[];
+
+	async componentWillLoad() {
+		const huttoLat = 30.545806;
+		const huttoLong = -97.542111;
+		this.moonRiseSet = GetMoonTimes(new Date(2025, 8, 1, 0, 0, 0, 0), new Date(2025, 8, 30, 0, 0, 0, 0), huttoLat, huttoLong);
+	}
 
 	componentDidLoad() {
 		console.log('moon component loaded');
-
-		const huttoLat = 30.545806;
-		const huttoLong = -97.542111;
-
-		GetMoonTimes(new Date(2025, 8, 1, 0, 0, 0, 0), new Date(2025, 8, 30, 0, 0, 0, 0), huttoLat, huttoLong);
-
 		// Date(year: number, monthIndex: number, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number):
-
-		;
 	}
+
 	render() {
+		let moonRiseSetDebug = '';
+
+		if(this.moonRiseSet) {
+			moonRiseSetDebug = <ul>{this.moonRiseSet.map(result =>
+				<li>Rise: {ToLocalISOString(result.rise)} Set: {ToLocalISOString(result.set)}</li>
+			)}</ul>;
+		}
+
 		return (
 			<Host>
 				<div>Moon Component</div>
+				{moonRiseSetDebug}
 			</Host>
 		);
 	}
