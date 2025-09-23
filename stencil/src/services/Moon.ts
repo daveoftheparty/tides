@@ -1,4 +1,4 @@
-import {DateRangeToArray, ToLocalISOString} from './DateUtils';
+import {DateRangeToArray } from './DateUtils';
 import SunCalc from 'suncalc';
 
 
@@ -7,14 +7,14 @@ import SunCalc from 'suncalc';
 
 export type MoonRiseSet = {
 	rise: Date,
-	set: Date
+	set: Date,
+	illumination: string
 };
 
 
 export function GetMoonTimes(start: Date, end: Date, lat: number, long: number): MoonRiseSet[] {
 	return _getMoonTimes(start, end, lat, long);
 }
-
 
 type MoonRiseRaw = {
 	when: Date,
@@ -79,12 +79,23 @@ function _getMoonTimes(start: Date, end: Date, lat: number, long: number) : Moon
 		}
 
 		if(currentRise && currentSet)
-			result.push({rise: currentRise, set: currentSet});
+			result.push({rise: currentRise, set: currentSet, illumination: _getMoonPhase(currentRise, currentSet)});
 
 		i = riseIndex;
 	}
 
-	console.log('results to return', result);
+	console.log('moon and illumination results to return', result);
+
+
+	// console.log('moon phases during these moonlight times');
+	// result.map(r => {
+	// 	const rawRise = SunCalc.getMoonIllumination(r.rise);
+	// 	const rawSet = SunCalc.getMoonIllumination(r.set);
+
+	// 	console.log(`rise: ${ToLocalISOString(r.rise)}, fraction: ${rawRise.fraction}, phase: ${rawRise.phase}`)
+	// 	console.log(`set: ${ToLocalISOString(r.set)}, fraction: ${rawSet.fraction}, phase: ${rawSet.phase}`)
+	// });
+
 	return result;
 }
 
@@ -94,3 +105,31 @@ function _getMoonTimes(start: Date, end: Date, lat: number, long: number) : Moon
 // 	const setLog = !r.set ? 'undefined' : ToLocalISOString(r.set).substring(11, 19);
 // 	return `{when: ${whenLog}, rise: ${riseLog}, set: ${setLog}}`;
 // }
+
+
+
+function _getMoonPhase(start: Date, end: Date) : string {
+
+	const rawRise = SunCalc.getMoonIllumination(start);
+	const rawSet = SunCalc.getMoonIllumination(end);
+
+	const avgIllumination = (rawRise.fraction + rawSet.fraction) / 2;
+
+	return Math.round(avgIllumination * 100) + '%';
+}
+
+// function _getMoonPhaseDebug(start: Date, end: Date) {
+
+// 	console.log('moon phase info:')
+// 	DateRangeToArray(start, end).map(d => {
+// 		const raw = SunCalc.getMoonIllumination(d);
+
+// 		console.log(`date: ${ToLocalISOString(d)}, fraction: ${raw.fraction}, phase: ${raw.phase}`)
+// 	});
+// 	console.log('END moon phases');
+// }
+
+
+
+
+

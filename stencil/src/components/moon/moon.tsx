@@ -1,4 +1,4 @@
-import { Component, h, Element, Host, State } from "@stencil/core";
+import { Component, h, Host, State } from "@stencil/core";
 import { GetMoonTimes, MoonRiseSet } from "../../services/Moon";
 import { ToLocalISOString } from "../../services/DateUtils";
 
@@ -13,7 +13,10 @@ export class Moon {
 	async componentWillLoad() {
 		const huttoLat = 30.545806;
 		const huttoLong = -97.542111;
-		this.moonRiseSet = GetMoonTimes(new Date(2025, 8, 1, 0, 0, 0, 0), new Date(2025, 8, 30, 0, 0, 0, 0), huttoLat, huttoLong);
+		let start : Date = new Date(2025, 8, 1, 0, 0, 0, 0);
+		let end : Date = new Date(2025, 8, 30, 0, 0, 0, 0);
+
+		this.moonRiseSet = GetMoonTimes(start, end, huttoLat, huttoLong);
 	}
 
 	componentDidLoad() {
@@ -26,7 +29,7 @@ export class Moon {
 
 		if(this.moonRiseSet) {
 			moonRiseSetDebug = <ul>{this.moonRiseSet.map(result =>
-				<li>Rise: {ToLocalISOString(result.rise)} Set: {ToLocalISOString(result.set)}</li>
+				<li>Rise: {ToLocalISOString(result.rise)} Set: {ToLocalISOString(result.set)} Illumination: {result.illumination} </li>
 			)}</ul>;
 		}
 
