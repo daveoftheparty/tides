@@ -317,11 +317,111 @@ export class TideChart {
 		console.log('clearing station data and dispatching resetStation event');
 	}
 
+	_getSvg() : string {
+		const yAxis = this._getYAxis();
+
+		let svg =
+
+			<svg id="chart" viewBox={`0 0 ${this.chartWidth} ${this.chartHeight}`} xmlns="http://www.w3.org/2000/svg">
+				<style>
+					{this._getChartStyle()}
+				</style>
+				<rect id="chartArea" width="100%" height="100%" />
+				<g id="days">
+					{this._getChartDayRects().map(day =>
+						<rect class="chartDayDark" id={`${day.index}`} width={day.width} height={this.chartAreaHeight} x={day.x} y={this.chartAreaYOffsetTop} />
+					)}
+					{this._getDaylightRects().map(day =>
+						<rect class="chartDaylight" id={`${day.index}`} width={day.width} height={this.chartAreaHeight} x={day.x} y={this.chartAreaYOffsetTop} />
+					)}
+				</g>
+				<g id="x-axis-day-ticks">
+					{
+						this._getChartXAxisGridlines().map(i =>
+							<path class="xGridline" id={`x-tick-${i.index}`} d={`M ${i.x},${this.chartAreaYOffsetTop / 2} V ${this.chartHeight - this.chartAreaYOffsetBottom / 2}`} />
+						)
+					}
+				</g>
+
+				<clipPath
+					id="tideClip">
+					<rect
+						x={this.chartAreaXOffset}
+						y={this.chartAreaYOffsetTop}
+						width={this.chartWidth - this.chartAreaXOffset }
+						height={this.chartAreaHeight} />
+				</clipPath>
+				<g id="tides" clip-path="url(#tideClip)">
+					<path class="tideSineWave" id="tideSineWave" d={this._getTideSineWave()} />
+					{
+						this._getTideCoords().map(i =>
+							<circle class="tideMarker" id={`tide-marker-${i.index}`} cx={i.x} cy={i.y} r="4">
+								<title>{this.tides[i.index].level} ft at {this.tides[i.index].when.toLocaleTimeString()}</title>
+							</circle>
+						)
+					}
+				</g>
+
+				<g id="y-axis-ticks-and-labels">
+					{
+						yAxis.map(i =>
+							<path class="yGridline" id={`y-tick-${i.index}`} d={`M ${this.chartAreaXOffset},${i.y} H ${this.chartWidth}`} />
+						)
+					}
+					{
+						// yAxis.slice(1, yAxis.length - 1).map(i =>
+						yAxis.map(i =>
+							<text
+								class="yTickLabel" id={`y-tick-${i.index}`}
+								text-anchor="end" alignment-baseline="middle"
+								x={this.chartAreaXOffset - 5} y={i.y}
+								font-size={this.chartFontSize}
+							>
+								{i.label}
+							</text>
+						)
+					}
+				</g>
+				<g id="x-axis-top-series-labels">
+					{
+						this._getCalendarLabels().map(i =>
+							<text
+								class="xAxisTopSeriesLabel" id={`x-top-label-${i.index}`}
+								text-anchor="middle" dominant-baseline="hanging"
+								y="5"
+								font-size={this.chartFontSize}
+							>
+								<tspan x={i.x} text-anchor="middle">{i.day}</tspan>
+								<tspan x={i.x} dy="1.2em" text-anchor="middle">{i.date}</tspan>
+							</text>
+						)
+					}
+				</g>
+				<g id="x-axis-daylight-labels">
+					{
+						this._getDaylightLabels().map(i =>
+							<text
+								class="xAxisDaylightLabel" id={`x-axis-daylight-label-${i.index}`}
+								text-anchor="end" dominant-baseline="middle" transform={`rotate(270, ${i.x}, ${i.y})`}
+								x={i.x} y={i.y}
+								font-size={this.chartFontSize}
+							>
+								{i.label}
+								<span>hi</span>
+							</text>
+						)
+					}
+				</g>
+			</svg>
+
+		return svg;
+	}
+
 	render() {
 		let chart = '';
+		let debugContent = '';
 
 		if(this.loaded) {
-			let debugContent = '';
 
 			let tideDebug = <ul>{this.tides.map(result =>
 				<li><strong>{result.when.toISOString()}</strong> - Ms since 1970: {result.when.getTime()} Level: {result.level}</li>
@@ -356,105 +456,12 @@ export class TideChart {
 					</div>
 			}
 
-			const yAxis = this._getYAxis();
-			this._getTideSineWave();
-
 			chart =
-			<div id="chartContainer">
-				<p><button onClick={this._toggleDebug.bind(this)}>Toggle Debug Info</button></p>
-				{debugContent}
-				<svg id="chart" viewBox={`0 0 ${this.chartWidth} ${this.chartHeight}`} xmlns="http://www.w3.org/2000/svg">
-					<style>
-						{this._getChartStyle()}
-					</style>
-					<rect id="chartArea" width="100%" height="100%" />
-					<g id="days">
-						{this._getChartDayRects().map(day =>
-							<rect class="chartDayDark" id={`${day.index}`} width={day.width} height={this.chartAreaHeight} x={day.x} y={this.chartAreaYOffsetTop} />
-						)}
-						{this._getDaylightRects().map(day =>
-							<rect class="chartDaylight" id={`${day.index}`} width={day.width} height={this.chartAreaHeight} x={day.x} y={this.chartAreaYOffsetTop} />
-						)}
-					</g>
-					<g id="x-axis-day-ticks">
-						{
-							this._getChartXAxisGridlines().map(i =>
-								<path class="xGridline" id={`x-tick-${i.index}`} d={`M ${i.x},${this.chartAreaYOffsetTop / 2} V ${this.chartHeight - this.chartAreaYOffsetBottom / 2}`} />
-							)
-						}
-					</g>
-
-					<clipPath
-						id="tideClip">
-						<rect
-							x={this.chartAreaXOffset}
-							y={this.chartAreaYOffsetTop}
-							width={this.chartWidth - this.chartAreaXOffset }
-							height={this.chartAreaHeight} />
-					</clipPath>
-					<g id="tides" clip-path="url(#tideClip)">
-						<path class="tideSineWave" id="tideSineWave" d={this._getTideSineWave()} />
-						{
-							this._getTideCoords().map(i =>
-								<circle class="tideMarker" id={`tide-marker-${i.index}`} cx={i.x} cy={i.y} r="4">
-									<title>{this.tides[i.index].level} ft at {this.tides[i.index].when.toLocaleTimeString()}</title>
-								</circle>
-							)
-						}
-					</g>
-
-					<g id="y-axis-ticks-and-labels">
-						{
-							yAxis.map(i =>
-								<path class="yGridline" id={`y-tick-${i.index}`} d={`M ${this.chartAreaXOffset},${i.y} H ${this.chartWidth}`} />
-							)
-						}
-						{
-							// yAxis.slice(1, yAxis.length - 1).map(i =>
-							yAxis.map(i =>
-								<text
-									class="yTickLabel" id={`y-tick-${i.index}`}
-									text-anchor="end" alignment-baseline="middle"
-									x={this.chartAreaXOffset - 5} y={i.y}
-									font-size={this.chartFontSize}
-								>
-									{i.label}
-								</text>
-							)
-						}
-					</g>
-					<g id="x-axis-top-series-labels">
-						{
-							this._getCalendarLabels().map(i =>
-								<text
-									class="xAxisTopSeriesLabel" id={`x-top-label-${i.index}`}
-									text-anchor="middle" dominant-baseline="hanging"
-									y="5"
-									font-size={this.chartFontSize}
-								>
-									<tspan x={i.x} text-anchor="middle">{i.day}</tspan>
-									<tspan x={i.x} dy="1.2em" text-anchor="middle">{i.date}</tspan>
-								</text>
-							)
-						}
-					</g>
-					<g id="x-axis-daylight-labels">
-						{
-							this._getDaylightLabels().map(i =>
-								<text
-									class="xAxisDaylightLabel" id={`x-axis-daylight-label-${i.index}`}
-									text-anchor="end" dominant-baseline="middle" transform={`rotate(270, ${i.x}, ${i.y})`}
-									x={i.x} y={i.y}
-									font-size={this.chartFontSize}
-								>
-									{i.label}
-									<span>hi</span>
-								</text>
-							)
-						}
-					</g>
-				</svg>
-			</div>
+				<div id="chartContainer">
+					<p><button onClick={this._toggleDebug.bind(this)}>Toggle Debug Info</button></p>
+					{debugContent}
+					{this._getSvg()}
+				</div>
 		}
 
 
@@ -481,6 +488,7 @@ export class TideChart {
 					</p>
 					<button onClick={this._getChartData.bind(this)}>Get Tides</button>
 				</div>
+
 				{chart}
 			</Host>
 		);
