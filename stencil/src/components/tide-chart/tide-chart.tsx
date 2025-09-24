@@ -105,12 +105,30 @@ export class TideChart {
 	}
 
 	_getTides() : Promise<TideResponse[]> {
-		return GetTides(this.beginDate, this.endDate, this.station.id)
-			.then(tides => {
-				console.log('getTides response:', tides);
-				this._setTidesYAxisRange(tides);
-				return tides;
-			});
+		// return GetTides(this.beginDate, this.endDate, this.station.id)
+		// 		.then(tides => {
+		// 		console.log('getTides response:', tides);
+		// 		this._setTidesYAxisRange(tides);
+		// 		return tides;
+		// 	});
+
+		let tides = this._mockTides();
+		this._setTidesYAxisRange(tides);
+		console.log('mock tides', tides);
+		return Promise.resolve(tides);
+	}
+
+	_mockTides() : TideResponse[] {
+
+		return [
+			{when: new Date(this.beginDate.getFullYear(), this.beginDate.getMonth(), this.beginDate.getDate() + 1, 10, 0, 0), level: 4},
+			{when: new Date(this.beginDate.getFullYear(), this.beginDate.getMonth(), this.beginDate.getDate() + 1, 16, 0, 0), level: 1},
+
+			{when: new Date(this.beginDate.getFullYear(), this.beginDate.getMonth(), this.beginDate.getDate() + 2, 10, 0, 0), level: 4},
+			{when: new Date(this.beginDate.getFullYear(), this.beginDate.getMonth(), this.beginDate.getDate() + 2, 12, 0, 0), level: 3},
+			{when: new Date(this.beginDate.getFullYear(), this.beginDate.getMonth(), this.beginDate.getDate() + 2, 14, 0, 0), level: 2},
+			{when: new Date(this.beginDate.getFullYear(), this.beginDate.getMonth(), this.beginDate.getDate() + 2, 16, 0, 0), level: 1},
+		]
 	}
 
 	_setTidesYAxisRange(tides: TideResponse[]) {
@@ -287,6 +305,18 @@ export class TideChart {
 		return transform;
 	}
 
+	_getYCoordNew(y: number): number {
+		const spread = this.tidesMaxY - this.tidesMinY;
+		const basis = y - this.tidesMinY;
+		const thisRatio = basis / spread;
+
+		const transform = this.tidePlotArea.height + this.tidePlotArea.y - (thisRatio * this.tidePlotArea.height);
+
+		if(y === this.tidesMinY)
+			console.log('_getYCoord for min', y, 'has basis', basis, 'and ratio', thisRatio, 'and is returning', transform);
+		return transform;
+	}
+
 	_getYAxis(): {index: number, y: number, label: string}[] {
 		const gridlines = 5;
 		const gridSpace = this.chartAreaHeight / (gridlines - 1);
@@ -325,6 +355,17 @@ export class TideChart {
 		return result;
 	}
 
+	_getTideCoordsNew() : {index: number, x: number, y: number}[] {
+		let i = 0;
+		let result = this.tides.map(tide => ({
+			index: i++,
+			x: this._getXForDateNew(tide.when),
+			y: this._getYCoordNew(tide.level)
+		}));
+
+		return result;
+	}
+
 	_getTideSineWave() : string {
 		let points = this._getTideCoords().map(i =>
 			// this gives straight line path:
@@ -335,6 +376,14 @@ export class TideChart {
 		);
 		let result = points.join(' ');
 		// console.log(result);
+		return result;
+	}
+	_getTideSineWaveNew() : string {
+		let points = this._getTideCoordsNew().map(i =>
+			// this gives straight line path:
+			(i.index === 0 ? 'M ' : 'L ') + i.x + ',' + i.y
+		);
+		let result = points.join(' ');
 		return result;
 	}
 
@@ -540,6 +589,26 @@ export class TideChart {
 					{
 						this._getChartXAxisGridlinesNew().map(i =>
 							<path class="xGridline" id={`x-tick-${i.index}`} d={`M ${i.x},${this.xAxisHeaderRect.height / 2} V ${this.chartRect.height - this.xAxisFooterRect.height / 2}`} />
+						)
+					}
+				</g>
+
+
+				<clipPath
+					id="tideClip">
+					<rect
+						x={this.tidePlotArea.x}
+						y={this.tidePlotArea.y}
+						width={this.tidePlotArea.width}
+						height={this.tidePlotArea.height} />
+				</clipPath>
+				<g id="tides" clip-path="url(#tideClip)">
+					<path class="tideSineWave" id="tideSineWave" d={this._getTideSineWaveNew()} />
+					{
+						this._getTideCoordsNew().map(i =>
+							<circle class="tideMarker" id={`tide-marker-${i.index}`} cx={i.x} cy={i.y} r="4">
+								<title>{this.tides[i.index].level} ft at {this.tides[i.index].when.toLocaleTimeString()}</title>
+							</circle>
 						)
 					}
 				</g>
