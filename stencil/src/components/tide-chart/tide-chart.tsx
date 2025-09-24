@@ -335,6 +335,24 @@ export class TideChart {
 		return result;
 	}
 
+	_getYAxisNew(): {index: number, y: number, label: string}[] {
+		const gridlines = 5;
+		const gridSpace = this.dayPlotArea.height / (gridlines - 1);
+		const labelIncrement = (this.tidesMaxY - this.tidesMinY) / (gridlines - 1);
+
+		let result = [...Array(gridlines).keys()].map(i => {
+			let labelNumber = Math.round(( (this.tidesMaxY - labelIncrement * i) + Number.EPSILON) * 100) / 100;
+			return {
+				index: i,
+				y: i * gridSpace + this.dayPlotArea.y,
+				label: `${labelNumber}`
+			};
+		});
+
+		console.log('_getYAxisYPos result', result);
+		return result;
+	}
+
 	_getTideCoords() : {index: number, x: number, y: number}[] {
 		let i = 0;
 		let result = this.tides.map(tide => ({
@@ -571,6 +589,8 @@ export class TideChart {
 
 	// TODO: get rid of all methods that don't have the NEW suffix and rename all the NEW suffix methods
 	_getNewSvg() : string {
+		const yAxis = this._getYAxisNew();
+
 		let svg =
 			<svg id="chart" viewBox={`0 0 ${this.chartRect.width} ${this.chartRect.height}`} xmlns="http://www.w3.org/2000/svg">
 				<style>
@@ -609,6 +629,25 @@ export class TideChart {
 							<circle class="tideMarker" id={`tide-marker-${i.index}`} cx={i.x} cy={i.y} r="4">
 								<title>{this.tides[i.index].level} ft at {this.tides[i.index].when.toLocaleTimeString()}</title>
 							</circle>
+						)
+					}
+				</g>
+				<g id="y-axis-ticks-and-labels">
+					{
+						yAxis.map(i =>
+							<path class="yGridline" id={`y-tick-${i.index}`} d={`M ${this.dayPlotArea.x},${i.y} H ${this.chartRect.width}`} />
+						)
+					}
+					{
+						yAxis.map(i =>
+							<text
+								class="yTickLabel" id={`y-tick-${i.index}`}
+								text-anchor="end" alignment-baseline="middle"
+								x={this.dayPlotArea.x - 5} y={i.y}
+								font-size={this.chartFontSize}
+							>
+								{i.label}
+							</text>
 						)
 					}
 				</g>
