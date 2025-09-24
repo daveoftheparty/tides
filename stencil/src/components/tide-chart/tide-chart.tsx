@@ -65,7 +65,7 @@ export class TideChart {
 		// TODO: move all chart sizes that are declared outside this method into here
 		this.chartRect = { x: 0, y: 0, width: 800, height: 200 };
 		this.xAxisHeaderRect = { x: this.chartAreaXOffset, y: this.chartRect.y, width: this.chartRect.width - this.chartAreaXOffset, height: this.chartAreaYOffsetTop };
-		this.yAxisRect = { x: this.chartRect.x, y: this.chartAreaYOffsetTop, width: this.chartAreaXOffset, height: this.chartRect.height - this.chartAreaYOffsetTop - this.chartAreaYOffsetBottom };
+		this.yAxisRect = { x: this.chartRect.x, y: this.chartRect.y, width: this.chartAreaXOffset, height: this.chartRect.height };
 		this.moonRect = { x: this.xAxisHeaderRect.x, y: this.xAxisHeaderRect.y + this.xAxisHeaderRect.height, width: this.xAxisHeaderRect.width, height: 25}
 		this.xAxisFooterRect = { x: this.xAxisHeaderRect.x, y: this.chartRect.height - this.chartAreaYOffsetBottom, width: this.xAxisHeaderRect.width, height: this.chartAreaYOffsetBottom };
 		this.dayPlotArea = { x: this.xAxisHeaderRect.x, y: this.moonRect.y, width: this.xAxisHeaderRect.width, height: this.chartRect.height - this.xAxisHeaderRect.height - this.xAxisFooterRect.height };
@@ -445,6 +445,21 @@ export class TideChart {
 		return svg;
 	}
 
+	_getNewSvgLayoutRectsOnly() : string {
+		let svg =
+			<svg id="chart" viewBox={`0 0 ${this.chartRect.width} ${this.chartRect.height}`} xmlns="http://www.w3.org/2000/svg">
+				<rect id="chartArea" width="100%" height="100%" fill="rgb(128, 128, 128)" />
+				<rect id="yAxisRect" x={this.yAxisRect.x} y={this.yAxisRect.y} width={this.yAxisRect.width} height={this.yAxisRect.height} fill="rgb(0, 255, 236)" />
+				<rect id="xAxisHeaderRect" x={this.xAxisHeaderRect.x} y={this.xAxisHeaderRect.y} width={this.xAxisHeaderRect.width} height={this.xAxisHeaderRect.height} fill="rgb(255, 128, 0)" />
+				<rect id="moonRect" x={this.moonRect.x} y={this.moonRect.y} width={this.moonRect.width} height={this.moonRect.height} fill="rgb(255, 255, 0)" />
+				<rect id="xAxisFooterRect" x={this.xAxisFooterRect.x} y={this.xAxisFooterRect.y} width={this.xAxisFooterRect.width} height={this.xAxisFooterRect.height} fill="rgb(0, 128, 255)" />
+				<rect id="dayPlotArea" x={this.dayPlotArea.x} y={this.dayPlotArea.y} width={this.dayPlotArea.width} height={this.dayPlotArea.height} fill="rgb(128, 0, 255)" />
+				<rect id="tidePlotArea" x={this.tidePlotArea.x} y={this.tidePlotArea.y} width={this.tidePlotArea.width} height={this.tidePlotArea.height} fill="rgb(255, 0, 128)" />
+			</svg>
+
+		return svg;
+	}
+
 	render() {
 		let chart = '';
 		let debugContent = '';
@@ -488,7 +503,7 @@ export class TideChart {
 				<div id="chartContainer">
 					<p><button onClick={this._toggleDebug.bind(this)}>Toggle Debug Info</button></p>
 					{debugContent}
-					{this._getSvg()}
+					{this._getNewSvgLayoutRectsOnly()}
 				</div>
 		}
 
