@@ -10,6 +10,14 @@ import { GetMoonTimes, MoonRiseSet } from "../../services/Moon";
 // TODO: is the tide data what we really want? MLLW type? explore other types?
 // TODO: filter tide retrieval by local? since we are retrieving tides in UTC and graphing in local, we have some instances where an "early GMT" tide transitions to the day before and the left side of the tide sine wave/markers crosses the YAxis marker. Example: we want tides from 9/14 - 9/20 local, but we get a GMT tide for 9/14 2:07 am that tranlates into 9/13 9:07 pm
 
+type Rect = {
+	x: number,
+	y: number,
+	width: number,
+	height: number
+}
+
+
 @Component({
 	tag: 'ds-tide-chart',
 	styleUrl: './tide-chart.css',
@@ -43,6 +51,26 @@ export class TideChart {
 	chartAreaYOffsetBottom = 35; // TODO this should be based on the font size of the x-axis-daylight-labels
 
 	chartAreaHeight = this.chartHeight - this.chartAreaYOffsetTop - this.chartAreaYOffsetBottom;
+
+	chartRect: Rect;
+	xAxisHeaderRect: Rect;
+	yAxisRect: Rect;
+	moonRect: Rect;
+	xAxisFooterRect: Rect;
+	dayPlotArea: Rect;
+	tidePlotArea: Rect;
+
+
+	constructor() {
+		// TODO: move all chart sizes that are declared outside this method into here
+		this.chartRect = { x: 0, y: 0, width: 800, height: 200 };
+		this.xAxisHeaderRect = { x: this.chartAreaXOffset, y: this.chartRect.y, width: this.chartRect.width - this.chartAreaXOffset, height: this.chartAreaYOffsetTop };
+		this.yAxisRect = { x: this.chartRect.x, y: this.chartAreaYOffsetTop, width: this.chartAreaXOffset, height: this.chartRect.height - this.chartAreaYOffsetTop - this.chartAreaYOffsetBottom };
+		this.moonRect = { x: this.xAxisHeaderRect.x, y: this.xAxisHeaderRect.y + this.xAxisHeaderRect.height, width: this.xAxisHeaderRect.width, height: 25}
+		this.xAxisFooterRect = { x: this.xAxisHeaderRect.x, y: this.chartRect.height - this.chartAreaYOffsetBottom, width: this.xAxisHeaderRect.width, height: this.chartAreaYOffsetBottom };
+		this.dayPlotArea = { x: this.xAxisHeaderRect.x, y: this.moonRect.y, width: this.xAxisHeaderRect.width, height: this.chartRect.height - this.xAxisHeaderRect.height - this.xAxisFooterRect.height };
+		this.tidePlotArea = { x: this.dayPlotArea.x, y: this.moonRect.y + this.moonRect.height, width: this.dayPlotArea.width, height: this.dayPlotArea.height - this.moonRect.height };
+	}
 
 	componentDidLoad() {
 		const today = new Date(GetFlattenedUnixDate(new Date()));
