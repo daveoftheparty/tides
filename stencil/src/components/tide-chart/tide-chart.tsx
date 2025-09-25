@@ -2,7 +2,7 @@ import { Component, h, Host, Prop, Element } from "@stencil/core";
 import { GetTides, TideResponse } from '../../services/TideApi';
 import { GetDaylight, DaylightResponse } from '../../services/DaylightApi';
 import { State } from "@stencil/core";
-import { GetExpandedUnixDate, GetFlattenedUnixDate, UtcToLocal } from "../../services/DateUtils";
+import { DateRangeToArray, GetExpandedUnixDate, GetFlattenedUnixDate, UtcToLocal } from "../../services/DateUtils";
 import { TideStationsResponse }  from "../../services/TideStationsApi";
 import { GetMoonTimes, MoonRiseSet } from "../../services/Moon";
 
@@ -98,7 +98,52 @@ export class TideChart {
 	}
 
 	_getDaylight() : DaylightResponse[] {
-		return GetDaylight(this.beginDate, this.endDate, this.station.lat, this.station.lng);
+		// return GetDaylight(this.beginDate, this.endDate, this.station.lat, this.station.lng);
+		return this._mockDaylight();
+	}
+
+	_mockDaylight() : DaylightResponse[] {
+		let mockDaylight = [
+			{
+				when: new Date(this.beginDate.getFullYear(), this.beginDate.getMonth(), this.beginDate.getDate() + 1, 0, 0, 0),
+				rise: new Date(this.beginDate.getFullYear(), this.beginDate.getMonth(), this.beginDate.getDate() + 1, 0, 0, 0),
+				set: new Date(this.beginDate.getFullYear(), this.beginDate.getMonth(), this.beginDate.getDate() + 1, 23, 59, 59),
+			},
+			{
+				when: new Date(this.beginDate.getFullYear(), this.beginDate.getMonth(), this.beginDate.getDate() + 2, 0, 0, 0),
+				rise: new Date(this.beginDate.getFullYear(), this.beginDate.getMonth(), this.beginDate.getDate() + 2, 2, 0, 0),
+				set: new Date(this.beginDate.getFullYear(), this.beginDate.getMonth(), this.beginDate.getDate() + 2, 22, 0, 0),
+			},
+			{
+				when: new Date(this.beginDate.getFullYear(), this.beginDate.getMonth(), this.beginDate.getDate() + 3, 0, 0, 0),
+				rise: new Date(this.beginDate.getFullYear(), this.beginDate.getMonth(), this.beginDate.getDate() + 3, 4, 0, 0),
+				set: new Date(this.beginDate.getFullYear(), this.beginDate.getMonth(), this.beginDate.getDate() + 3, 20, 0, 0),
+			},
+			{
+				when: new Date(this.beginDate.getFullYear(), this.beginDate.getMonth(), this.beginDate.getDate() + 4, 0, 0, 0),
+				rise: new Date(this.beginDate.getFullYear(), this.beginDate.getMonth(), this.beginDate.getDate() + 4, 6, 0, 0),
+				set: new Date(this.beginDate.getFullYear(), this.beginDate.getMonth(), this.beginDate.getDate() + 4, 18, 0, 0),
+			},
+			{
+				when: new Date(this.beginDate.getFullYear(), this.beginDate.getMonth(), this.beginDate.getDate() + 5, 0, 0, 0),
+				rise: new Date(this.beginDate.getFullYear(), this.beginDate.getMonth(), this.beginDate.getDate() + 5, 8, 0, 0),
+				set: new Date(this.beginDate.getFullYear(), this.beginDate.getMonth(), this.beginDate.getDate() + 5, 16, 0, 0),
+			},
+			{
+				when: new Date(this.beginDate.getFullYear(), this.beginDate.getMonth(), this.beginDate.getDate() + 6, 0, 0, 0),
+				rise: new Date(this.beginDate.getFullYear(), this.beginDate.getMonth(), this.beginDate.getDate() + 6, 10, 0, 0),
+				set: new Date(this.beginDate.getFullYear(), this.beginDate.getMonth(), this.beginDate.getDate() + 6, 14, 0, 0),
+			},
+			{
+				when: new Date(this.beginDate.getFullYear(), this.beginDate.getMonth(), this.beginDate.getDate() + 7, 0, 0, 0),
+				rise: new Date(this.beginDate.getFullYear(), this.beginDate.getMonth(), this.beginDate.getDate() + 7, 12, 0, 0),
+				set: new Date(this.beginDate.getFullYear(), this.beginDate.getMonth(), this.beginDate.getDate() + 7, 12, 59, 59),
+			},
+
+		];
+
+		console.log('mockDaylight', mockDaylight);
+		return mockDaylight;
 	}
 
 	_getTides() : Promise<TideResponse[]> {
@@ -240,7 +285,7 @@ export class TideChart {
 		}
 
 		// const thisRatio = input.valueOf() / expandedMaxDate;
-		return thisRatio * this.dayPlotArea.width + this.yAxisRect.y;
+		return thisRatio * this.dayPlotArea.width + this.yAxisRect.width;
 	}
 
 
@@ -392,7 +437,6 @@ export class TideChart {
 	}
 
 
-	// TODO: check day rects calculations (light and dark), they don't seem to align to the vertical ticks correctlly
 	// TODO: check moon calculations, don't seem to align to day hours correctly
 	_getSvg() : string {
 		const yAxis = this._getYAxis();
