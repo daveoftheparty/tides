@@ -204,7 +204,7 @@ export class TideChart {
 					index: i,
 					x: this._getXForDateNew(day),
 					y: this.xAxisFooterRect.y + 3,
-					label: `${day.getHours()}:${day.getMinutes()}`
+					label: `${('00' + day.getHours()).slice(-2)}:${('00' + day.getMinutes()).slice(-2)}`
 				});
 			})
 		});
