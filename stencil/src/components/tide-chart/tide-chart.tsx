@@ -2,13 +2,10 @@ import { Component, h, Host, Prop, Element } from "@stencil/core";
 import { GetTides, TideResponse } from '../../services/TideApi';
 import { GetDaylight, DaylightResponse } from '../../services/DaylightApi';
 import { State } from "@stencil/core";
-import { DateRangeToArray, GetExpandedUnixDate, GetFlattenedUnixDate, UtcToLocal } from "../../services/DateUtils";
+import { GetExpandedUnixDate, GetFlattenedUnixDate, UtcToLocal } from "../../services/DateUtils";
 import { TideStationsResponse }  from "../../services/TideStationsApi";
 import { GetMoonTimes, MoonRiseSet } from "../../services/Moon";
 
-// TODO: station (Bob Hall Pier) is hard coded, need station selector
-// TODO: is the tide data what we really want? MLLW type? explore other types?
-// TODO: filter tide retrieval by local? since we are retrieving tides in UTC and graphing in local, we have some instances where an "early GMT" tide transitions to the day before and the left side of the tide sine wave/markers crosses the YAxis marker. Example: we want tides from 9/14 - 9/20 local, but we get a GMT tide for 9/14 2:07 am that tranlates into 9/13 9:07 pm
 
 type Rect = {
 	x: number,
@@ -89,6 +86,7 @@ export class TideChart {
 
 
 		this.moonData = GetMoonTimes(this.beginDate, this.endDate, this.station.lat, this.station.lng);
+		// this.moonData = this._mockMoonTimes();
 		const daylight = this._getDaylight();
 
 
@@ -98,9 +96,24 @@ export class TideChart {
 	}
 
 	_getDaylight() : DaylightResponse[] {
-		// return GetDaylight(this.beginDate, this.endDate, this.station.lat, this.station.lng);
-		return this._mockDaylight();
+		return GetDaylight(this.beginDate, this.endDate, this.station.lat, this.station.lng);
+		// return this._mockDaylight();
 	}
+
+	_mockMoonTimes() : MoonRiseSet[] {
+		let result: MoonRiseSet[] = [];
+
+		this._mockDaylight().forEach(d => {
+			result.push({
+				rise: d.rise,
+				set: d.set,
+				illumination: "foo%"
+			});
+		});
+
+		return result;
+	}
+
 
 	_mockDaylight() : DaylightResponse[] {
 		let mockDaylight = [
@@ -147,17 +160,17 @@ export class TideChart {
 	}
 
 	_getTides() : Promise<TideResponse[]> {
-		// return GetTides(this.beginDate, this.endDate, this.station.id)
-		// 		.then(tides => {
-		// 		console.log('getTides response:', tides);
-		// 		this._setTidesYAxisRange(tides);
-		// 		return tides;
-		// 	});
+		return GetTides(this.beginDate, this.endDate, this.station.id)
+				.then(tides => {
+				console.log('getTides response:', tides);
+				this._setTidesYAxisRange(tides);
+				return tides;
+			});
 
-		let tides = this._mockTides();
-		this._setTidesYAxisRange(tides);
-		console.log('mock tides', tides);
-		return Promise.resolve(tides);
+		// let tides = this._mockTides();
+		// this._setTidesYAxisRange(tides);
+		// console.log('mock tides', tides);
+		// return Promise.resolve(tides);
 	}
 
 	_mockTides() : TideResponse[] {
@@ -437,7 +450,6 @@ export class TideChart {
 	}
 
 
-	// TODO: check moon calculations, don't seem to align to day hours correctly
 	_getSvg() : string {
 		const yAxis = this._getYAxis();
 
