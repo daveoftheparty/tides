@@ -478,11 +478,24 @@ export class TideChart {
 						)
 					}
 				</g>
-				<g id="moon">
+
+				<clipPath
+					id="moonClip">
+					<rect
+						x={this.dayPlotArea.x}
+						y={this.dayPlotArea.y}
+						width={this.dayPlotArea.width}
+						height={this.dayPlotArea.height} />
+				</clipPath>
+				<g id="moon" clip-path="url(#moonClip)">
 					{this._getMoonData().map(moon =>
 						<g id={`moonData${moon.index}`}>
 							<rect class="chartMoonData" id={`moon${moon.index}`} width={moon.width} height={moon.height} x={moon.x} y={moon.y}>
-								<title>moonrise: {moon.rise.toLocaleTimeString()} set: {moon.set.toLocaleTimeString()}</title>
+								<title>
+									moonrise: {moon.rise.toLocaleTimeString()}&#10;
+									set: {moon.set.toLocaleTimeString()}&#10;
+									illumination: {moon.illumination}
+								</title>
 							</rect>
 
 							<text
