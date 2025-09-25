@@ -426,6 +426,27 @@ export class TideChart {
 		return result;
 	}
 
+	_getCalendarLabelsNew() : {index: number, x: number, day: string, date: string}[] {
+		const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+		const days = this._getChartDays();
+		const chartRects = this._getChartDayRectsNew();
+		// TODO: replace this date stuff with DateRangeToArray()
+		let result = [...Array(days).keys()].map(i => {
+			const msInDay = 24 * 60 * 60 * 1000;
+			let offset = msInDay * i;
+			let currentDate = new Date(this.beginDate.getTime() + offset);
+
+			return {
+				index: i,
+				x: (chartRects[i].width / 2) + chartRects[i].x,
+				day: dayNames[currentDate.getUTCDay()],
+				date: `${currentDate.getUTCMonth() + 1}/${currentDate.getUTCDate()}`
+			};
+		});
+
+		return result;
+	}
+
 	_toggleDebug() {
 		this.showDebug = !this.showDebug;
 	}
@@ -572,20 +593,6 @@ export class TideChart {
 		return svg;
 	}
 
-	_getNewSvgLayoutRectsOnly() : string {
-		let svg =
-			<svg id="chart" viewBox={`0 0 ${this.chartRect.width} ${this.chartRect.height}`} xmlns="http://www.w3.org/2000/svg">
-				<rect id="chartArea" width="100%" height="100%" fill="rgb(128, 128, 128)" />
-				<rect id="yAxisRect" x={this.yAxisRect.x} y={this.yAxisRect.y} width={this.yAxisRect.width} height={this.yAxisRect.height} fill="rgb(0, 255, 236)" />
-				<rect id="xAxisHeaderRect" x={this.xAxisHeaderRect.x} y={this.xAxisHeaderRect.y} width={this.xAxisHeaderRect.width} height={this.xAxisHeaderRect.height} fill="rgb(255, 128, 0)" />
-				<rect id="moonRect" x={this.moonRect.x} y={this.moonRect.y} width={this.moonRect.width} height={this.moonRect.height} fill="rgb(255, 255, 0)" />
-				<rect id="xAxisFooterRect" x={this.xAxisFooterRect.x} y={this.xAxisFooterRect.y} width={this.xAxisFooterRect.width} height={this.xAxisFooterRect.height} fill="rgb(0, 128, 255)" />
-				<rect id="dayPlotArea" x={this.dayPlotArea.x} y={this.dayPlotArea.y} width={this.dayPlotArea.width} height={this.dayPlotArea.height} fill="rgb(128, 0, 255)" />
-				<rect id="tidePlotArea" x={this.tidePlotArea.x} y={this.tidePlotArea.y} width={this.tidePlotArea.width} height={this.tidePlotArea.height} fill="rgb(255, 0, 128)" />
-			</svg>
-
-		return svg;
-	}
 
 	// TODO: get rid of all methods that don't have the NEW suffix and rename all the NEW suffix methods
 	_getNewSvg() : string {
@@ -651,6 +658,36 @@ export class TideChart {
 						)
 					}
 				</g>
+				<g id="x-axis-top-series-labels">
+					{
+						this._getCalendarLabelsNew().map(i =>
+							<text
+								class="xAxisTopSeriesLabel" id={`x-top-label-${i.index}`}
+								text-anchor="middle" dominant-baseline="hanging"
+								y="5"
+								font-size={this.chartFontSize}
+							>
+								<tspan x={i.x} text-anchor="middle">{i.day}</tspan>
+								<tspan x={i.x} dy="1.2em" text-anchor="middle">{i.date}</tspan>
+							</text>
+						)
+					}
+				</g>
+			</svg>
+
+		return svg;
+	}
+
+	_getNewSvgLayoutRectsOnly() : string {
+		let svg =
+			<svg id="chart" viewBox={`0 0 ${this.chartRect.width} ${this.chartRect.height}`} xmlns="http://www.w3.org/2000/svg">
+				<rect id="chartArea" width="100%" height="100%" fill="rgb(128, 128, 128)" />
+				<rect id="yAxisRect" x={this.yAxisRect.x} y={this.yAxisRect.y} width={this.yAxisRect.width} height={this.yAxisRect.height} fill="rgb(0, 255, 236)" />
+				<rect id="xAxisHeaderRect" x={this.xAxisHeaderRect.x} y={this.xAxisHeaderRect.y} width={this.xAxisHeaderRect.width} height={this.xAxisHeaderRect.height} fill="rgb(255, 128, 0)" />
+				<rect id="moonRect" x={this.moonRect.x} y={this.moonRect.y} width={this.moonRect.width} height={this.moonRect.height} fill="rgb(255, 255, 0)" />
+				<rect id="xAxisFooterRect" x={this.xAxisFooterRect.x} y={this.xAxisFooterRect.y} width={this.xAxisFooterRect.width} height={this.xAxisFooterRect.height} fill="rgb(0, 128, 255)" />
+				<rect id="dayPlotArea" x={this.dayPlotArea.x} y={this.dayPlotArea.y} width={this.dayPlotArea.width} height={this.dayPlotArea.height} fill="rgb(128, 0, 255)" />
+				<rect id="tidePlotArea" x={this.tidePlotArea.x} y={this.tidePlotArea.y} width={this.tidePlotArea.width} height={this.tidePlotArea.height} fill="rgb(255, 0, 128)" />
 			</svg>
 
 		return svg;
