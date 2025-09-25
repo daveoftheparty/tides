@@ -466,6 +466,27 @@ export class TideChart {
 		return result;
 	}
 
+	_getMoonData() : {
+			index: number,
+			x: number, y: number, width: number, height: number,
+			rise: Date, set: Date,
+			illumination: string}[] {
+		const rectHeight = 15;
+		let i = 0;
+		let result = this.moonData.map(moon => ({
+			index: i++,
+			x: this._getXForDateNew(moon.rise),
+			y: (this.moonRect.height - rectHeight) / 2  + this.moonRect.y,
+			width: this._getXForDateNew(moon.set) - this._getXForDateNew(moon.rise),
+			height: rectHeight,
+			rise: moon.rise,
+			set: moon.set,
+			illumination: moon.illumination
+		}));
+
+		return result;
+	}
+
 	_toggleDebug() {
 		this.showDebug = !this.showDebug;
 	}
@@ -499,6 +520,9 @@ export class TideChart {
 
 			svg .yTickLabel {
 				fill: black;
+			}
+			.chartMoonData {
+				fill: rgb(128, 128, 0);
 			}
 	`;
 	}
@@ -705,6 +729,25 @@ export class TideChart {
 							</text>
 						)
 					}
+				</g>
+				<g id="moon">
+					{this._getMoonData().map(moon =>
+						<g id={`moonData${moon.index}`}>
+							<rect class="chartMoonData" id={`moon${moon.index}`} width={moon.width} height={moon.height} x={moon.x} y={moon.y}>
+								<title>moonrise: {moon.rise.toLocaleTimeString()} set: {moon.set.toLocaleTimeString()}</title>
+							</rect>
+
+							<text
+									class="moonLabel" id={`moon-label-${moon.index}`}
+									text-anchor="middle" dominant-baseline="hanging"
+									// todo: adjust y so that the text is in the middle of the moon rect
+									x={moon.width / 2 + moon.x} y={moon.height / 2 + moon.y}
+									font-size={this.chartFontSize}
+								>
+									{moon.illumination}
+							</text>
+					</g>
+					)}
 				</g>
 			</svg>
 
