@@ -160,7 +160,13 @@ export class TideChart {
 	}
 
 	_getTides() : Promise<TideResponse[]> {
-		return GetTides(this.beginDate, this.endDate, this.station.id)
+		// expand input so we make sure we get full sine waves at the edges
+		let adjustedStart = new Date(this.beginDate);
+		adjustedStart.setDate(adjustedStart.getDate() - 3);
+		let adjustedEnd = new Date(this.endDate);
+		adjustedEnd.setDate(adjustedEnd.getDate() + 3);
+
+		return GetTides(adjustedStart, adjustedEnd, this.station.id)
 				.then(tides => {
 				console.log('getTides response:', tides);
 				this._setTidesYAxisRange(tides);
