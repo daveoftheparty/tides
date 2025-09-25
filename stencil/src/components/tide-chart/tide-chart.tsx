@@ -194,6 +194,25 @@ export class TideChart {
 		return result;
 	}
 
+	_getXAxisBottomLabels() : {index: number, x: number, y: number, label: string}[] {
+		const result: {index: number, x: number, y: number, label: string}[]= [];
+
+		this.daylight.forEach((daylight, i) => {
+			[daylight.rise, daylight.set].map(day => {
+				result.push(
+				{
+					index: i,
+					x: this._getXForDateNew(day),
+					y: this.xAxisFooterRect.y + 3,
+					label: `${day.getHours()}:${day.getMinutes()}`
+				});
+			})
+		});
+
+		console.log('_getXAxisBottomLabels result', result);
+		return result;
+	}
+
 	_getChartDayRects(): {index: number, x: number, width: number}[] {
 		const chartDays = this._getChartDays();
 		console.log('chart days', chartDays);
@@ -669,6 +688,20 @@ export class TideChart {
 							>
 								<tspan x={i.x} text-anchor="middle">{i.day}</tspan>
 								<tspan x={i.x} dy="1.2em" text-anchor="middle">{i.date}</tspan>
+							</text>
+						)
+					}
+				</g>
+				<g id="x-axis-daylight-labels">
+					{
+						this._getXAxisBottomLabels().map(i =>
+							<text
+								class="xAxisDaylightLabel" id={`x-axis-daylight-label-${i.index}`}
+								text-anchor="end" dominant-baseline="middle" transform={`rotate(270, ${i.x}, ${i.y})`}
+								x={i.x} y={i.y}
+								font-size={this.chartFontSize}
+							>
+								{i.label}
 							</text>
 						)
 					}
