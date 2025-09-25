@@ -25,14 +25,15 @@
      inkscape:document-units="px"
      showborder="false"
      inkscape:zoom="1.0255231"
-     inkscape:cx="419.29822"
-     inkscape:cy="36.079149"
+     inkscape:cx="418.81065"
+     inkscape:cy="36.079148"
      inkscape:window-width="1920"
      inkscape:window-height="1010"
-     inkscape:window-x="1913"
+     inkscape:window-x="-6"
      inkscape:window-y="-6"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer1" />
+     inkscape:current-layer="layer1"
+     showgrid="false" />
   <defs
      id="defs1" />
   <g
@@ -48,32 +49,32 @@
        y="0"
        inkscape:label="chartArea" />
     <rect
-       style="vector-effect:non-scaling-stroke;fill:#ffffff;stroke-width:0.264583;stroke-linecap:round;stroke-linejoin:round;-inkscape-stroke:hairline;stroke:#000000"
+       style="vector-effect:non-scaling-stroke;fill:#ffffff;stroke:#000000;stroke-width:0.264583;stroke-linecap:round;stroke-linejoin:round;-inkscape-stroke:hairline"
        id="rect2"
-       width="211.66667"
+       width="205.05208"
        height="6.6145835"
-       x="0"
+       x="6.614583"
        y="0"
        inkscape:label="xAxisHeaderRect" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.64444px;line-height:0em;font-family:Calibri;-inkscape-font-specification:'Calibri, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:0px;word-spacing:0px;vector-effect:non-scaling-stroke;fill:#ffffff;stroke:#000000;stroke-width:0.264583;stroke-linecap:round;stroke-linejoin:round;-inkscape-stroke:hairline"
-       x="6.9659572"
+       x="11.730973"
        y="5.1952043"
        id="text2"
        inkscape:label="xAxisHeaderRectLabel"><tspan
          sodipodi:role="line"
          id="tspan2"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.64444px;font-family:Calibri;-inkscape-font-specification:'Calibri, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-         x="6.9659572"
+         x="11.730973"
          y="5.1952043">xAxisHeaderRect</tspan></text>
     <rect
        style="vector-effect:non-scaling-stroke;fill:#ffffff;stroke:#000000;stroke-width:0.264583;stroke-linecap:round;stroke-linejoin:round;-inkscape-stroke:hairline"
        id="rect3"
        width="6.6145835"
-       height="52.916668"
+       height="33.072918"
        x="0"
-       y="0"
+       y="13.229166"
        inkscape:label="yAxisRect" />
     <text
        xml:space="preserve"
@@ -111,14 +112,14 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.64444px;line-height:0em;font-family:Calibri;-inkscape-font-specification:'Calibri, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:0px;word-spacing:0px;vector-effect:non-scaling-stroke;fill:#ffffff;stroke:#000000;stroke-width:0.264583;stroke-linecap:round;stroke-linejoin:round;-inkscape-stroke:hairline"
-       x="8.2482586"
+       x="12.807487"
        y="11.678872"
        id="text6"
        inkscape:label="moonRectLabel"><tspan
          sodipodi:role="line"
          id="tspan6"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.64444px;font-family:Calibri;-inkscape-font-specification:'Calibri, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-         x="8.2482586"
+         x="12.807487"
          y="11.678872">moonRect</tspan></text>
     <rect
        style="vector-effect:non-scaling-stroke;fill:#0000ff;stroke:#000000;stroke-width:0.264584;stroke-linecap:round;stroke-linejoin:round;-inkscape-stroke:hairline;opacity:0.25"

@@ -63,13 +63,16 @@ export class TideChart {
 
 	constructor() {
 		// TODO: move all chart sizes that are declared outside this method into here
+		const yAxisWidth = 25;
+		const xAxisFooterHeight = 35;
+
 		this.chartRect = { x: 0, y: 0, width: 800, height: 200 };
-		this.xAxisHeaderRect = { x: this.chartAreaXOffset, y: this.chartRect.y, width: this.chartRect.width - this.chartAreaXOffset, height: this.chartAreaYOffsetTop };
-		this.yAxisRect = { x: this.chartRect.x, y: this.chartRect.y, width: this.chartAreaXOffset, height: this.chartRect.height };
+		this.xAxisHeaderRect = { x: yAxisWidth, y: this.chartRect.y, width: this.chartRect.width - yAxisWidth, height: 25 };
 		this.moonRect = { x: this.xAxisHeaderRect.x, y: this.xAxisHeaderRect.y + this.xAxisHeaderRect.height, width: this.xAxisHeaderRect.width, height: 25}
-		this.xAxisFooterRect = { x: this.xAxisHeaderRect.x, y: this.chartRect.height - this.chartAreaYOffsetBottom, width: this.xAxisHeaderRect.width, height: this.chartAreaYOffsetBottom };
+		this.xAxisFooterRect = { x: this.xAxisHeaderRect.x, y: this.chartRect.height - xAxisFooterHeight, width: this.xAxisHeaderRect.width, height: xAxisFooterHeight };
+		this.yAxisRect = { x: this.chartRect.x, y: this.moonRect.y + this.moonRect.height, width: yAxisWidth, height: this.chartRect.height - this.xAxisHeaderRect.height - this.moonRect.height - this.xAxisFooterRect.height };
 		this.dayPlotArea = { x: this.xAxisHeaderRect.x, y: this.moonRect.y, width: this.xAxisHeaderRect.width, height: this.chartRect.height - this.xAxisHeaderRect.height - this.xAxisFooterRect.height };
-		this.tidePlotArea = { x: this.dayPlotArea.x, y: this.moonRect.y + this.moonRect.height, width: this.dayPlotArea.width, height: this.dayPlotArea.height - this.moonRect.height };
+		this.tidePlotArea = { x: this.xAxisHeaderRect.x, y: this.moonRect.y + this.moonRect.height, width: this.xAxisHeaderRect.width, height: this.dayPlotArea.height - this.moonRect.height };
 	}
 
 	componentDidLoad() {
@@ -121,9 +124,10 @@ export class TideChart {
 	_mockTides() : TideResponse[] {
 
 		return [
-			{when: new Date(this.beginDate.getFullYear(), this.beginDate.getMonth(), this.beginDate.getDate() + 1, 10, 0, 0), level: 4},
+			{when: new Date(this.beginDate.getFullYear(), this.beginDate.getMonth(), this.beginDate.getDate() + 1, 10, 0, 0), level: 5},
 			{when: new Date(this.beginDate.getFullYear(), this.beginDate.getMonth(), this.beginDate.getDate() + 1, 16, 0, 0), level: 1},
 
+			{when: new Date(this.beginDate.getFullYear(), this.beginDate.getMonth(), this.beginDate.getDate() + 2, 8, 0, 0), level: 5},
 			{when: new Date(this.beginDate.getFullYear(), this.beginDate.getMonth(), this.beginDate.getDate() + 2, 10, 0, 0), level: 4},
 			{when: new Date(this.beginDate.getFullYear(), this.beginDate.getMonth(), this.beginDate.getDate() + 2, 12, 0, 0), level: 3},
 			{when: new Date(this.beginDate.getFullYear(), this.beginDate.getMonth(), this.beginDate.getDate() + 2, 14, 0, 0), level: 2},
@@ -356,14 +360,14 @@ export class TideChart {
 
 	_getYAxisNew(): {index: number, y: number, label: string}[] {
 		const gridlines = 5;
-		const gridSpace = this.dayPlotArea.height / (gridlines - 1);
+		const gridSpace = this.yAxisRect.height / (gridlines - 1);
 		const labelIncrement = (this.tidesMaxY - this.tidesMinY) / (gridlines - 1);
 
 		let result = [...Array(gridlines).keys()].map(i => {
 			let labelNumber = Math.round(( (this.tidesMaxY - labelIncrement * i) + Number.EPSILON) * 100) / 100;
 			return {
 				index: i,
-				y: i * gridSpace + this.dayPlotArea.y,
+				y: i * gridSpace + this.yAxisRect.y,
 				label: `${labelNumber}`
 			};
 		});
