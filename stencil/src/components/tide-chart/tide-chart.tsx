@@ -130,8 +130,15 @@ export class TideChart {
 	}
 
 	_setTidesYAxisRange(tides: TideResponse[]) {
-		this.tidesMinY = tides.reduce((min, current) => current.level < min ? current.level : min, tides[0].level);
-		this.tidesMaxY = tides.reduce((max, current) => current.level > max ? current.level : max, tides[0].level);
+
+
+		let minHeight = tides.reduce((min, current) => current.level < min ? current.level : min, tides[0].level);
+		let maxHeight = tides.reduce((max, current) => current.level > max ? current.level : max, tides[0].level);
+
+
+		let buffer = (maxHeight - minHeight) * 0.05; // add 5% buffer space for visuals
+		this.tidesMinY = minHeight - buffer;
+		this.tidesMaxY = maxHeight + buffer;
 	}
 
 	_getChartDays(): number {
@@ -385,7 +392,8 @@ export class TideChart {
 	}
 
 
-	// TODO: get rid of all methods that don't have the NEW suffix and rename all the NEW suffix methods
+	// TODO: check day rects calculations (light and dark), they don't seem to align to the vertical ticks correctlly
+	// TODO: check moon calculations, don't seem to align to day hours correctly
 	_getSvg() : string {
 		const yAxis = this._getYAxis();
 
