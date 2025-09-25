@@ -154,11 +154,11 @@ export class TideChart {
 	}
 
 
-	_getDaylightRectsNew() : {index: number, x: number, width: number}[] {
+	_getDaylightRects() : {index: number, x: number, width: number}[] {
 		let result = this.daylight.map((daylight, i) => ({
 			index: i,
-			x: this._getXForDateNew(daylight.rise),
-			width: this._getXForDateNew(daylight.set) - this._getXForDateNew(daylight.rise)
+			x: this._getXForDate(daylight.rise),
+			width: this._getXForDate(daylight.set) - this._getXForDate(daylight.rise)
 		}));
 		console.log('getDaylightRects result', result);
 		return result;
@@ -173,7 +173,7 @@ export class TideChart {
 				result.push(
 				{
 					index: i,
-					x: this._getXForDateNew(day),
+					x: this._getXForDate(day),
 					y: this.xAxisFooterRect.y + 3,
 					label: `${('00' + day.getHours()).slice(-2)}:${('00' + day.getMinutes()).slice(-2)}`
 				});
@@ -185,7 +185,7 @@ export class TideChart {
 	}
 
 
-	_getChartDayRectsNew(): {index: number, x: number, width: number}[] {
+	_getChartDayRects(): {index: number, x: number, width: number}[] {
 		const chartDays = this._getChartDays();
 		console.log('chart days', chartDays);
 		const dayWidth = this.dayPlotArea.width / chartDays;
@@ -200,7 +200,7 @@ export class TideChart {
 	}
 
 
-	_getChartXAxisGridlinesNew(): {index: number, x: number}[] {
+	_getChartXAxisGridlines(): {index: number, x: number}[] {
 		const chartDays = this._getChartDays();
 		const dayWidth = (this.chartRect.width - this.yAxisRect.width) / chartDays;
 
@@ -213,7 +213,7 @@ export class TideChart {
 	}
 
 
-	_getXForDateNew(input: Date, log: boolean = false): number {
+	_getXForDate(input: Date, log: boolean = false): number {
 
 		const inputLocal = UtcToLocal(input);
 		const expandedMaxDate = GetExpandedUnixDate(this.endDate);
@@ -237,7 +237,7 @@ export class TideChart {
 	}
 
 
-	_getYCoordNew(y: number): number {
+	_getYCoord(y: number): number {
 		const spread = this.tidesMaxY - this.tidesMinY;
 		const basis = y - this.tidesMinY;
 		const thisRatio = basis / spread;
@@ -251,7 +251,7 @@ export class TideChart {
 
 
 
-	_getYAxisNew(): {index: number, y: number, label: string}[] {
+	_getYAxis(): {index: number, y: number, label: string}[] {
 		const gridlines = 5;
 		const gridSpace = this.yAxisRect.height / (gridlines - 1);
 		const labelIncrement = (this.tidesMaxY - this.tidesMinY) / (gridlines - 1);
@@ -271,20 +271,20 @@ export class TideChart {
 
 
 
-	_getTideCoordsNew() : {index: number, x: number, y: number}[] {
+	_getTideCoords() : {index: number, x: number, y: number}[] {
 		let i = 0;
 		let result = this.tides.map(tide => ({
 			index: i++,
-			x: this._getXForDateNew(tide.when),
-			y: this._getYCoordNew(tide.level)
+			x: this._getXForDate(tide.when),
+			y: this._getYCoord(tide.level)
 		}));
 
 		return result;
 	}
 
 
-	_getTideSineWaveNew() : string {
-		let points = this._getTideCoordsNew().map(i =>
+	_getTideSineWave() : string {
+		let points = this._getTideCoords().map(i =>
 			// this gives straight line path:
 			(i.index === 0 ? 'M ' : 'L ') + i.x + ',' + i.y
 		);
@@ -294,10 +294,10 @@ export class TideChart {
 
 
 
-	_getCalendarLabelsNew() : {index: number, x: number, day: string, date: string}[] {
+	_getCalendarLabels() : {index: number, x: number, day: string, date: string}[] {
 		const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 		const days = this._getChartDays();
-		const chartRects = this._getChartDayRectsNew();
+		const chartRects = this._getChartDayRects();
 		// TODO: replace this date stuff with DateRangeToArray()
 		let result = [...Array(days).keys()].map(i => {
 			const msInDay = 24 * 60 * 60 * 1000;
@@ -324,9 +324,9 @@ export class TideChart {
 		let i = 0;
 		let result = this.moonData.map(moon => ({
 			index: i++,
-			x: this._getXForDateNew(moon.rise),
+			x: this._getXForDate(moon.rise),
 			y: (this.moonRect.height - rectHeight) / 2  + this.moonRect.y,
-			width: this._getXForDateNew(moon.set) - this._getXForDateNew(moon.rise),
+			width: this._getXForDate(moon.set) - this._getXForDate(moon.rise),
 			height: rectHeight,
 			rise: moon.rise,
 			set: moon.set,
@@ -386,8 +386,8 @@ export class TideChart {
 
 
 	// TODO: get rid of all methods that don't have the NEW suffix and rename all the NEW suffix methods
-	_getNewSvg() : string {
-		const yAxis = this._getYAxisNew();
+	_getSvg() : string {
+		const yAxis = this._getYAxis();
 
 		let svg =
 			<svg id="chart" viewBox={`0 0 ${this.chartRect.width} ${this.chartRect.height}`} xmlns="http://www.w3.org/2000/svg">
@@ -396,16 +396,16 @@ export class TideChart {
 				</style>
 				<rect id="chartArea" width="100%" height="100%" fill="rgb(128, 128, 128)" />
 				<g id="days">
-					{this._getChartDayRectsNew().map(day =>
+					{this._getChartDayRects().map(day =>
 						<rect class="chartDayDark" id={`dark${day.index}`} width={day.width} height={this.dayPlotArea.height} x={day.x} y={this.dayPlotArea.y} />
 					)}
-					{this._getDaylightRectsNew().map(day =>
+					{this._getDaylightRects().map(day =>
 						<rect class="chartDaylight" id={`light${day.index}`} width={day.width} height={this.dayPlotArea.height} x={day.x} y={this.dayPlotArea.y} />
 					)}
 				</g>
 				<g id="x-axis-day-ticks">
 					{
-						this._getChartXAxisGridlinesNew().map(i =>
+						this._getChartXAxisGridlines().map(i =>
 							<path class="xGridline" id={`x-tick-${i.index}`} d={`M ${i.x},${this.xAxisHeaderRect.height / 2} V ${this.chartRect.height - this.xAxisFooterRect.height / 2}`} />
 						)
 					}
@@ -421,9 +421,9 @@ export class TideChart {
 						height={this.tidePlotArea.height} />
 				</clipPath>
 				<g id="tides" clip-path="url(#tideClip)">
-					<path class="tideSineWave" id="tideSineWave" d={this._getTideSineWaveNew()} />
+					<path class="tideSineWave" id="tideSineWave" d={this._getTideSineWave()} />
 					{
-						this._getTideCoordsNew().map(i =>
+						this._getTideCoords().map(i =>
 							<circle class="tideMarker" id={`tide-marker-${i.index}`} cx={i.x} cy={i.y} r="4">
 								<title>{this.tides[i.index].level} ft at {this.tides[i.index].when.toLocaleTimeString()}</title>
 							</circle>
@@ -451,7 +451,7 @@ export class TideChart {
 				</g>
 				<g id="x-axis-top-series-labels">
 					{
-						this._getCalendarLabelsNew().map(i =>
+						this._getCalendarLabels().map(i =>
 							<text
 								class="xAxisTopSeriesLabel" id={`x-top-label-${i.index}`}
 								text-anchor="middle" dominant-baseline="hanging"
@@ -502,7 +502,7 @@ export class TideChart {
 		return svg;
 	}
 
-	_getNewSvgLayoutRectsOnly() : string {
+	_getSvgLayoutRectsOnly() : string {
 		let svg =
 			<svg id="chart" viewBox={`0 0 ${this.chartRect.width} ${this.chartRect.height}`} xmlns="http://www.w3.org/2000/svg">
 				<rect id="chartArea" width="100%" height="100%" fill="rgb(128, 128, 128)" />
@@ -560,7 +560,7 @@ export class TideChart {
 				<div id="chartContainer">
 					<p><button onClick={this._toggleDebug.bind(this)}>Toggle Debug Info</button></p>
 					{debugContent}
-					{this._getNewSvg()}
+					{this._getSvg()}
 				</div>
 		}
 
