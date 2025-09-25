@@ -42,15 +42,9 @@ export class TideChart {
 
 	@State() moonData: MoonRiseSet[] = [];
 
-	chartWidth = 800;
-	chartHeight = 200;
 
 	chartFontSize = 9; // TODO this should be relative to/calculated by chart width/height
-	chartAreaXOffset = 25; // TODO this should be based on the font size of the y-axis labels
-	chartAreaYOffsetTop = 25; // TODO this should be based on the font size of the x-axis top series labels
-	chartAreaYOffsetBottom = 35; // TODO this should be based on the font size of the x-axis-daylight-labels
 
-	chartAreaHeight = this.chartHeight - this.chartAreaYOffsetTop - this.chartAreaYOffsetBottom;
 
 	chartRect: Rect;
 	xAxisHeaderRect: Rect;
@@ -159,15 +153,6 @@ export class TideChart {
 		) + 1;
 	}
 
-	_getDaylightRects() : {index: number, x: number, width: number}[] {
-		let result = this.daylight.map((daylight, i) => ({
-			index: i,
-			x: this._getXForDate(daylight.rise),
-			width: this._getXForDate(daylight.set) - this._getXForDate(daylight.rise)
-		}));
-		console.log('getDaylightRects result', result);
-		return result;
-	}
 
 	_getDaylightRectsNew() : {index: number, x: number, width: number}[] {
 		let result = this.daylight.map((daylight, i) => ({
@@ -179,24 +164,6 @@ export class TideChart {
 		return result;
 	}
 
-	_getDaylightLabels() : {index: number, x: number, y: number, label: string}[] {
-		const result: {index: number, x: number, y: number, label: string}[]= [];
-
-		this.daylight.forEach((daylight, i) => {
-			[daylight.rise, daylight.set].map(day => {
-				result.push(
-				{
-					index: i,
-					x: this._getXForDate(day),
-					y: this.chartHeight - this.chartAreaYOffsetBottom + 3,
-					label: `${day.getHours()}:${day.getMinutes()}`
-				});
-			})
-		});
-
-		console.log('getDaylightRects result', result);
-		return result;
-	}
 
 	_getXAxisBottomLabels() : {index: number, x: number, y: number, label: string}[] {
 		const result: {index: number, x: number, y: number, label: string}[]= [];
@@ -217,19 +184,6 @@ export class TideChart {
 		return result;
 	}
 
-	_getChartDayRects(): {index: number, x: number, width: number}[] {
-		const chartDays = this._getChartDays();
-		console.log('chart days', chartDays);
-		const dayWidth = (this.chartWidth - this.chartAreaXOffset) / chartDays;
-
-		let result = [...Array(chartDays).keys()].map(i => ({
-			index: i,
-			x: i * dayWidth + this.chartAreaXOffset,
-			width: dayWidth
-		}));
-
-		return result;
-	}
 
 	_getChartDayRectsNew(): {index: number, x: number, width: number}[] {
 		const chartDays = this._getChartDays();
@@ -245,21 +199,10 @@ export class TideChart {
 		return result;
 	}
 
-	_getChartXAxisGridlines(): {index: number, x: number}[] {
-		const chartDays = this._getChartDays();
-		const dayWidth = (this.chartWidth - this.chartAreaXOffset) / chartDays;
-
-		let result = [...Array(chartDays + 1).keys()].map(i => ({
-			index: i,
-			x: i * dayWidth + this.chartAreaXOffset
-		}));
-
-		return result;
-	}
 
 	_getChartXAxisGridlinesNew(): {index: number, x: number}[] {
 		const chartDays = this._getChartDays();
-		const dayWidth = (this.chartWidth - this.chartAreaXOffset) / chartDays;
+		const dayWidth = (this.chartRect.width - this.yAxisRect.width) / chartDays;
 
 		let result = [...Array(chartDays + 1).keys()].map(i => ({
 			index: i,
@@ -269,28 +212,6 @@ export class TideChart {
 		return result;
 	}
 
-	_getXForDate(input: Date, log: boolean = false): number {
-
-		const inputLocal = UtcToLocal(input);
-		const expandedMaxDate = GetExpandedUnixDate(this.endDate);
-		const flattenedMinDate = GetFlattenedUnixDate(this.beginDate);
-		const chartDateDiff = expandedMaxDate - flattenedMinDate;
-
-		const thisRatio = (inputLocal.valueOf() - flattenedMinDate) / chartDateDiff;
-		if(log) {
-			console.log(
-				'getxfordate input:', inputLocal.toISOString(),
-				'input valueOf():', inputLocal.valueOf(),
-				'flattenedMinDate:', new Date(flattenedMinDate).toISOString(),
-				'flattenedMinDate valueOf():', new Date(flattenedMinDate).valueOf(),
-				'expandedMaxDate:', new Date(expandedMaxDate).toISOString(),
-				'expandedMaxDate valueOf():', new Date(expandedMaxDate).valueOf(),
-				'ratio:', thisRatio);
-		}
-
-		// const thisRatio = input.valueOf() / expandedMaxDate;
-		return thisRatio * (this.chartWidth - this.chartAreaXOffset) + this.chartAreaXOffset;
-	}
 
 	_getXForDateNew(input: Date, log: boolean = false): number {
 
@@ -315,18 +236,6 @@ export class TideChart {
 		return thisRatio * this.dayPlotArea.width + this.yAxisRect.y;
 	}
 
-	_getYCoord(y: number): number {
-		const spread = this.tidesMaxY - this.tidesMinY;
-		const basis = y - this.tidesMinY;
-		const thisRatio = basis / spread;
-
-		const transform = (this.chartAreaHeight + this.chartAreaYOffsetTop)
-			- (thisRatio * this.chartAreaHeight);
-
-		if(y === this.tidesMinY)
-			console.log('_getYCoord for min', y, 'has basis', basis, 'and ratio', thisRatio, 'and is returning', transform);
-		return transform;
-	}
 
 	_getYCoordNew(y: number): number {
 		const spread = this.tidesMaxY - this.tidesMinY;
@@ -340,23 +249,7 @@ export class TideChart {
 		return transform;
 	}
 
-	_getYAxis(): {index: number, y: number, label: string}[] {
-		const gridlines = 5;
-		const gridSpace = this.chartAreaHeight / (gridlines - 1);
-		const labelIncrement = (this.tidesMaxY - this.tidesMinY) / (gridlines - 1);
 
-		let result = [...Array(gridlines).keys()].map(i => {
-			let labelNumber = Math.round(( (this.tidesMaxY - labelIncrement * i) + Number.EPSILON) * 100) / 100;
-			return {
-				index: i,
-				y: i * gridSpace + this.chartAreaYOffsetTop,
-				label: `${labelNumber}`
-			};
-		});
-
-		console.log('_getYAxisYPos result', result);
-		return result;
-	}
 
 	_getYAxisNew(): {index: number, y: number, label: string}[] {
 		const gridlines = 5;
@@ -376,25 +269,7 @@ export class TideChart {
 		return result;
 	}
 
-	_getTideCoords() : {index: number, x: number, y: number}[] {
-		let i = 0;
-		let result = this.tides.map(tide => ({
-			index: i++,
-			x: this._getXForDate(tide.when),
-			y: this._getYCoord(tide.level)
-		}));
 
-		// if(this.tides[0]) {
-		// 	console.log('how is a date interpreted?',
-		// 		'tide level:', this.tides[0].level,
-		// 		'utc string', this.tides[0].when.toUTCString(),
-		// 		'locale string', this.tides[0].when.toLocaleString(),
-		// 		'tostring', this.tides[0].when.toString(),
-		// 		'json', this.tides[0].when.toJSON(),
-		// 		);
-		// }
-		return result;
-	}
 
 	_getTideCoordsNew() : {index: number, x: number, y: number}[] {
 		let i = 0;
@@ -407,18 +282,7 @@ export class TideChart {
 		return result;
 	}
 
-	_getTideSineWave() : string {
-		let points = this._getTideCoords().map(i =>
-			// this gives straight line path:
-			(i.index === 0 ? 'M ' : 'L ') + i.x + ',' + i.y
 
-			// this gives sine wave, if i'm lucky:
-			// (i.index === 0 ? 'm ' : (i.index === 1 ? 'c ' : '') ) + i.x + ',' + i.y
-		);
-		let result = points.join(' ');
-		// console.log(result);
-		return result;
-	}
 	_getTideSineWaveNew() : string {
 		let points = this._getTideCoordsNew().map(i =>
 			// this gives straight line path:
@@ -428,26 +292,7 @@ export class TideChart {
 		return result;
 	}
 
-	_getCalendarLabels() : {index: number, x: number, day: string, date: string}[] {
-		const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-		const days = this._getChartDays();
-		const chartRects = this._getChartDayRects();
-		// TODO: replace this date stuff with DateRangeToArray()
-		let result = [...Array(days).keys()].map(i => {
-			const msInDay = 24 * 60 * 60 * 1000;
-			let offset = msInDay * i;
-			let currentDate = new Date(this.beginDate.getTime() + offset);
 
-			return {
-				index: i,
-				x: (chartRects[i].width / 2) + chartRects[i].x,
-				day: dayNames[currentDate.getUTCDay()],
-				date: `${currentDate.getUTCMonth() + 1}/${currentDate.getUTCDate()}`
-			};
-		});
-
-		return result;
-	}
 
 	_getCalendarLabelsNew() : {index: number, x: number, day: string, date: string}[] {
 		const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -537,107 +382,6 @@ export class TideChart {
 		this.loaded = false;
 		this.hostElement.dispatchEvent(new CustomEvent('resetStation', {bubbles: true }));
 		console.log('clearing station data and dispatching resetStation event');
-	}
-
-	_getSvgOld() : string {
-		// TODO: delete me once ready
-		const yAxis = this._getYAxis();
-
-		let svg =
-
-			<svg id="chart" viewBox={`0 0 ${this.chartWidth} ${this.chartHeight}`} xmlns="http://www.w3.org/2000/svg">
-				<style>
-					{this._getChartStyle()}
-				</style>
-				<rect id="chartArea" width="100%" height="100%" />
-				<g id="days">
-					{this._getChartDayRects().map(day =>
-						<rect class="chartDayDark" id={`${day.index}`} width={day.width} height={this.chartAreaHeight} x={day.x} y={this.chartAreaYOffsetTop} />
-					)}
-					{this._getDaylightRects().map(day =>
-						<rect class="chartDaylight" id={`${day.index}`} width={day.width} height={this.chartAreaHeight} x={day.x} y={this.chartAreaYOffsetTop} />
-					)}
-				</g>
-				<g id="x-axis-day-ticks">
-					{
-						this._getChartXAxisGridlines().map(i =>
-							<path class="xGridline" id={`x-tick-${i.index}`} d={`M ${i.x},${this.chartAreaYOffsetTop / 2} V ${this.chartHeight - this.chartAreaYOffsetBottom / 2}`} />
-						)
-					}
-				</g>
-
-				<clipPath
-					id="tideClip">
-					<rect
-						x={this.chartAreaXOffset}
-						y={this.chartAreaYOffsetTop}
-						width={this.chartWidth - this.chartAreaXOffset }
-						height={this.chartAreaHeight} />
-				</clipPath>
-				<g id="tides" clip-path="url(#tideClip)">
-					<path class="tideSineWave" id="tideSineWave" d={this._getTideSineWave()} />
-					{
-						this._getTideCoords().map(i =>
-							<circle class="tideMarker" id={`tide-marker-${i.index}`} cx={i.x} cy={i.y} r="4">
-								<title>{this.tides[i.index].level} ft at {this.tides[i.index].when.toLocaleTimeString()}</title>
-							</circle>
-						)
-					}
-				</g>
-
-				<g id="y-axis-ticks-and-labels">
-					{
-						yAxis.map(i =>
-							<path class="yGridline" id={`y-tick-${i.index}`} d={`M ${this.chartAreaXOffset},${i.y} H ${this.chartWidth}`} />
-						)
-					}
-					{
-						// yAxis.slice(1, yAxis.length - 1).map(i =>
-						yAxis.map(i =>
-							<text
-								class="yTickLabel" id={`y-tick-${i.index}`}
-								text-anchor="end" alignment-baseline="middle"
-								x={this.chartAreaXOffset - 5} y={i.y}
-								font-size={this.chartFontSize}
-							>
-								{i.label}
-							</text>
-						)
-					}
-				</g>
-				<g id="x-axis-top-series-labels">
-					{
-						this._getCalendarLabels().map(i =>
-							<text
-								class="xAxisTopSeriesLabel" id={`x-top-label-${i.index}`}
-								text-anchor="middle" dominant-baseline="hanging"
-								y="5"
-								font-size={this.chartFontSize}
-							>
-								<tspan x={i.x} text-anchor="middle">{i.day}</tspan>
-								<tspan x={i.x} dy="1.2em" text-anchor="middle">{i.date}</tspan>
-							</text>
-						)
-					}
-				</g>
-				<g id="x-axis-daylight-labels">
-					{
-						this._getDaylightLabels().map(i =>
-							<text
-								class="xAxisDaylightLabel" id={`x-axis-daylight-label-${i.index}`}
-								text-anchor="end" dominant-baseline="middle" transform={`rotate(270, ${i.x}, ${i.y})`}
-								x={i.x} y={i.y}
-								font-size={this.chartFontSize}
-							>
-								{i.label}
-								<span>hi</span>
-							</text>
-						)
-					}
-				</g>
-			</svg>
-
-		return svg;
 	}
 
 
