@@ -412,18 +412,19 @@ export class TideChart {
 			}
 
 			.chartDayDark {
-				fill: rgb(31, 31, 83);
+				fill: rgb(0, 34, 43);
 			}
 			.chartDaylight {
 				/* fill: rgb(205, 205, 255); */
-				fill: rgb(151, 151, 190);
+				fill: rgb(170, 238, 255);
 			}
 			.tideMarker {
-				fill: rgb(0, 255, 236);
+				fill: rgb(42, 127, 255);
 			}
 			.tideSineWave {
-				stroke: rgb(0, 255, 236);
-				stroke-width: 3px;
+				// stroke: rgb(0, 255, 236);
+				stroke: rgb(42, 127, 255);
+				stroke-width: 2px;
 				fill: none;
 			}
 
@@ -436,7 +437,7 @@ export class TideChart {
 				fill: black;
 			}
 			.chartMoonData {
-				fill: rgb(128, 128, 0);
+				fill: rgb(151, 151, 190);;
 			}
 	`;
 	}
@@ -564,7 +565,7 @@ export class TideChart {
 
 							<text
 									class="moonLabel" id={`moon-label-${moon.index}`}
-									text-anchor="middle" dominant-baseline="hanging"
+									text-anchor="middle" dominant-baseline="middle"
 									// todo: adjust y so that the text is in the middle of the moon rect
 									x={moon.width / 2 + moon.x} y={moon.height / 2 + moon.y}
 									font-size={this.chartFontSize}
