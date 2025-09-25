@@ -1,0 +1,763 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   id="chart"
+   viewBox="0 0 800 200"
+   version="1.1"
+   sodipodi:docname="chart-with-moon.svg"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs47" />
+  <sodipodi:namedview
+     id="namedview47"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     showgrid="false"
+     inkscape:zoom="1.4142136"
+     inkscape:cx="394.56558"
+     inkscape:cy="63.63961"
+     inkscape:window-width="1920"
+     inkscape:window-height="1010"
+     inkscape:window-x="1913"
+     inkscape:window-y="-6"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <style
+     id="style1">#chartArea {
+				fill: white;
+			}
+
+			.chartDayDark {
+				fill: rgb(31, 31, 83);
+			}
+			.chartDaylight {
+				/* fill: rgb(205, 205, 255); */
+				fill: rgb(151, 151, 190);
+			}
+			.tideMarker {
+				fill: rgb(0, 255, 236);
+			}
+			.tideSineWave {
+				stroke: rgb(0, 255, 236);
+				stroke-width: 3px;
+				fill: none;
+			}
+
+			.xGridline,
+			.yGridline {
+				stroke: gray;
+			}
+
+			svg .yTickLabel {
+				fill: black;
+			}</style>
+  <rect
+     id="chartArea"
+     width="100%"
+     height="119.09188%"
+     x="0"
+     y="-38.183765"
+     style="stroke-width:1"
+     sodipodi:insensitive="true" />
+  <g
+     id="days"
+     transform="matrix(1,0,0,1.1767767,0,-29.168155)"
+     style="stroke-width:0.921835">
+    <rect
+       class="chartDayDark"
+       id="0"
+       width="110.71429"
+       height="140"
+       x="25"
+       y="25"
+       style="stroke-width:0.921835" />
+    <rect
+       class="chartDayDark"
+       id="1"
+       width="110.71429"
+       height="140"
+       x="135.71428"
+       y="25"
+       style="stroke-width:0.921835" />
+    <rect
+       class="chartDayDark"
+       id="2"
+       width="110.71429"
+       height="140"
+       x="246.42857"
+       y="25"
+       style="stroke-width:0.921835" />
+    <rect
+       class="chartDayDark"
+       id="3"
+       width="110.71429"
+       height="140"
+       x="357.14285"
+       y="25"
+       style="stroke-width:0.921835" />
+    <rect
+       class="chartDayDark"
+       id="4"
+       width="110.71429"
+       height="140"
+       x="467.85715"
+       y="25"
+       style="stroke-width:0.921835" />
+    <rect
+       class="chartDayDark"
+       id="5"
+       width="110.71429"
+       height="140"
+       x="578.57141"
+       y="25"
+       style="stroke-width:0.921835" />
+    <rect
+       class="chartDayDark"
+       id="6"
+       width="110.71429"
+       height="140"
+       x="689.28571"
+       y="25"
+       style="stroke-width:0.921835" />
+    <rect
+       class="chartDaylight"
+       id="rect1"
+       width="55.866306"
+       height="140"
+       x="58.713467"
+       y="25"
+       style="stroke-width:0.921835" />
+    <rect
+       class="chartDaylight"
+       id="rect2"
+       width="55.739872"
+       height="140"
+       x="169.46312"
+       y="25"
+       style="stroke-width:0.921835" />
+    <rect
+       class="chartDaylight"
+       id="rect3"
+       width="55.613434"
+       height="140"
+       x="280.21298"
+       y="25"
+       style="stroke-width:0.921835" />
+    <rect
+       class="chartDaylight"
+       id="rect4"
+       width="55.487"
+       height="140"
+       x="390.96307"
+       y="25"
+       style="stroke-width:0.921835" />
+    <rect
+       class="chartDaylight"
+       id="rect5"
+       width="55.360592"
+       height="140"
+       x="501.71341"
+       y="25"
+       style="stroke-width:0.921835" />
+    <rect
+       class="chartDaylight"
+       id="rect6"
+       width="55.23423"
+       height="140"
+       x="612.46405"
+       y="25"
+       style="stroke-width:0.921835" />
+    <rect
+       class="chartDaylight"
+       id="rect7"
+       width="55.107929"
+       height="140"
+       x="723.21497"
+       y="25"
+       style="stroke-width:0.921835" />
+  </g>
+  <g
+     id="x-axis-day-ticks"
+     style="display:inline;stroke-width:0.966416"
+     transform="matrix(1,0,0,1.0707107,0,-12.904699)">
+    <path
+       class="xGridline"
+       id="x-tick-0"
+       d="m 25,12.5 v 170"
+       style="stroke-width:0.966416" />
+    <path
+       class="xGridline"
+       id="x-tick-1"
+       d="m 135.71429,12.5 v 170"
+       style="stroke-width:0.966416" />
+    <path
+       class="xGridline"
+       id="x-tick-2"
+       d="m 246.42857,12.5 v 170"
+       style="stroke-width:0.966416" />
+    <path
+       class="xGridline"
+       id="x-tick-3"
+       d="m 357.14286,12.5 v 170"
+       style="stroke-width:0.966416" />
+    <path
+       class="xGridline"
+       id="x-tick-4"
+       d="m 467.85714,12.5 v 170"
+       style="stroke-width:0.966416" />
+    <path
+       class="xGridline"
+       id="x-tick-5"
+       d="m 578.57143,12.5 v 170"
+       style="stroke-width:0.966416" />
+    <path
+       class="xGridline"
+       id="x-tick-6"
+       d="m 689.28571,12.5 v 170"
+       style="stroke-width:0.966416" />
+    <path
+       class="xGridline"
+       id="x-tick-7"
+       d="m 800,12.5 v 170"
+       style="stroke-width:0.966416" />
+  </g>
+  <clipPath
+     id="tideClip">
+    <rect
+       x="25"
+       y="25"
+       width="775"
+       height="140"
+       id="rect8" />
+  </clipPath>
+  <g
+     inkscape:groupmode="layer"
+     id="layer1"
+     inkscape:label="moonrise"
+     transform="translate(0,-31.819805)">
+    <rect
+       style="vector-effect:non-scaling-stroke;fill:#ffe680;stroke-width:0.999999;stroke-linecap:round;stroke-linejoin:round;-inkscape-stroke:hairline"
+       id="rect47"
+       width="60.755642"
+       height="15.91219"
+       x="96.196419"
+       y="35.440784"
+       inkscape:label="tues" />
+    <rect
+       style="vector-effect:non-scaling-stroke;fill:#ffe680;stroke-width:0.999999;stroke-linecap:round;stroke-linejoin:round;-inkscape-stroke:hairline"
+       id="rect47-7"
+       width="60.755642"
+       height="15.91219"
+       x="215.44656"
+       y="36.6297"
+       inkscape:label="weds" />
+    <text
+       class="yTickLabel"
+       id="text48"
+       text-anchor="end"
+       alignment-baseline="middle"
+       x="136.11092"
+       y="45.091274"
+       font-size="9px">2%</text>
+    <text
+       class="yTickLabel"
+       id="text49"
+       text-anchor="end"
+       alignment-baseline="middle"
+       x="255.61197"
+       y="45.091274"
+       font-size="9px">6%</text>
+  </g>
+  <g
+     id="tides"
+     clip-path="url(#tideClip)">
+    <path
+       class="tideSineWave"
+       id="tideSineWave"
+       d="M 21.15575396189774,107.60075228371844 L 42.22222225069812,87.51477700161203 L 71.51537706103733,140.32509403546482 L 107.34375013615038,42.07684040838261 L 137.09821447106185,83.75335840945729 L 150.01488115908546,79.61579795808706 L 184.38244073971964,146.41859215475552 L 223.36309556607654,32.82375067168189 L 297.5570441014502,150.48092423428264 L 339.843750520575,27.181622783449797 L 411.346726829277,153.26437399247718 L 457.247024524218,25 L 525.6746040024382,156.04782375067168 L 575.3422628147193,25 L 640.7713303832198,159.73401397098334 L 692.0535725315038,26.57979580870503 L 756.6369059716218,165" />
+    <circle
+       class="tideMarker"
+       id="tide-marker-0"
+       cx="21.15575396189774"
+       cy="107.60075228371844"
+       r="4">
+      <title
+         id="title8">1.344 ft at 11:10:00 PM</title>
+    </circle>
+    <circle
+       class="tideMarker"
+       id="tide-marker-1"
+       cx="42.22222225069812"
+       cy="87.51477700161203"
+       r="4">
+      <title
+         id="title9">1.611 ft at 3:44:00 AM</title>
+    </circle>
+    <circle
+       class="tideMarker"
+       id="tide-marker-2"
+       cx="71.51537706103733"
+       cy="140.32509403546482"
+       r="4">
+      <title
+         id="title10">0.909 ft at 10:05:00 AM</title>
+    </circle>
+    <circle
+       class="tideMarker"
+       id="tide-marker-3"
+       cx="107.34375013615038"
+       cy="42.07684040838261"
+       r="4">
+      <title
+         id="title11">2.215 ft at 5:51:00 PM</title>
+    </circle>
+    <circle
+       class="tideMarker"
+       id="tide-marker-4"
+       cx="137.09821447106185"
+       cy="83.75335840945729"
+       r="4">
+      <title
+         id="title12">1.661 ft at 12:18:00 AM</title>
+    </circle>
+    <circle
+       class="tideMarker"
+       id="tide-marker-5"
+       cx="150.01488115908546"
+       cy="79.61579795808706"
+       r="4">
+      <title
+         id="title13">1.716 ft at 3:06:00 AM</title>
+    </circle>
+    <circle
+       class="tideMarker"
+       id="tide-marker-6"
+       cx="184.38244073971964"
+       cy="146.41859215475552"
+       r="4">
+      <title
+         id="title14">0.828 ft at 10:33:00 AM</title>
+    </circle>
+    <circle
+       class="tideMarker"
+       id="tide-marker-7"
+       cx="223.36309556607654"
+       cy="32.82375067168189"
+       r="4">
+      <title
+         id="title15">2.338 ft at 7:00:00 PM</title>
+    </circle>
+    <circle
+       class="tideMarker"
+       id="tide-marker-8"
+       cx="297.5570441014502"
+       cy="150.48092423428264"
+       r="4">
+      <title
+         id="title16">0.774 ft at 11:05:00 AM</title>
+    </circle>
+    <circle
+       class="tideMarker"
+       id="tide-marker-9"
+       cx="339.843750520575"
+       cy="27.181622783449797"
+       r="4">
+      <title
+         id="title17">2.413 ft at 8:15:00 PM</title>
+    </circle>
+    <circle
+       class="tideMarker"
+       id="tide-marker-10"
+       cx="411.346726829277"
+       cy="153.26437399247718"
+       r="4">
+      <title
+         id="title18">0.737 ft at 11:45:00 AM</title>
+    </circle>
+    <circle
+       class="tideMarker"
+       id="tide-marker-11"
+       cx="457.247024524218"
+       cy="25"
+       r="4">
+      <title
+         id="title19">2.442 ft at 9:42:00 PM</title>
+    </circle>
+    <circle
+       class="tideMarker"
+       id="tide-marker-12"
+       cx="525.6746040024382"
+       cy="156.04782375067168"
+       r="4">
+      <title
+         id="title20">0.7 ft at 12:32:00 PM</title>
+    </circle>
+    <circle
+       class="tideMarker"
+       id="tide-marker-13"
+       cx="575.3422628147193"
+       cy="25"
+       r="4">
+      <title
+         id="title21">2.442 ft at 11:18:00 PM</title>
+    </circle>
+    <circle
+       class="tideMarker"
+       id="tide-marker-14"
+       cx="640.7713303832198"
+       cy="159.73401397098334"
+       r="4">
+      <title
+         id="title22">0.651 ft at 1:29:00 PM</title>
+    </circle>
+    <circle
+       class="tideMarker"
+       id="tide-marker-15"
+       cx="692.0535725315038"
+       cy="26.57979580870503"
+       r="4">
+      <title
+         id="title23">2.421 ft at 12:36:00 AM</title>
+    </circle>
+    <circle
+       class="tideMarker"
+       id="tide-marker-16"
+       cx="756.6369059716218"
+       cy="165"
+       r="4">
+      <title
+         id="title24">0.581 ft at 2:36:00 PM</title>
+    </circle>
+  </g>
+  <g
+     id="y-axis-ticks-and-labels"
+     sodipodi:insensitive="true">
+    <path
+       class="yGridline"
+       id="y-tick-0"
+       d="M 25,25 H 800" />
+    <path
+       class="yGridline"
+       id="y-tick-1"
+       d="M 25,60 H 800" />
+    <path
+       class="yGridline"
+       id="y-tick-2"
+       d="M 25,95 H 800" />
+    <path
+       class="yGridline"
+       id="y-tick-3"
+       d="M 25,130 H 800" />
+    <path
+       class="yGridline"
+       id="y-tick-4"
+       d="M 25,165 H 800" />
+    <text
+       class="yTickLabel"
+       id="text24"
+       text-anchor="end"
+       alignment-baseline="middle"
+       x="20"
+       y="25"
+       font-size="9px">2.44</text>
+    <text
+       class="yTickLabel"
+       id="text25"
+       text-anchor="end"
+       alignment-baseline="middle"
+       x="20"
+       y="60"
+       font-size="9px">1.98</text>
+    <text
+       class="yTickLabel"
+       id="text26"
+       text-anchor="end"
+       alignment-baseline="middle"
+       x="20"
+       y="95"
+       font-size="9px">1.51</text>
+    <text
+       class="yTickLabel"
+       id="text27"
+       text-anchor="end"
+       alignment-baseline="middle"
+       x="20"
+       y="130"
+       font-size="9px">1.05</text>
+    <text
+       class="yTickLabel"
+       id="text28"
+       text-anchor="end"
+       alignment-baseline="middle"
+       x="20"
+       y="165"
+       font-size="9px">0.58</text>
+  </g>
+  <g
+     id="x-axis-top-series-labels"
+     transform="translate(0,-22.627417)">
+    <text
+       class="xAxisTopSeriesLabel"
+       id="x-top-label-0"
+       text-anchor="middle"
+       dominant-baseline="hanging"
+       y="5"
+       font-size="9px"><tspan
+         x="80.35714"
+         text-anchor="middle"
+         id="tspan28">Tuesday</tspan><tspan
+         x="80.35714"
+         dy="1.2em"
+         text-anchor="middle"
+         id="tspan29">9/23</tspan></text>
+    <text
+       class="xAxisTopSeriesLabel"
+       id="x-top-label-1"
+       text-anchor="middle"
+       dominant-baseline="hanging"
+       y="5"
+       font-size="9px"><tspan
+         x="191.07143"
+         text-anchor="middle"
+         id="tspan30">Wednesday</tspan><tspan
+         x="191.07143"
+         dy="1.2em"
+         text-anchor="middle"
+         id="tspan31">9/24</tspan></text>
+    <text
+       class="xAxisTopSeriesLabel"
+       id="x-top-label-2"
+       text-anchor="middle"
+       dominant-baseline="hanging"
+       y="5"
+       font-size="9px"><tspan
+         x="301.78571"
+         text-anchor="middle"
+         id="tspan32">Thursday</tspan><tspan
+         x="301.78571"
+         dy="1.2em"
+         text-anchor="middle"
+         id="tspan33">9/25</tspan></text>
+    <text
+       class="xAxisTopSeriesLabel"
+       id="x-top-label-3"
+       text-anchor="middle"
+       dominant-baseline="hanging"
+       y="5"
+       font-size="9px"><tspan
+         x="412.5"
+         text-anchor="middle"
+         id="tspan34">Friday</tspan><tspan
+         x="412.5"
+         dy="1.2em"
+         text-anchor="middle"
+         id="tspan35">9/26</tspan></text>
+    <text
+       class="xAxisTopSeriesLabel"
+       id="x-top-label-4"
+       text-anchor="middle"
+       dominant-baseline="hanging"
+       y="5"
+       font-size="9px"><tspan
+         x="523.21429"
+         text-anchor="middle"
+         id="tspan36">Saturday</tspan><tspan
+         x="523.21429"
+         dy="1.2em"
+         text-anchor="middle"
+         id="tspan37">9/27</tspan></text>
+    <text
+       class="xAxisTopSeriesLabel"
+       id="x-top-label-5"
+       text-anchor="middle"
+       dominant-baseline="hanging"
+       y="5"
+       font-size="9px"><tspan
+         x="633.92859"
+         text-anchor="middle"
+         id="tspan38">Sunday</tspan><tspan
+         x="633.92859"
+         dy="1.2em"
+         text-anchor="middle"
+         id="tspan39">9/28</tspan></text>
+    <text
+       class="xAxisTopSeriesLabel"
+       id="x-top-label-6"
+       text-anchor="middle"
+       dominant-baseline="hanging"
+       y="5"
+       font-size="9px"><tspan
+         x="744.64288"
+         text-anchor="middle"
+         id="tspan40">Monday</tspan><tspan
+         x="744.64288"
+         dy="1.2em"
+         text-anchor="middle"
+         id="tspan41">9/29</tspan></text>
+  </g>
+  <g
+     id="x-axis-daylight-labels">
+    <text
+       class="xAxisDaylightLabel"
+       id="x-axis-daylight-label-0"
+       text-anchor="end"
+       dominant-baseline="middle"
+       transform="rotate(270, 58.71346496149713, 168)"
+       x="58.71346496149713"
+       y="168"
+       font-size="9">
+			7:18
+			<span>hi</span></text>
+    <text
+       class="xAxisDaylightLabel"
+       id="text41"
+       text-anchor="end"
+       dominant-baseline="middle"
+       transform="rotate(270, 114.57977060942422, 168)"
+       x="114.57977060942422"
+       y="168"
+       font-size="9">
+			19:25
+			<span>hi</span></text>
+    <text
+       class="xAxisDaylightLabel"
+       id="x-axis-daylight-label-1"
+       text-anchor="end"
+       dominant-baseline="middle"
+       transform="rotate(270, 169.463115359562, 168)"
+       x="169.463115359562"
+       y="168"
+       font-size="9">
+			7:18
+			<span>hi</span></text>
+    <text
+       class="xAxisDaylightLabel"
+       id="text42"
+       text-anchor="end"
+       dominant-baseline="middle"
+       transform="rotate(270, 225.20298888095732, 168)"
+       x="225.20298888095732"
+       y="168"
+       font-size="9">
+			19:23
+			<span>hi</span></text>
+    <text
+       class="xAxisDaylightLabel"
+       id="x-axis-daylight-label-2"
+       text-anchor="end"
+       dominant-baseline="middle"
+       transform="rotate(270, 280.2129746283283, 168)"
+       x="280.2129746283283"
+       y="168"
+       font-size="9">
+			7:19
+			<span>hi</span></text>
+    <text
+       class="xAxisDaylightLabel"
+       id="text43"
+       text-anchor="end"
+       dominant-baseline="middle"
+       transform="rotate(270, 335.8264070532844, 168)"
+       x="335.8264070532844"
+       y="168"
+       font-size="9">
+			19:22
+			<span>hi</span></text>
+    <text
+       class="xAxisDaylightLabel"
+       id="x-axis-daylight-label-3"
+       text-anchor="end"
+       dominant-baseline="middle"
+       transform="rotate(270, 390.96306583327225, 168)"
+       x="390.96306583327225"
+       y="168"
+       font-size="9">
+			7:19
+			<span>hi</span></text>
+    <text
+       class="xAxisDaylightLabel"
+       id="text44"
+       text-anchor="end"
+       dominant-baseline="middle"
+       transform="rotate(270, 446.45006485028125, 168)"
+       x="446.45006485028125"
+       y="168"
+       font-size="9">
+			19:21
+			<span>hi</span></text>
+    <text
+       class="xAxisDaylightLabel"
+       id="x-axis-daylight-label-4"
+       text-anchor="end"
+       dominant-baseline="middle"
+       transform="rotate(270, 501.713408195624, 168)"
+       x="501.713408195624"
+       y="168"
+       font-size="9">
+			7:20
+			<span>hi</span></text>
+    <text
+       class="xAxisDaylightLabel"
+       id="text45"
+       text-anchor="end"
+       dominant-baseline="middle"
+       transform="rotate(270, 557.074000714408, 168)"
+       x="557.074000714408"
+       y="168"
+       font-size="9">
+			19:20
+			<span>hi</span></text>
+    <text
+       class="xAxisDaylightLabel"
+       id="x-axis-daylight-label-5"
+       text-anchor="end"
+       dominant-baseline="middle"
+       transform="rotate(270, 612.4640260622751, 168)"
+       x="612.4640260622751"
+       y="168"
+       font-size="9">
+			7:20
+			<span>hi</span></text>
+    <text
+       class="xAxisDaylightLabel"
+       id="text46"
+       text-anchor="end"
+       dominant-baseline="middle"
+       transform="rotate(270, 667.6982556509561, 168)"
+       x="667.6982556509561"
+       y="168"
+       font-size="9">
+			19:19
+			<span>hi</span></text>
+    <text
+       class="xAxisDaylightLabel"
+       id="x-axis-daylight-label-6"
+       text-anchor="end"
+       dominant-baseline="middle"
+       transform="rotate(270, 723.2149412172865, 168)"
+       x="723.2149412172865"
+       y="168"
+       font-size="9">
+			7:21
+			<span>hi</span></text>
+    <text
+       class="xAxisDaylightLabel"
+       id="text47"
+       text-anchor="end"
+       dominant-baseline="middle"
+       transform="rotate(270, 778.3228706652163, 168)"
+       x="778.3228706652163"
+       y="168"
+       font-size="9">
+			19:18
+			<span>hi</span></text>
+  </g>
+</svg>

@@ -16,6 +16,8 @@ export namespace Components {
     }
     interface DsMap {
     }
+    interface DsMoon {
+    }
     interface DsNoaa {
     }
     interface DsTideChart {
@@ -47,6 +49,12 @@ declare global {
         prototype: HTMLDsMapElement;
         new (): HTMLDsMapElement;
     };
+    interface HTMLDsMoonElement extends Components.DsMoon, HTMLStencilElement {
+    }
+    var HTMLDsMoonElement: {
+        prototype: HTMLDsMoonElement;
+        new (): HTMLDsMoonElement;
+    };
     interface HTMLDsNoaaElement extends Components.DsNoaa, HTMLStencilElement {
     }
     var HTMLDsNoaaElement: {
@@ -64,6 +72,7 @@ declare global {
         "ds-debug-tide-api": HTMLDsDebugTideApiElement;
         "ds-main": HTMLDsMainElement;
         "ds-map": HTMLDsMapElement;
+        "ds-moon": HTMLDsMoonElement;
         "ds-noaa": HTMLDsNoaaElement;
         "ds-tide-chart": HTMLDsTideChartElement;
     }
@@ -77,6 +86,8 @@ declare namespace LocalJSX {
     }
     interface DsMap {
     }
+    interface DsMoon {
+    }
     interface DsNoaa {
     }
     interface DsTideChart {
@@ -87,6 +98,7 @@ declare namespace LocalJSX {
         "ds-debug-tide-api": DsDebugTideApi;
         "ds-main": DsMain;
         "ds-map": DsMap;
+        "ds-moon": DsMoon;
         "ds-noaa": DsNoaa;
         "ds-tide-chart": DsTideChart;
     }
@@ -99,6 +111,7 @@ declare module "@stencil/core" {
             "ds-debug-tide-api": LocalJSX.DsDebugTideApi & JSXBase.HTMLAttributes<HTMLDsDebugTideApiElement>;
             "ds-main": LocalJSX.DsMain & JSXBase.HTMLAttributes<HTMLDsMainElement>;
             "ds-map": LocalJSX.DsMap & JSXBase.HTMLAttributes<HTMLDsMapElement>;
+            "ds-moon": LocalJSX.DsMoon & JSXBase.HTMLAttributes<HTMLDsMoonElement>;
             "ds-noaa": LocalJSX.DsNoaa & JSXBase.HTMLAttributes<HTMLDsNoaaElement>;
             "ds-tide-chart": LocalJSX.DsTideChart & JSXBase.HTMLAttributes<HTMLDsTideChartElement>;
         }
