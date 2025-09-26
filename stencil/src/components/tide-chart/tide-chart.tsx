@@ -52,6 +52,20 @@ export class TideChart {
 	chartFontSize: number;
 
 
+	// TODO: modify toggle debug info so that both UTC and local time are displayed
+	// TODO: move toggle debug info bottom below chart
+	// TODO: consider modifying displayed toggle debug info such that each category (sun, moon, tide) is collapsible
+	// TODO: clean up console logs. there is a lot there. put behind a new this.log variable-- it is currently being passed into a method but not declared "globally"
+	// TODO: create new component that explains how to read the chart, and create a button or link above the chart to redirect to that component
+	// TODO: style the user input box so that it doesn't take up half the vertical space on the screen
+	// TODO: add gridline on the Y axis at the top of day plot area below day labels
+	// TODO: add title hover to moon illumination numbers so that hovering there will also give the helper text, not just hovering on the rect
+	// TODO: consider adding a y Axis title named "Moon" so that it's a little more obvious what that row is
+	// TODO: consider adding a y Axis title named "Sunrise/Set" at bottom of chart so that it's more obvious what the times are
+	// TODO: consider adding twilight before and after sunrise/set: new rects with different color
+	// TODO: consider reducing tide api date call so there isn't too much extra info, impacting the tideMax and tideMin more than we need
+	// TODO: consider putting a render() counter and seeing if I have the lifecycle right for componentDidLoad and the API async calls
+
 	constructor() {
 		const yAxisWidth = 25;
 		const xAxisFooterHeight = 35;
