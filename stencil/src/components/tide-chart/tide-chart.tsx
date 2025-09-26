@@ -37,6 +37,7 @@ export class TideChart {
 
 	@State() showDebug = false;
 	@State() debugMoonOpen = false;
+	@State() debugSunOpen = false;
 
 	@State() moonData: MoonRiseSet[] = [];
 
@@ -66,6 +67,7 @@ export class TideChart {
 	// TODO: consider reducing tide api date call so there isn't too much extra info, impacting the tideMax and tideMin more than we need
 	// TODO: consider putting a render() counter and seeing if I have the lifecycle right for componentDidLoad and the API async calls
 
+	// TODO: have a close look at the daylight debug data. ISO/Local seems to be off from each other and not sure the dates are correct for daylight!
 	constructor() {
 		const yAxisWidth = 25;
 		const xAxisFooterHeight = 35;
@@ -611,10 +613,38 @@ export class TideChart {
 				<li><strong>{result.when.toISOString()}</strong> - Ms since 1970: {result.when.getTime()} Level: {result.level}</li>
 			)}</ul>;
 
-			let daylightDebug = <ul>{this.daylight.map(result =>
-				<li><strong>{result.when.toISOString()}</strong> Rise: {result.rise.toLocaleString()} Set: {result.set.toLocaleString()}</li>
-			)}</ul>;
 
+			let sunSection = (
+				<div>
+					<h2
+						style={{ cursor: 'pointer', userSelect: 'none', marginBottom: '0.5rem' }}
+						onClick={() => this.debugSunOpen = !this.debugSunOpen}
+					>
+						{this.debugSunOpen ? '▼' : '▶'} debug daylight response
+					</h2>
+					{this.debugSunOpen && (
+						<div id="debugTable">
+							<div id="debugHeader">
+								<div id="debugCell">Date (Local / ISO)</div>
+								<div id="debugCell">Rise Locale</div>
+								<div id="debugCell">Set Locale</div>
+								<div id="debugCell">Rise ISO</div>
+								<div id="debugCell">Set ISO</div>
+
+							</div>
+							{this.daylight.map(result =>
+								<div id="debugRow">
+									<div id="debugCell">Local: {result.when.toLocaleDateString()} Iso: {result.when.toISOString()}</div>
+									<div id="debugCell">{result.rise.toLocaleString()}</div>
+									<div id="debugCell">{result.set.toLocaleString()}</div>
+									<div id="debugCell">{result.rise.toISOString()}</div>
+									<div id="debugCell">{result.set.toISOString()}</div>
+								</div>
+							)}
+						</div>
+					)}
+				</div>
+			);
 
 			let moonSection = (
 				<div>
@@ -648,6 +678,7 @@ export class TideChart {
 				</div>
 			);
 
+
 			if(this.showDebug) {
 				debugContent =
 					<div>
@@ -660,8 +691,7 @@ export class TideChart {
 						<p>Max Y: {this.tidesMaxY}</p>
 						<p>Min Y: {this.tidesMinY}</p>
 
-						<h2>debug daylight response</h2>
-						{daylightDebug}
+						{sunSection}
 
 						{moonSection}
 
