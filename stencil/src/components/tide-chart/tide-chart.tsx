@@ -627,15 +627,20 @@ export class TideChart {
 					{this.debugMoonOpen && (
 						<div id="debugMoon">
 							<div id="debugMoonHeader">
-								<div id="debugMoonCell">BeginDate</div>
-								<div id="debugMoonCell">ISO String</div>
-								<div id="debugMoonCell">Locale String</div>
+								<div id="debugMoonCell">Rise Locale</div>
+								<div id="debugMoonCell">Set Locale</div>
+								<div id="debugMoonCell">Illumination</div>
+								<div id="debugMoonCell">Rise ISO</div>
+								<div id="debugMoonCell">Set ISO</div>
+
 							</div>
 							{this.moonData.map(result =>
 								<div id="debugMoonRow">
-									<div id="debugMoonCell">BeginDate:</div>
-									<div id="debugMoonCell">{result.rise.toISOString()}</div>
 									<div id="debugMoonCell">{result.rise.toLocaleString()}</div>
+									<div id="debugMoonCell">{result.set.toLocaleString()}</div>
+									<div id="debugMoonCell">{result.illumination}</div>
+									<div id="debugMoonCell">{result.rise.toISOString()}</div>
+									<div id="debugMoonCell">{result.set.toISOString()}</div>
 								</div>
 							)}
 						</div>
