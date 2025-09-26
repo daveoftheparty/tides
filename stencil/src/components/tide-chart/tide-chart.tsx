@@ -40,7 +40,6 @@ export class TideChart {
 	@State() moonData: MoonRiseSet[] = [];
 
 
-	chartFontSize = 9; // TODO this should be relative to/calculated by chart width/height
 
 
 	chartRect: Rect;
@@ -50,12 +49,14 @@ export class TideChart {
 	xAxisFooterRect: Rect;
 	dayPlotArea: Rect;
 	tidePlotArea: Rect;
+	chartFontSize: number;
 
 
 	constructor() {
-		// TODO: move all chart sizes that are declared outside this method into here
 		const yAxisWidth = 25;
 		const xAxisFooterHeight = 35;
+
+		this.chartFontSize = 9; // TODO this should MAYBE be relative to/calculated by chart width/height
 
 		this.chartRect = { x: 0, y: 0, width: 800, height: 200 };
 		this.xAxisHeaderRect = { x: yAxisWidth, y: this.chartRect.y, width: this.chartRect.width - yAxisWidth, height: 25 };
