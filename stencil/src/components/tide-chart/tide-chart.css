@@ -20,21 +20,21 @@
 }
 
 
-#debugMoon {
+#debugTable {
 	display: table;
 	border: 1px solid black;
 }
 
-#debugMoonHeader {
+#debugHeader {
 	display: table-header-group;
 	font-weight: bold;
 }
 
-#debugMoonRow {
+#debugRow {
 	display: table-row;
 }
 
-#debugMoonCell {
+#debugCell {
 	display: table-cell;
 	padding: 1rem;
 	margin: 1rem;

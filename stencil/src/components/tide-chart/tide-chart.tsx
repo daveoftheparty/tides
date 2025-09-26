@@ -625,22 +625,22 @@ export class TideChart {
 						{this.debugMoonOpen ? '▼' : '▶'} debug moonlight response
 					</h2>
 					{this.debugMoonOpen && (
-						<div id="debugMoon">
-							<div id="debugMoonHeader">
-								<div id="debugMoonCell">Rise Locale</div>
-								<div id="debugMoonCell">Set Locale</div>
-								<div id="debugMoonCell">Illumination</div>
-								<div id="debugMoonCell">Rise ISO</div>
-								<div id="debugMoonCell">Set ISO</div>
+						<div id="debugTable">
+							<div id="debugHeader">
+								<div id="debugCell">Rise Locale</div>
+								<div id="debugCell">Set Locale</div>
+								<div id="debugCell">Illumination</div>
+								<div id="debugCell">Rise ISO</div>
+								<div id="debugCell">Set ISO</div>
 
 							</div>
 							{this.moonData.map(result =>
-								<div id="debugMoonRow">
-									<div id="debugMoonCell">{result.rise.toLocaleString()}</div>
-									<div id="debugMoonCell">{result.set.toLocaleString()}</div>
-									<div id="debugMoonCell">{result.illumination}</div>
-									<div id="debugMoonCell">{result.rise.toISOString()}</div>
-									<div id="debugMoonCell">{result.set.toISOString()}</div>
+								<div id="debugRow">
+									<div id="debugCell">{result.rise.toLocaleString()}</div>
+									<div id="debugCell">{result.set.toLocaleString()}</div>
+									<div id="debugCell">{result.illumination}</div>
+									<div id="debugCell">{result.rise.toISOString()}</div>
+									<div id="debugCell">{result.set.toISOString()}</div>
 								</div>
 							)}
 						</div>
