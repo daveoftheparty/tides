@@ -39,6 +39,7 @@ export class TideChart {
 	@State() debugMoonOpen = false;
 	@State() debugSunOpen = false;
 	@State() debugTideOpen = false;
+	@State() debugDateRangeOpen = false;
 
 	@State() moonData: MoonRiseSet[] = [];
 
@@ -55,8 +56,6 @@ export class TideChart {
 	chartFontSize: number;
 
 
-	// TODO: mod debug info for local and utc
-	// TODO: consider modifying displayed toggle debug info such that each category (sun, moon, tide) is collapsible
 	// TODO: clean up console logs. there is a lot there. put behind a new this.log variable-- it is currently being passed into a method but not declared "globally"
 	// TODO: create new component that explains how to read the chart, and create a button or link above the chart to redirect to that component
 	// TODO: style the user input box so that it doesn't take up half the vertical space on the screen
@@ -610,6 +609,37 @@ export class TideChart {
 
 		if(this.loaded) {
 
+			let dateRangeSection = (
+				<div>
+					<h2
+						style={{ cursor: 'pointer', userSelect: 'none', marginBottom: '0.5rem' }}
+						onClick={() => this.debugDateRangeOpen = !this.debugDateRangeOpen}
+					>
+						{this.debugDateRangeOpen ? '▼' : '▶'} debug date range
+					</h2>
+					{this.debugDateRangeOpen && (
+						<div id="debugTable">
+							<div id="debugHeader">
+								<div id="debugCell"></div>
+								<div id="debugCell">Locale</div>
+								<div id="debugCell">ISO</div>
+
+							</div>
+								<div id="debugRow">
+									<div id="debugCell">Begin Date</div>
+									<div id="debugCell">{this.beginDate.toLocaleString()}</div>
+									<div id="debugCell">{this.beginDate.toISOString()}</div>
+								</div>
+								<div id="debugRow">
+									<div id="debugCell">End Date</div>
+									<div id="debugCell">{this.endDate.toLocaleString()}</div>
+									<div id="debugCell">{this.endDate.toISOString()}</div>
+								</div>
+						</div>
+					)}
+				</div>
+			);
+
 			let tideSection = (
 				<div>
 					<h2
@@ -709,16 +739,13 @@ export class TideChart {
 			if(this.showDebug) {
 				debugContent =
 					<div>
-						<h2>debug begin/enddate state</h2>
-						<p>BeginDate: {this.beginDate.toISOString()}{this.beginDate.toLocaleString()}</p>
-						<p>EndDate: {this.endDate.toISOString()}</p>
+						{dateRangeSection}
 
 						{tideSection}
 
 						{sunSection}
 
 						{moonSection}
-
 					</div>
 			}
 
