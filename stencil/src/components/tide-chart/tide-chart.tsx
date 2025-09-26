@@ -36,6 +36,7 @@ export class TideChart {
 	@State() loaded = false;
 
 	@State() showDebug = false;
+	@State() debugMoonOpen = false;
 
 	@State() moonData: MoonRiseSet[] = [];
 
@@ -52,7 +53,7 @@ export class TideChart {
 	chartFontSize: number;
 
 
-	// TODO: move toggle debug info bottom below chart
+	// TODO: mod debug info for local and utc
 	// TODO: consider modifying displayed toggle debug info such that each category (sun, moon, tide) is collapsible
 	// TODO: clean up console logs. there is a lot there. put behind a new this.log variable-- it is currently being passed into a method but not declared "globally"
 	// TODO: create new component that explains how to read the chart, and create a button or link above the chart to redirect to that component
@@ -614,15 +615,39 @@ export class TideChart {
 				<li><strong>{result.when.toISOString()}</strong> Rise: {result.rise.toLocaleString()} Set: {result.set.toLocaleString()}</li>
 			)}</ul>;
 
-			let moonRiseSetDebug = <ul>{this.moonData.map(result =>
-					<li>Rise: {result.rise.toLocaleString()} Set: {result.set.toLocaleString()} Illumination: {result.illumination} </li>
-			)}</ul>;
+
+			let moonSection = (
+				<div>
+					<h2
+						style={{ cursor: 'pointer', userSelect: 'none', marginBottom: '0.5rem' }}
+						onClick={() => this.debugMoonOpen = !this.debugMoonOpen}
+					>
+						{this.debugMoonOpen ? '▼' : '▶'} debug moonlight response
+					</h2>
+					{this.debugMoonOpen && (
+						<div id="debugMoon">
+							<div id="debugMoonHeader">
+								<div id="debugMoonCell">BeginDate</div>
+								<div id="debugMoonCell">ISO String</div>
+								<div id="debugMoonCell">Locale String</div>
+							</div>
+							{this.moonData.map(result =>
+								<div id="debugMoonRow">
+									<div id="debugMoonCell">BeginDate:</div>
+									<div id="debugMoonCell">{result.rise.toISOString()}</div>
+									<div id="debugMoonCell">{result.rise.toLocaleString()}</div>
+								</div>
+							)}
+						</div>
+					)}
+				</div>
+			);
 
 			if(this.showDebug) {
 				debugContent =
 					<div>
 						<h2>debug begin/enddate state</h2>
-						<p>BeginDate: {this.beginDate.toISOString()}</p>
+						<p>BeginDate: {this.beginDate.toISOString()}{this.beginDate.toLocaleString()}</p>
 						<p>EndDate: {this.endDate.toISOString()}</p>
 
 						<h2>debug tide response</h2>
@@ -633,11 +658,12 @@ export class TideChart {
 						<h2>debug daylight response</h2>
 						{daylightDebug}
 
-						<h2>debug moonlight response</h2>
-						{moonRiseSetDebug}
+						{moonSection}
 
 					</div>
 			}
+
+
 
 			chart =
 				<div id="chartContainer">

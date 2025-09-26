@@ -19,3 +19,26 @@
 	overflow: auto;
 }
 
+
+#debugMoon {
+	display: table;
+	border: 1px solid black;
+}
+
+#debugMoonHeader {
+	display: table-header-group;
+	font-weight: bold;
+}
+
+#debugMoonRow {
+	display: table-row;
+}
+
+#debugMoonCell {
+	display: table-cell;
+	padding: 1rem;
+	margin: 1rem;
+	border: 1px solid black;
+	max-width: 100%;
+	overflow: auto;
+}
