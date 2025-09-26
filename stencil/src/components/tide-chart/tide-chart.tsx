@@ -38,6 +38,7 @@ export class TideChart {
 	@State() showDebug = false;
 	@State() debugMoonOpen = false;
 	@State() debugSunOpen = false;
+	@State() debugTideOpen = false;
 
 	@State() moonData: MoonRiseSet[] = [];
 
@@ -609,10 +610,36 @@ export class TideChart {
 
 		if(this.loaded) {
 
-			let tideDebug = <ul>{this.tides.map(result =>
-				<li><strong>{result.when.toISOString()}</strong> - Ms since 1970: {result.when.getTime()} Level: {result.level}</li>
-			)}</ul>;
+			let tideSection = (
+				<div>
+					<h2
+						style={{ cursor: 'pointer', userSelect: 'none', marginBottom: '0.5rem' }}
+						onClick={() => this.debugTideOpen = !this.debugTideOpen}
+					>
+						{this.debugTideOpen ? '▼' : '▶'} debug tide response
+					</h2>
+					{this.debugTideOpen && (
+						<div>
+							<p>Max Tide: {this.tidesMaxY} Min Tide: {this.tidesMinY}</p>
+							<div id="debugTable">
+								<div id="debugHeader">
+									<div id="debugCell">Date Locale</div>
+									<div id="debugCell">Level</div>
+									<div id="debugCell">Date ISO</div>
 
+								</div>
+								{this.tides.map(result =>
+									<div id="debugRow">
+										<div id="debugCell">{result.when.toLocaleString()}</div>
+										<div id="debugCell">{result.level}</div>
+										<div id="debugCell">{result.when.toISOString()}</div>
+									</div>
+								)}
+							</div>
+						</div>
+					)}
+				</div>
+			);
 
 			let sunSection = (
 				<div>
@@ -686,10 +713,7 @@ export class TideChart {
 						<p>BeginDate: {this.beginDate.toISOString()}{this.beginDate.toLocaleString()}</p>
 						<p>EndDate: {this.endDate.toISOString()}</p>
 
-						<h2>debug tide response</h2>
-						{tideDebug}
-						<p>Max Y: {this.tidesMaxY}</p>
-						<p>Min Y: {this.tidesMinY}</p>
+						{tideSection}
 
 						{sunSection}
 
