@@ -14,8 +14,8 @@
 #chartContainer {
 	padding: 1rem;
 	margin: 1rem;
-	/* width: 50rem; */
-	/* max-width: 100%; */
 	border: 1px solid black;
+	max-width: 100%;
+	overflow: auto;
 }
 
