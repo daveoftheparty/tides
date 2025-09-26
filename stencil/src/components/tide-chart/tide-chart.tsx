@@ -60,7 +60,6 @@ export class TideChart {
 	// TODO: create new component that explains how to read the chart, and create a button or link above the chart to redirect to that component
 	// TODO: style the user input box so that it doesn't take up half the vertical space on the screen
 	// TODO: add gridline on the Y axis at the top of day plot area below day labels
-	// TODO: add title hover to moon illumination numbers so that hovering there will also give the helper text, not just hovering on the rect
 	// TODO: consider adding a y Axis title named "Moon" so that it's a little more obvious what that row is
 	// TODO: consider adding a y Axis title named "Sunrise/Set" at bottom of chart so that it's more obvious what the times are
 	// TODO: consider adding twilight before and after sunrise/set: new rects with different color
@@ -594,6 +593,11 @@ export class TideChart {
 									font-size={this.chartFontSize}
 								>
 									{moon.illumination}
+								<title>
+									moonrise: {moon.rise.toLocaleTimeString()}&#10;
+									set: {moon.set.toLocaleTimeString()}&#10;
+									illumination: {moon.illumination}
+								</title>
 							</text>
 					</g>
 					)}
