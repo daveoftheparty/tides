@@ -468,7 +468,7 @@ export class TideChart {
 		this.tides = [];
 		this.daylight = [];
 		this.loaded = false;
-		this.hostElement.dispatchEvent(new CustomEvent('resetStation', {bubbles: true }));
+		this.hostElement.dispatchEvent(new CustomEvent('resetStation', {bubbles: true, composed: true }));
 		console.log('clearing station data and dispatching resetStation event');
 	}
 
@@ -757,6 +757,8 @@ export class TideChart {
 
 			chart =
 				<div id="chartContainer">
+					<p><button onClick={() => this.hostElement.dispatchEvent(new CustomEvent('showUserGuide', {bubbles: true }))}>Show Help on Reading This Chart</button></p>
+
 					{this._getSvg()}
 					<p><button onClick={this._toggleDebug.bind(this)}>Toggle Debug Info</button></p>
 					{debugContent}
