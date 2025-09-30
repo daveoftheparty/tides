@@ -1,9 +1,6 @@
 :root, html, body {
-	width: 100vw;
-	height: 100vh;
 	margin: 0;
 	padding: 0;
-	overflow: hidden;
 }
 :host {
 	font-family: sans-serif;
@@ -19,18 +16,19 @@ h1 {
 }
 
 #map-container {
-	width: 100vw;
-	height: 100vh;
-	max-width: 100vw;
-	max-height: 100vh;
+	width: 99vw;
+	height: 99vh;
+	max-width: 99vw;
+	max-height: 99vh;
 	box-sizing: border-box;
+	overflow: hidden;
 }
 
 #map {
-	width: 100vw;
-	height: calc(100vh - 60px);
-	max-width: 100vw;
-	max-height: calc(100vh - 60px);
+	width: 99vw;
+	height: calc(99vh - 60px);
+	max-width: 99vw;
+	max-height: calc(99vh - 60px);
 	display: block;
 	box-sizing: border-box;
 }

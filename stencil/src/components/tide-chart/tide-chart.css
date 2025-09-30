@@ -14,8 +14,31 @@
 #chartContainer {
 	padding: 1rem;
 	margin: 1rem;
-	/* width: 50rem; */
-	/* max-width: 100%; */
+	border: 1px solid black;
+	max-width: 100%;
+	overflow: auto;
+}
+
+
+#debugTable {
+	display: table;
 	border: 1px solid black;
 }
 
+#debugHeader {
+	display: table-header-group;
+	font-weight: bold;
+}
+
+#debugRow {
+	display: table-row;
+}
+
+#debugCell {
+	display: table-cell;
+	padding: 1rem;
+	margin: 1rem;
+	border: 1px solid black;
+	max-width: 100%;
+	overflow: auto;
+}

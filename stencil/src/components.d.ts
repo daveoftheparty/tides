@@ -23,6 +23,11 @@ export namespace Components {
     interface DsTideChart {
         "station": TideStationsResponse;
     }
+    interface DsTideGuide {
+        "station": TideStationsResponse;
+    }
+    interface DsUserGuide {
+    }
 }
 declare global {
     interface HTMLDsDebugDaylightApiElement extends Components.DsDebugDaylightApi, HTMLStencilElement {
@@ -67,6 +72,18 @@ declare global {
         prototype: HTMLDsTideChartElement;
         new (): HTMLDsTideChartElement;
     };
+    interface HTMLDsTideGuideElement extends Components.DsTideGuide, HTMLStencilElement {
+    }
+    var HTMLDsTideGuideElement: {
+        prototype: HTMLDsTideGuideElement;
+        new (): HTMLDsTideGuideElement;
+    };
+    interface HTMLDsUserGuideElement extends Components.DsUserGuide, HTMLStencilElement {
+    }
+    var HTMLDsUserGuideElement: {
+        prototype: HTMLDsUserGuideElement;
+        new (): HTMLDsUserGuideElement;
+    };
     interface HTMLElementTagNameMap {
         "ds-debug-daylight-api": HTMLDsDebugDaylightApiElement;
         "ds-debug-tide-api": HTMLDsDebugTideApiElement;
@@ -75,6 +92,8 @@ declare global {
         "ds-moon": HTMLDsMoonElement;
         "ds-noaa": HTMLDsNoaaElement;
         "ds-tide-chart": HTMLDsTideChartElement;
+        "ds-tide-guide": HTMLDsTideGuideElement;
+        "ds-user-guide": HTMLDsUserGuideElement;
     }
 }
 declare namespace LocalJSX {
@@ -93,6 +112,11 @@ declare namespace LocalJSX {
     interface DsTideChart {
         "station"?: TideStationsResponse;
     }
+    interface DsTideGuide {
+        "station"?: TideStationsResponse;
+    }
+    interface DsUserGuide {
+    }
     interface IntrinsicElements {
         "ds-debug-daylight-api": DsDebugDaylightApi;
         "ds-debug-tide-api": DsDebugTideApi;
@@ -101,6 +125,8 @@ declare namespace LocalJSX {
         "ds-moon": DsMoon;
         "ds-noaa": DsNoaa;
         "ds-tide-chart": DsTideChart;
+        "ds-tide-guide": DsTideGuide;
+        "ds-user-guide": DsUserGuide;
     }
 }
 export { LocalJSX as JSX };
@@ -114,6 +140,8 @@ declare module "@stencil/core" {
             "ds-moon": LocalJSX.DsMoon & JSXBase.HTMLAttributes<HTMLDsMoonElement>;
             "ds-noaa": LocalJSX.DsNoaa & JSXBase.HTMLAttributes<HTMLDsNoaaElement>;
             "ds-tide-chart": LocalJSX.DsTideChart & JSXBase.HTMLAttributes<HTMLDsTideChartElement>;
+            "ds-tide-guide": LocalJSX.DsTideGuide & JSXBase.HTMLAttributes<HTMLDsTideGuideElement>;
+            "ds-user-guide": LocalJSX.DsUserGuide & JSXBase.HTMLAttributes<HTMLDsUserGuideElement>;
         }
     }
 }

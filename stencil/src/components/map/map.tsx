@@ -110,8 +110,6 @@ export class Map {
 					<h1>Choose your closest tide station</h1>
 					<div id="map"></div>
 				</div>
-
-				<ds-noaa></ds-noaa>
 			</Host>
 		);
 	}

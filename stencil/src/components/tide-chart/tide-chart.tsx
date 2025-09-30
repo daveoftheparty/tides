@@ -36,11 +36,14 @@ export class TideChart {
 	@State() loaded = false;
 
 	@State() showDebug = false;
+	@State() debugMoonOpen = false;
+	@State() debugSunOpen = false;
+	@State() debugTideOpen = false;
+	@State() debugDateRangeOpen = false;
 
 	@State() moonData: MoonRiseSet[] = [];
 
 
-	chartFontSize = 9; // TODO this should be relative to/calculated by chart width/height
 
 
 	chartRect: Rect;
@@ -50,12 +53,20 @@ export class TideChart {
 	xAxisFooterRect: Rect;
 	dayPlotArea: Rect;
 	tidePlotArea: Rect;
+	chartFontSize: number;
 
 
+	// TODO: clean up console logs. there is a lot there. put behind a new this.log variable-- it is currently being passed into a method but not declared "globally"
+	// TODO: style the user input box so that it doesn't take up half the vertical space on the screen
+	// TODO: consider reducing tide api date call so there isn't too much extra info, impacting the tideMax and tideMin more than we need
+	// TODO: consider putting a render() counter and seeing if I have the lifecycle right for componentDidLoad and the API async calls
+
+	// TODO: have a close look at the daylight debug data. ISO/Local seems to be off from each other and not sure the dates are correct for daylight!
 	constructor() {
-		// TODO: move all chart sizes that are declared outside this method into here
 		const yAxisWidth = 25;
 		const xAxisFooterHeight = 35;
+
+		this.chartFontSize = 9; // TODO this should MAYBE be relative to/calculated by chart width/height
 
 		this.chartRect = { x: 0, y: 0, width: 800, height: 200 };
 		this.xAxisHeaderRect = { x: yAxisWidth, y: this.chartRect.y, width: this.chartRect.width - yAxisWidth, height: 25 };
@@ -452,7 +463,7 @@ export class TideChart {
 		this.tides = [];
 		this.daylight = [];
 		this.loaded = false;
-		this.hostElement.dispatchEvent(new CustomEvent('resetStation', {bubbles: true }));
+		this.hostElement.dispatchEvent(new CustomEvent('resetStation', {bubbles: true, composed: true }));
 		console.log('clearing station data and dispatching resetStation event');
 	}
 
@@ -481,26 +492,6 @@ export class TideChart {
 						)
 					}
 				</g>
-
-
-				<clipPath
-					id="tideClip">
-					<rect
-						x={this.tidePlotArea.x}
-						y={this.tidePlotArea.y}
-						width={this.tidePlotArea.width}
-						height={this.tidePlotArea.height} />
-				</clipPath>
-				<g id="tides" clip-path="url(#tideClip)">
-					<path class="tideSineWave" id="tideSineWave" d={this._getTideSineWave()} />
-					{
-						this._getTideCoords().map(i =>
-							<circle class="tideMarker" id={`tide-marker-${i.index}`} cx={i.x} cy={i.y} r="4">
-								<title>{this.tides[i.index].level} ft at {this.tides[i.index].when.toLocaleTimeString()}</title>
-							</circle>
-						)
-					}
-				</g>
 				<g id="y-axis-ticks-and-labels">
 					{
 						yAxis.map(i =>
@@ -520,6 +511,7 @@ export class TideChart {
 						)
 					}
 				</g>
+				<path class="yGridline" id={`yLineBelowDayLabels`} d={`M ${this.xAxisHeaderRect.x},${this.xAxisHeaderRect.y + this.xAxisHeaderRect.height} H ${this.xAxisHeaderRect.x + this.xAxisHeaderRect.width}`} />
 				<g id="x-axis-top-series-labels">
 					{
 						this._getCalendarLabels().map(i =>
@@ -551,6 +543,25 @@ export class TideChart {
 				</g>
 
 				<clipPath
+					id="tideClip">
+					<rect
+						x={this.tidePlotArea.x}
+						y={this.tidePlotArea.y}
+						width={this.tidePlotArea.width}
+						height={this.tidePlotArea.height} />
+				</clipPath>
+				<g id="tides" clip-path="url(#tideClip)">
+					<path class="tideSineWave" id="tideSineWave" d={this._getTideSineWave()} />
+					{
+						this._getTideCoords().map(i =>
+							<circle class="tideMarker" id={`tide-marker-${i.index}`} cx={i.x} cy={i.y} r="4">
+								<title>{this.tides[i.index].level} ft at {this.tides[i.index].when.toLocaleTimeString()}</title>
+							</circle>
+						)
+					}
+				</g>
+
+				<clipPath
 					id="moonClip">
 					<rect
 						x={this.dayPlotArea.x}
@@ -577,25 +588,15 @@ export class TideChart {
 									font-size={this.chartFontSize}
 								>
 									{moon.illumination}
+								<title>
+									moonrise: {moon.rise.toLocaleTimeString()}&#10;
+									set: {moon.set.toLocaleTimeString()}&#10;
+									illumination: {moon.illumination}
+								</title>
 							</text>
 					</g>
 					)}
 				</g>
-			</svg>
-
-		return svg;
-	}
-
-	_getSvgLayoutRectsOnly() : string {
-		let svg =
-			<svg id="chart" viewBox={`0 0 ${this.chartRect.width} ${this.chartRect.height}`} xmlns="http://www.w3.org/2000/svg">
-				<rect id="chartArea" width="100%" height="100%" fill="rgb(128, 128, 128)" />
-				<rect id="yAxisRect" x={this.yAxisRect.x} y={this.yAxisRect.y} width={this.yAxisRect.width} height={this.yAxisRect.height} fill="rgb(0, 255, 236)" />
-				<rect id="xAxisHeaderRect" x={this.xAxisHeaderRect.x} y={this.xAxisHeaderRect.y} width={this.xAxisHeaderRect.width} height={this.xAxisHeaderRect.height} fill="rgb(255, 128, 0)" />
-				<rect id="moonRect" x={this.moonRect.x} y={this.moonRect.y} width={this.moonRect.width} height={this.moonRect.height} fill="rgb(255, 255, 0)" />
-				<rect id="xAxisFooterRect" x={this.xAxisFooterRect.x} y={this.xAxisFooterRect.y} width={this.xAxisFooterRect.width} height={this.xAxisFooterRect.height} fill="rgb(0, 128, 255)" />
-				<rect id="dayPlotArea" x={this.dayPlotArea.x} y={this.dayPlotArea.y} width={this.dayPlotArea.width} height={this.dayPlotArea.height} fill="rgb(128, 0, 255)" />
-				<rect id="tidePlotArea" x={this.tidePlotArea.x} y={this.tidePlotArea.y} width={this.tidePlotArea.width} height={this.tidePlotArea.height} fill="rgb(255, 0, 128)" />
 			</svg>
 
 		return svg;
@@ -607,44 +608,155 @@ export class TideChart {
 
 		if(this.loaded) {
 
-			let tideDebug = <ul>{this.tides.map(result =>
-				<li><strong>{result.when.toISOString()}</strong> - Ms since 1970: {result.when.getTime()} Level: {result.level}</li>
-			)}</ul>;
+			let dateRangeSection = (
+				<div>
+					<h2
+						style={{ cursor: 'pointer', userSelect: 'none', marginBottom: '0.5rem' }}
+						onClick={() => this.debugDateRangeOpen = !this.debugDateRangeOpen}
+					>
+						{this.debugDateRangeOpen ? '▼' : '▶'} debug date range
+					</h2>
+					{this.debugDateRangeOpen && (
+						<div id="debugTable">
+							<div id="debugHeader">
+								<div id="debugCell"></div>
+								<div id="debugCell">Locale</div>
+								<div id="debugCell">ISO</div>
 
-			let daylightDebug = <ul>{this.daylight.map(result =>
-				<li><strong>{result.when.toISOString()}</strong> Rise: {result.rise.toLocaleString()} Set: {result.set.toLocaleString()}</li>
-			)}</ul>;
+							</div>
+								<div id="debugRow">
+									<div id="debugCell">Begin Date</div>
+									<div id="debugCell">{this.beginDate.toLocaleString()}</div>
+									<div id="debugCell">{this.beginDate.toISOString()}</div>
+								</div>
+								<div id="debugRow">
+									<div id="debugCell">End Date</div>
+									<div id="debugCell">{this.endDate.toLocaleString()}</div>
+									<div id="debugCell">{this.endDate.toISOString()}</div>
+								</div>
+						</div>
+					)}
+				</div>
+			);
 
-			let moonRiseSetDebug = <ul>{this.moonData.map(result =>
-					<li>Rise: {result.rise.toLocaleString()} Set: {result.set.toLocaleString()} Illumination: {result.illumination} </li>
-			)}</ul>;
+			let tideSection = (
+				<div>
+					<h2
+						style={{ cursor: 'pointer', userSelect: 'none', marginBottom: '0.5rem' }}
+						onClick={() => this.debugTideOpen = !this.debugTideOpen}
+					>
+						{this.debugTideOpen ? '▼' : '▶'} debug tide response
+					</h2>
+					{this.debugTideOpen && (
+						<div>
+							<p>Max Tide: {this.tidesMaxY} Min Tide: {this.tidesMinY}</p>
+							<div id="debugTable">
+								<div id="debugHeader">
+									<div id="debugCell">Date Locale</div>
+									<div id="debugCell">Level</div>
+									<div id="debugCell">Date ISO</div>
+
+								</div>
+								{this.tides.map(result =>
+									<div id="debugRow">
+										<div id="debugCell">{result.when.toLocaleString()}</div>
+										<div id="debugCell">{result.level}</div>
+										<div id="debugCell">{result.when.toISOString()}</div>
+									</div>
+								)}
+							</div>
+						</div>
+					)}
+				</div>
+			);
+
+			let sunSection = (
+				<div>
+					<h2
+						style={{ cursor: 'pointer', userSelect: 'none', marginBottom: '0.5rem' }}
+						onClick={() => this.debugSunOpen = !this.debugSunOpen}
+					>
+						{this.debugSunOpen ? '▼' : '▶'} debug daylight response
+					</h2>
+					{this.debugSunOpen && (
+						<div id="debugTable">
+							<div id="debugHeader">
+								<div id="debugCell">Date (Local / ISO)</div>
+								<div id="debugCell">Rise Locale</div>
+								<div id="debugCell">Set Locale</div>
+								<div id="debugCell">Rise ISO</div>
+								<div id="debugCell">Set ISO</div>
+
+							</div>
+							{this.daylight.map(result =>
+								<div id="debugRow">
+									<div id="debugCell">Local: {result.when.toLocaleDateString()} Iso: {result.when.toISOString()}</div>
+									<div id="debugCell">{result.rise.toLocaleString()}</div>
+									<div id="debugCell">{result.set.toLocaleString()}</div>
+									<div id="debugCell">{result.rise.toISOString()}</div>
+									<div id="debugCell">{result.set.toISOString()}</div>
+								</div>
+							)}
+						</div>
+					)}
+				</div>
+			);
+
+			let moonSection = (
+				<div>
+					<h2
+						style={{ cursor: 'pointer', userSelect: 'none', marginBottom: '0.5rem' }}
+						onClick={() => this.debugMoonOpen = !this.debugMoonOpen}
+					>
+						{this.debugMoonOpen ? '▼' : '▶'} debug moonlight response
+					</h2>
+					{this.debugMoonOpen && (
+						<div id="debugTable">
+							<div id="debugHeader">
+								<div id="debugCell">Rise Locale</div>
+								<div id="debugCell">Set Locale</div>
+								<div id="debugCell">Illumination</div>
+								<div id="debugCell">Rise ISO</div>
+								<div id="debugCell">Set ISO</div>
+
+							</div>
+							{this.moonData.map(result =>
+								<div id="debugRow">
+									<div id="debugCell">{result.rise.toLocaleString()}</div>
+									<div id="debugCell">{result.set.toLocaleString()}</div>
+									<div id="debugCell">{result.illumination}</div>
+									<div id="debugCell">{result.rise.toISOString()}</div>
+									<div id="debugCell">{result.set.toISOString()}</div>
+								</div>
+							)}
+						</div>
+					)}
+				</div>
+			);
+
 
 			if(this.showDebug) {
 				debugContent =
 					<div>
-						<h2>debug begin/enddate state</h2>
-						<p>BeginDate: {this.beginDate.toISOString()}</p>
-						<p>EndDate: {this.endDate.toISOString()}</p>
+						{dateRangeSection}
 
-						<h2>debug tide response</h2>
-						{tideDebug}
-						<p>Max Y: {this.tidesMaxY}</p>
-						<p>Min Y: {this.tidesMinY}</p>
+						{tideSection}
 
-						<h2>debug daylight response</h2>
-						{daylightDebug}
+						{sunSection}
 
-						<h2>debug moonlight response</h2>
-						{moonRiseSetDebug}
-
+						{moonSection}
 					</div>
 			}
 
+
+
 			chart =
 				<div id="chartContainer">
+					<p><button onClick={() => this.hostElement.dispatchEvent(new CustomEvent('showUserGuide', {bubbles: true }))}>Show Help on Reading This Chart</button></p>
+
+					{this._getSvg()}
 					<p><button onClick={this._toggleDebug.bind(this)}>Toggle Debug Info</button></p>
 					{debugContent}
-					{this._getSvg()}
 				</div>
 		}
 
@@ -676,5 +788,21 @@ export class TideChart {
 				{chart}
 			</Host>
 		);
+	}
+
+
+	_getSvgLayoutRectsOnly() : string {
+		let svg =
+			<svg id="chart" viewBox={`0 0 ${this.chartRect.width} ${this.chartRect.height}`} xmlns="http://www.w3.org/2000/svg">
+				<rect id="chartArea" width="100%" height="100%" fill="rgb(128, 128, 128)" />
+				<rect id="yAxisRect" x={this.yAxisRect.x} y={this.yAxisRect.y} width={this.yAxisRect.width} height={this.yAxisRect.height} fill="rgb(0, 255, 236)" />
+				<rect id="xAxisHeaderRect" x={this.xAxisHeaderRect.x} y={this.xAxisHeaderRect.y} width={this.xAxisHeaderRect.width} height={this.xAxisHeaderRect.height} fill="rgb(255, 128, 0)" />
+				<rect id="moonRect" x={this.moonRect.x} y={this.moonRect.y} width={this.moonRect.width} height={this.moonRect.height} fill="rgb(255, 255, 0)" />
+				<rect id="xAxisFooterRect" x={this.xAxisFooterRect.x} y={this.xAxisFooterRect.y} width={this.xAxisFooterRect.width} height={this.xAxisFooterRect.height} fill="rgb(0, 128, 255)" />
+				<rect id="dayPlotArea" x={this.dayPlotArea.x} y={this.dayPlotArea.y} width={this.dayPlotArea.width} height={this.dayPlotArea.height} fill="rgb(128, 0, 255)" />
+				<rect id="tidePlotArea" x={this.tidePlotArea.x} y={this.tidePlotArea.y} width={this.tidePlotArea.width} height={this.tidePlotArea.height} fill="rgb(255, 0, 128)" />
+			</svg>
+
+		return svg;
 	}
 }

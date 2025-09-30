@@ -9,38 +9,43 @@ export class DsMain {
 	@State() selectedStation: any = null;
 
 	mapEl: HTMLDsMapElement;
-	tideChartEl: HTMLDsTideChartElement;
+	tideGuideEl: HTMLDsTideGuideElement;
 
 
 	render() {
-		return (
-		<div>
-			{this.showMap ? (
+		let map =
 			<ds-map ref={el => {
 				this.mapEl = el as HTMLDsMapElement;
 				if (this.mapEl) {
 					this.mapEl.addEventListener('stationSelected', (event: CustomEvent) => {
 						this.selectedStation = event.detail;
 						this.showMap = false;
+						console.log('!! stationSelected EVENT RECEIVED !!')
 					});
 				}
 			}} />
-			) : (
-			<ds-tide-chart
+
+		let tideChart =
+			<ds-tide-guide
 				ref={el => {
-					this.tideChartEl = el as HTMLDsTideChartElement;
-					if (this.tideChartEl) {
-						this.tideChartEl.addEventListener('resetStation', () => {
+					this.tideGuideEl = el as HTMLDsTideGuideElement;
+					if (this.tideGuideEl) {
+						this.tideGuideEl.addEventListener('resetStation', () => {
 							this.selectedStation = null;
 							this.showMap = true;
-							console.log('resetStation event received in ds-main');
+							console.log('!! resetStation EVENT RECEIVED !!')
 						});
 					}
 				}}
 				station={this.selectedStation}
 			/>
-			)}
-		</div>
+
+		let content = this.showMap ? map : tideChart;
+
+		return (
+			<div>
+				{content}
+			</div>
 		);
 	}
 }
