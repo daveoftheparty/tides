@@ -56,9 +56,6 @@ export class TideChart {
 	chartFontSize: number;
 
 
-	// TODO: add a title/hover over "Sunrise/Set" x axis lower labels that show the time. maybe add the hover to the daylight rects, too
-	// TODO: consider adding twilight before and after sunrise/set: new rects with different color
-
 	// TODO: clean up console logs. there is a lot there. put behind a new this.log variable-- it is currently being passed into a method but not declared "globally"
 	// TODO: create new component that explains how to read the chart, and create a button or link above the chart to redirect to that component
 	// TODO: style the user input box so that it doesn't take up half the vertical space on the screen
