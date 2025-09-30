@@ -56,8 +56,7 @@ export class TideChart {
 	chartFontSize: number;
 
 
-	// TODO: consider adding a y Axis title named "Sunrise/Set" at bottom of chart so that it's more obvious what the times are
-	// TODO: consider adding a y Axis title named "Moon" so that it's a little more obvious what that row is
+	// TODO: add a title/hover over "Sunrise/Set" x axis lower labels that show the time. maybe add the hover to the daylight rects, too
 	// TODO: consider adding twilight before and after sunrise/set: new rects with different color
 
 	// TODO: clean up console logs. there is a lot there. put behind a new this.log variable-- it is currently being passed into a method but not declared "globally"
@@ -497,26 +496,6 @@ export class TideChart {
 						)
 					}
 				</g>
-
-
-				<clipPath
-					id="tideClip">
-					<rect
-						x={this.tidePlotArea.x}
-						y={this.tidePlotArea.y}
-						width={this.tidePlotArea.width}
-						height={this.tidePlotArea.height} />
-				</clipPath>
-				<g id="tides" clip-path="url(#tideClip)">
-					<path class="tideSineWave" id="tideSineWave" d={this._getTideSineWave()} />
-					{
-						this._getTideCoords().map(i =>
-							<circle class="tideMarker" id={`tide-marker-${i.index}`} cx={i.x} cy={i.y} r="4">
-								<title>{this.tides[i.index].level} ft at {this.tides[i.index].when.toLocaleTimeString()}</title>
-							</circle>
-						)
-					}
-				</g>
 				<g id="y-axis-ticks-and-labels">
 					{
 						yAxis.map(i =>
@@ -563,6 +542,25 @@ export class TideChart {
 							>
 								{i.label}
 							</text>
+						)
+					}
+				</g>
+
+				<clipPath
+					id="tideClip">
+					<rect
+						x={this.tidePlotArea.x}
+						y={this.tidePlotArea.y}
+						width={this.tidePlotArea.width}
+						height={this.tidePlotArea.height} />
+				</clipPath>
+				<g id="tides" clip-path="url(#tideClip)">
+					<path class="tideSineWave" id="tideSineWave" d={this._getTideSineWave()} />
+					{
+						this._getTideCoords().map(i =>
+							<circle class="tideMarker" id={`tide-marker-${i.index}`} cx={i.x} cy={i.y} r="4">
+								<title>{this.tides[i.index].level} ft at {this.tides[i.index].when.toLocaleTimeString()}</title>
+							</circle>
 						)
 					}
 				</g>
