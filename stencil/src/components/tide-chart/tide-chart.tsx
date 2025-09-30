@@ -57,7 +57,6 @@ export class TideChart {
 
 
 	// TODO: clean up console logs. there is a lot there. put behind a new this.log variable-- it is currently being passed into a method but not declared "globally"
-	// TODO: create new component that explains how to read the chart, and create a button or link above the chart to redirect to that component
 	// TODO: style the user input box so that it doesn't take up half the vertical space on the screen
 	// TODO: consider reducing tide api date call so there isn't too much extra info, impacting the tideMax and tideMin more than we need
 	// TODO: consider putting a render() counter and seeing if I have the lifecycle right for componentDidLoad and the API async calls

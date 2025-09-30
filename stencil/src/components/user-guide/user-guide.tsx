@@ -11,12 +11,114 @@ export class UserGuide {
 	render() {
 		return (
 			<div>
-				User Guide Component
-
+				<h1>Sun, Moon, Tide: reading the chart</h1>
 				<p><button onClick={() => this.hostElement.dispatchEvent(new CustomEvent('backToTide', {bubbles: true }))}>Back to Tide Chart</button></p>
 
+
+				<p>This chart shows the predicted tides for the selected NOAA tide station over a 7-day period. The
+				chart also includes information about sunrise and sunset times, as well as moon data. From top to bottom:</p>
+
+
+				<h2>Moon</h2>
+				<p>
+					The greyish squares
+				</p>
+
+				<div style={{ maxWidth: '100px' }}>
+					{this._getSampleMoonRect()}
+				</div>
+
+				<p>
+					at the top of the chart represent the moon: when it rises, when it sets, and how
+					illuminated it is. 100% is as bright as the moon gets-- full moon, 0% would be a new moon. Illumination
+					data seems much more useful that knowing you're halfway between quarters (moon phases).
+				</p>
+
+				<p>
+					<b><i>Tip:</i></b> hover over the greyish squares or the illumination percentages to get the exact moonrise and set time.
+				</p>
+
+				<h2>Sun</h2>
+				<p>
+					The dark blue and light blue rectangles represent daylight and nighttime hours. The left edge of each
+					rectangle is the time of sunrise, and the right edge is the time of sunset.
+				</p>
+
+				<p>
+					There is no hover functionality here, because the sunrise and set times are labelled at the bottom of the chart.
+					In the sample below, note that the sun rises at 7:23 am on Tuesday, and sets at 7:18 pm (24-hour clock).
+				</p>
+
+				<p>
+					<b><i>Tip:</i></b> remember that it gets light about 30 minutes before sunrise, and stays light about 30 minutes after sunset.
+				</p>
+
+				<h2>Tide</h2>
+
+
+				<p>
+					<b><i>Tip:</i></b> hover over the circular tide markers
+				</p>
+
+				<div style={{ maxWidth: '35px' }}>
+					{this._getSampleTideMarker()}
+				</div>
+
+				<p>
+					to get the exact tide height and time.
+				</p>
+
 				{this._getSampleChart()}
+				<p><button onClick={() => this.hostElement.dispatchEvent(new CustomEvent('backToTide', {bubbles: true }))}>Back to Tide Chart</button></p>
 			</div>
+		);
+	}
+
+	_getSampleMoonRect(): string {
+		return (
+		<svg xmlns="http://www.w3.org/2000/svg" id="chart" viewBox="0 0 100 25">
+				<style>
+					{`
+					.chartMoonData {
+						fill: rgb(151, 151, 190);;
+					}`
+					}
+				</style>
+				<g>
+					<rect class="chartMoonData" id="moonSample" width="100%" height="100%" >
+						<title>
+							moonrise: 3:11:58 PM&#10;
+							set: 1:38:54 AM&#10;
+							illumination: 61&#10;
+						</title>
+					</rect>
+					<text class="moonLabel" id="moon-label-4" text-anchor="middle" dominant-baseline="middle" x="50%" y="50%" font-size="18">
+						61%
+						<title>
+							moonrise: 3:11:58 PM&#10;
+							set: 1:38:54 AM&#10;
+							illumination: 61&#10;
+						</title>
+					</text>
+				</g>
+		</svg>
+		);
+	}
+
+	_getSampleTideMarker(): string {
+		return (
+		<svg xmlns="http://www.w3.org/2000/svg" id="chart" viewBox="0 0 25 25">
+				<style>
+					{`
+					.tideMarker {
+						fill: rgb(42, 127, 255);
+					}`
+					}
+				</style>
+				<circle class="tideMarker" id="tide-marker-6" cx="50%" cy="50%" r="4">
+					<title>1.053 ft at 8:25:00 AM</title>
+				</circle>
+		</svg>
 		);
 	}
 
