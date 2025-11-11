@@ -473,20 +473,18 @@ export class TideChart {
 
 		// Filter daylight events to selected date range
 		this.daylight.forEach(day => {
-			const riseLocal = UtcToLocal(day.rise);
-			const setLocal = UtcToLocal(day.set);
-
-			if (riseLocal >= this.beginDate && riseLocal <= this.endDate) {
+			// Use UTC dates directly - JavaScript Date methods will display in local time
+			if (day.rise >= this.beginDate && day.rise <= this.endDate) {
 				result.push({
-					when: riseLocal,
+					when: day.rise,
 					activity: 'Sunrise',
 					data: ''
 				});
 			}
 
-			if (setLocal >= this.beginDate && setLocal <= this.endDate) {
+			if (day.set >= this.beginDate && day.set <= this.endDate) {
 				result.push({
-					when: setLocal,
+					when: day.set,
 					activity: 'Sunset',
 					data: ''
 				});
@@ -495,11 +493,9 @@ export class TideChart {
 
 		// Filter tide events to selected date range
 		this.tides.forEach(tide => {
-			const tideLocal = UtcToLocal(tide.when);
-
-			if (tideLocal >= this.beginDate && tideLocal <= this.endDate) {
+			if (tide.when >= this.beginDate && tide.when <= this.endDate) {
 				result.push({
-					when: tideLocal,
+					when: tide.when,
 					activity: tide.type === 'H' ? 'High Tide' : 'Low Tide',
 					data: `${tide.level.toFixed(3)} ft`
 				});
@@ -508,20 +504,17 @@ export class TideChart {
 
 		// Filter moon events to selected date range
 		this.moonData.forEach(moon => {
-			const riseLocal = UtcToLocal(moon.rise);
-			const setLocal = UtcToLocal(moon.set);
-
-			if (riseLocal >= this.beginDate && riseLocal <= this.endDate) {
+			if (moon.rise >= this.beginDate && moon.rise <= this.endDate) {
 				result.push({
-					when: riseLocal,
+					when: moon.rise,
 					activity: 'Moonrise',
 					data: moon.illumination
 				});
 			}
 
-			if (setLocal >= this.beginDate && setLocal <= this.endDate) {
+			if (moon.set >= this.beginDate && moon.set <= this.endDate) {
 				result.push({
-					when: setLocal,
+					when: moon.set,
 					activity: 'Moonset',
 					data: moon.illumination
 				});
@@ -548,18 +541,17 @@ export class TideChart {
 			return '';
 		};
 
-		// Helper function to format time as "h:mm am/pm"
+		// Helper function to format time as "h:mm am/pm" in local time
 		const formatTime = (date: Date) => {
-			let hours = date.getHours();
-			const minutes = date.getMinutes();
-			const ampm = hours >= 12 ? 'pm' : 'am';
-			hours = hours % 12;
-			hours = hours ? hours : 12; // hour '0' should be '12'
-			const minutesStr = minutes < 10 ? '0' + minutes : minutes;
-			return `${hours}:${minutesStr} ${ampm}`;
+			// Use toLocaleTimeString with specific options to get local time
+			return date.toLocaleTimeString('en-US', {
+				hour: 'numeric',
+				minute: '2-digit',
+				hour12: true
+			});
 		};
 
-		// Helper function to format date as "YYYY-MM-DD"
+		// Helper function to format date as "YYYY-MM-DD" in local time
 		const formatDate = (date: Date) => {
 			const year = date.getFullYear();
 			const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -577,9 +569,8 @@ export class TideChart {
 			});
 
 			if (dayData) {
-				const riseLocal = UtcToLocal(dayData.rise);
-				const setLocal = UtcToLocal(dayData.set);
-				return eventDate >= riseLocal && eventDate <= setLocal;
+				// Use UTC dates directly - comparison will work correctly
+				return eventDate >= dayData.rise && eventDate <= dayData.set;
 			}
 			return false;
 		};
