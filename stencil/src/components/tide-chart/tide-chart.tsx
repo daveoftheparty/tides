@@ -899,6 +899,7 @@ export class TideChart {
 					<p><button onClick={() => this.hostElement.dispatchEvent(new CustomEvent('showUserGuide', {bubbles: true }))}>Show Help on Reading This Chart</button></p>
 
 					{this._getSvg()}
+					{this._getUserDataTable()}
 					<p><button onClick={this._toggleDebug.bind(this)}>Toggle Debug Info</button></p>
 					{debugContent}
 				</div>
