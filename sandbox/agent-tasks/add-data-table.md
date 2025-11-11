@@ -27,6 +27,7 @@ where there is an "i" in the data table, we will output an icon
 - create a new method in tide-chart.tsx to normalize and sort our sun, tide, and moon data
 - place the method above the getSvg() method
 - the method should return an array or collection of dates and activity code (sun rise, sun set, moon rise, moon set, tide high, tide low) and additional activity data attribute (tide height, moon illumination)
+- only include events within the user's selected date range (this.beginDate to this.endDate), using local time
 - this is a data method only, no html or jsx shall be produced.
 
 ### step two
@@ -42,6 +43,12 @@ where there is an "i" in the data table, we will output an icon
   - ☀ \u2600 for sun rise or set
   - 💧 \u{1F4A7} for high or low tide
 - for any table row that occurs on or after sunrise, and before or on sunset, emit a different class such as "userDataSunup". for other table rows, use a different class such as "userDataSundown"
+- the table has 5 columns: Day, Time, Activity, (data), Date
+  - Day column: day of week (e.g., "Sat", "Sun")
+  - Time column: time in format "h:mm am/pm" (e.g., "6:50 am")
+  - Activity column: activity name (e.g., "Sunrise", "Moonrise", "Low Tide", "High Tide")
+  - Data column: tide height for tides (e.g., "-0.169 ft"), moon illumination for moon events (e.g., "6%"), empty for sun events
+  - Date column: date in format "YYYY-MM-DD" (e.g., "2025-11-22")
 
 ### step three
 - in tide-chart.tsx render() method, where chart is assigned, place the resulting JSX from step two's method after the svg data and before the button to toggle debug info
