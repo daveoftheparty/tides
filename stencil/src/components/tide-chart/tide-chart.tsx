@@ -536,6 +536,82 @@ export class TideChart {
 	}
 
 
+	_getUserDataTable() {
+		const events = this._getUserDataEvents();
+		const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+		// Helper function to get icon based on activity
+		const getIcon = (activity: string) => {
+			if (activity === 'Sunrise' || activity === 'Sunset') return '\u2600';
+			if (activity === 'Moonrise' || activity === 'Moonset') return '\u{1F319}';
+			if (activity === 'High Tide' || activity === 'Low Tide') return '\u{1F4A7}';
+			return '';
+		};
+
+		// Helper function to format time as "h:mm am/pm"
+		const formatTime = (date: Date) => {
+			let hours = date.getHours();
+			const minutes = date.getMinutes();
+			const ampm = hours >= 12 ? 'pm' : 'am';
+			hours = hours % 12;
+			hours = hours ? hours : 12; // hour '0' should be '12'
+			const minutesStr = minutes < 10 ? '0' + minutes : minutes;
+			return `${hours}:${minutesStr} ${ampm}`;
+		};
+
+		// Helper function to format date as "YYYY-MM-DD"
+		const formatDate = (date: Date) => {
+			const year = date.getFullYear();
+			const month = String(date.getMonth() + 1).padStart(2, '0');
+			const day = String(date.getDate()).padStart(2, '0');
+			return `${year}-${month}-${day}`;
+		};
+
+		// Helper function to determine if time is during daytime
+		const isDaytime = (eventDate: Date) => {
+			// Find the daylight data for this date
+			const dayData = this.daylight.find(day => {
+				const dayLocal = new Date(day.when.getFullYear(), day.when.getMonth(), day.when.getDate());
+				const eventLocal = new Date(eventDate.getFullYear(), eventDate.getMonth(), eventDate.getDate());
+				return dayLocal.getTime() === eventLocal.getTime();
+			});
+
+			if (dayData) {
+				const riseLocal = UtcToLocal(dayData.rise);
+				const setLocal = UtcToLocal(dayData.set);
+				return eventDate >= riseLocal && eventDate <= setLocal;
+			}
+			return false;
+		};
+
+		return (
+			<div id="userDataTableContainer">
+				<div id="userDataTable">
+					<div class="userDataHeader">
+						<div class="userDataCell">Day</div>
+						<div class="userDataCell">Time</div>
+						<div class="userDataCell">Activity</div>
+						<div class="userDataCell">Data</div>
+						<div class="userDataCell">Date</div>
+					</div>
+					{events.map((event, index) => {
+						const rowClass = isDaytime(event.when) ? 'userDataSunup' : 'userDataSundown';
+						return (
+							<div class={`userDataRow ${rowClass}`} key={index}>
+								<div class="userDataCell">{dayNames[event.when.getDay()]}</div>
+								<div class="userDataCell">{formatTime(event.when)}</div>
+								<div class="userDataCell">{getIcon(event.activity)} {event.activity}</div>
+								<div class="userDataCell">{event.data}</div>
+								<div class="userDataCell">{formatDate(event.when)}</div>
+							</div>
+						);
+					})}
+				</div>
+			</div>
+		);
+	}
+
+
 	_getSvg() : string {
 		const yAxis = this._getYAxis();
 
