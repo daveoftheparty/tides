@@ -468,6 +468,74 @@ export class TideChart {
 	}
 
 
+	_getUserDataEvents() : {when: Date, activity: string, data: string}[] {
+		const result: {when: Date, activity: string, data: string}[] = [];
+
+		// Filter daylight events to selected date range
+		this.daylight.forEach(day => {
+			const riseLocal = UtcToLocal(day.rise);
+			const setLocal = UtcToLocal(day.set);
+
+			if (riseLocal >= this.beginDate && riseLocal <= this.endDate) {
+				result.push({
+					when: riseLocal,
+					activity: 'Sunrise',
+					data: ''
+				});
+			}
+
+			if (setLocal >= this.beginDate && setLocal <= this.endDate) {
+				result.push({
+					when: setLocal,
+					activity: 'Sunset',
+					data: ''
+				});
+			}
+		});
+
+		// Filter tide events to selected date range
+		this.tides.forEach(tide => {
+			const tideLocal = UtcToLocal(tide.when);
+
+			if (tideLocal >= this.beginDate && tideLocal <= this.endDate) {
+				result.push({
+					when: tideLocal,
+					activity: tide.type === 'H' ? 'High Tide' : 'Low Tide',
+					data: `${tide.level.toFixed(3)} ft`
+				});
+			}
+		});
+
+		// Filter moon events to selected date range
+		this.moonData.forEach(moon => {
+			const riseLocal = UtcToLocal(moon.rise);
+			const setLocal = UtcToLocal(moon.set);
+
+			if (riseLocal >= this.beginDate && riseLocal <= this.endDate) {
+				result.push({
+					when: riseLocal,
+					activity: 'Moonrise',
+					data: moon.illumination
+				});
+			}
+
+			if (setLocal >= this.beginDate && setLocal <= this.endDate) {
+				result.push({
+					when: setLocal,
+					activity: 'Moonset',
+					data: moon.illumination
+				});
+			}
+		});
+
+		// Sort all events by time
+		result.sort((a, b) => a.when.valueOf() - b.when.valueOf());
+
+		console.log('getUserDataEvents result', result);
+		return result;
+	}
+
+
 	_getSvg() : string {
 		const yAxis = this._getYAxis();
 
