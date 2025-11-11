@@ -471,10 +471,34 @@ export class TideChart {
 	_getUserDataEvents() : {when: Date, activity: string, data: string}[] {
 		const result: {when: Date, activity: string, data: string}[] = [];
 
+		// Helper function to check if a date falls within our local date range
+		// Compare only the date portion (year, month, day) in local time
+		const isInRange = (date: Date) => {
+			// Get the local date components of the event
+			const eventYear = date.getFullYear();
+			const eventMonth = date.getMonth();
+			const eventDay = date.getDate();
+
+			// Get the UTC date components of our range (since beginDate/endDate are stored as UTC midnight)
+			const beginYear = this.beginDate.getUTCFullYear();
+			const beginMonth = this.beginDate.getUTCMonth();
+			const beginDay = this.beginDate.getUTCDate();
+
+			const endYear = this.endDate.getUTCFullYear();
+			const endMonth = this.endDate.getUTCMonth();
+			const endDay = this.endDate.getUTCDate();
+
+			// Create Date objects at midnight for comparison (all in local time)
+			const eventMidnight = new Date(eventYear, eventMonth, eventDay);
+			const beginMidnight = new Date(beginYear, beginMonth, beginDay);
+			const endMidnight = new Date(endYear, endMonth, endDay);
+
+			return eventMidnight >= beginMidnight && eventMidnight <= endMidnight;
+		};
+
 		// Filter daylight events to selected date range
 		this.daylight.forEach(day => {
-			// Use UTC dates directly - JavaScript Date methods will display in local time
-			if (day.rise >= this.beginDate && day.rise <= this.endDate) {
+			if (isInRange(day.rise)) {
 				result.push({
 					when: day.rise,
 					activity: 'Sunrise',
@@ -482,7 +506,7 @@ export class TideChart {
 				});
 			}
 
-			if (day.set >= this.beginDate && day.set <= this.endDate) {
+			if (isInRange(day.set)) {
 				result.push({
 					when: day.set,
 					activity: 'Sunset',
@@ -493,7 +517,7 @@ export class TideChart {
 
 		// Filter tide events to selected date range
 		this.tides.forEach(tide => {
-			if (tide.when >= this.beginDate && tide.when <= this.endDate) {
+			if (isInRange(tide.when)) {
 				result.push({
 					when: tide.when,
 					activity: tide.type === 'H' ? 'High Tide' : 'Low Tide',
@@ -504,7 +528,7 @@ export class TideChart {
 
 		// Filter moon events to selected date range
 		this.moonData.forEach(moon => {
-			if (moon.rise >= this.beginDate && moon.rise <= this.endDate) {
+			if (isInRange(moon.rise)) {
 				result.push({
 					when: moon.rise,
 					activity: 'Moonrise',
@@ -512,7 +536,7 @@ export class TideChart {
 				});
 			}
 
-			if (moon.set >= this.beginDate && moon.set <= this.endDate) {
+			if (isInRange(moon.set)) {
 				result.push({
 					when: moon.set,
 					activity: 'Moonset',
