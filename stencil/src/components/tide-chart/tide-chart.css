@@ -90,3 +90,7 @@
 .userDataRow:hover {
 	background-color: #f0f0f0;
 }
+
+.userDataDayBreak {
+	border-top: 3px solid #999;
+}

@@ -611,8 +611,20 @@ export class TideChart {
 					</div>
 					{events.map((event, index) => {
 						const rowClass = isDaytime(event.when) ? 'userDataSunup' : 'userDataSundown';
+						
+						// Check if this is the first event of a new day
+						let isNewDay = false;
+						if (index > 0) {
+							const prevEvent = events[index - 1];
+							const prevDate = formatDate(prevEvent.when);
+							const currentDate = formatDate(event.when);
+							isNewDay = prevDate !== currentDate;
+						}
+						
+						const dayBreakClass = isNewDay ? 'userDataDayBreak' : '';
+						
 						return (
-							<div class={`userDataRow ${rowClass}`} key={index}>
+							<div class={`userDataRow ${rowClass} ${dayBreakClass}`} key={index}>
 								<div class="userDataCell">{dayNames[event.when.getDay()]}</div>
 								<div class="userDataCell">{formatTime(event.when)}</div>
 								<div class="userDataCell">{getIcon(event.activity)} {event.activity}</div>
