@@ -526,13 +526,14 @@ export class TideChart {
 			}
 		});
 
+		const illumination = " illumination";
 		// Filter moon events to selected date range
 		this.moonData.forEach(moon => {
 			if (isInRange(moon.rise)) {
 				result.push({
 					when: moon.rise,
 					activity: 'Moonrise',
-					data: moon.illumination
+					data: moon.illumination + illumination
 				});
 			}
 
@@ -540,7 +541,7 @@ export class TideChart {
 				result.push({
 					when: moon.set,
 					activity: 'Moonset',
-					data: moon.illumination
+					data: moon.illumination + illumination
 				});
 			}
 		});
@@ -583,53 +584,60 @@ export class TideChart {
 			return `${year}-${month}-${day}`;
 		};
 
-		// Initialize sun tracking - start with sun up if first event is Sunrise
-		let isSunUp = events.length > 0 && events[0].activity === 'Sunrise';
+		// Group events by day
+		const eventsByDay: {[key: string]: typeof events} = {};
+		events.forEach(event => {
+			const dateKey = formatDate(event.when);
+			if (!eventsByDay[dateKey]) {
+				eventsByDay[dateKey] = [];
+			}
+			eventsByDay[dateKey].push(event);
+		});
+
+		// Get sorted list of dates
+		const dates = Object.keys(eventsByDay).sort();
 
 		return (
 			<div id="userDataTableContainer">
-				<div id="userDataTable">
-					<div class="userDataHeader">
-						<div class="userDataCell">Day</div>
-						<div class="userDataCell">Time</div>
-						<div class="userDataCell">Activity</div>
-						<div class="userDataCell">Data</div>
-						<div class="userDataCell">Date</div>
-					</div>
-					{events.map((event, index) => {
-						// Update sun state based on Sunrise or Sunset
-						if (event.activity === 'Sunrise') {
-							isSunUp = true;
-						} else if (event.activity === 'Sunset') {
-							isSunUp = false;
-						}
+				{dates.map((dateKey, dayIndex) => {
+					const dayEvents = eventsByDay[dateKey];
+					// Initialize sun tracking for each day - start with sun up if first event is Sunrise
+					let isSunUp = dayEvents.length > 0 && dayEvents[0].activity === 'Sunrise';
 
-						// Determine row class - Sunrise and Sunset rows are always light (sunup)
-						const isSunEvent = event.activity === 'Sunrise' || event.activity === 'Sunset';
-						const rowClass = (isSunUp || isSunEvent) ? 'userDataSunup' : 'userDataSundown';
-
-						// Check if this is the first event of a new day
-						let isNewDay = false;
-						if (index > 0) {
-							const prevEvent = events[index - 1];
-							const prevDate = formatDate(prevEvent.when);
-							const currentDate = formatDate(event.when);
-							isNewDay = prevDate !== currentDate;
-						}
-
-						const dayBreakClass = isNewDay ? 'userDataDayBreak' : '';
-
-						return (
-							<div class={`userDataRow ${rowClass} ${dayBreakClass}`} key={index}>
-								<div class="userDataCell">{dayNames[event.when.getDay()]}</div>
-								<div class="userDataCell">{formatTime(event.when)}</div>
-								<div class="userDataCell">{getIcon(event.activity)} {event.activity}</div>
-								<div class="userDataCell">{event.data}</div>
-								<div class="userDataCell">{formatDate(event.when)}</div>
+					return (
+						<div class="userDataTable" key={dayIndex}>
+							<div class="userDataHeader">
+								<div class="userDataCell">Day</div>
+								<div class="userDataCell">Time</div>
+								<div class="userDataCell">Activity</div>
+								<div class="userDataCell">Data</div>
+								<div class="userDataCell">Date</div>
 							</div>
-						);
-					})}
-				</div>
+							{dayEvents.map((event, index) => {
+								// Update sun state based on Sunrise or Sunset
+								if (event.activity === 'Sunrise') {
+									isSunUp = true;
+								} else if (event.activity === 'Sunset') {
+									isSunUp = false;
+								}
+
+								// Determine row class - Sunrise and Sunset rows are always light (sunup)
+								const isSunEvent = event.activity === 'Sunrise' || event.activity === 'Sunset';
+								const rowClass = (isSunUp || isSunEvent) ? 'userDataSunup' : 'userDataSundown';
+
+								return (
+									<div class={`userDataRow ${rowClass}`} key={index}>
+										<div class="userDataCell">{dayNames[event.when.getDay()]}</div>
+										<div class="userDataCell">{formatTime(event.when)}</div>
+										<div class="userDataCell">{getIcon(event.activity)} {event.activity}</div>
+										<div class="userDataCell">{event.data}</div>
+										<div class="userDataCell">{formatDate(event.when)}</div>
+									</div>
+								);
+							})}
+						</div>
+					);
+				})}
 			</div>
 		);
 	}

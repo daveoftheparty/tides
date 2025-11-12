@@ -49,11 +49,12 @@
 	margin-top: 2rem;
 }
 
-#userDataTable {
+.userDataTable {
 	display: table;
 	border-collapse: collapse;
 	width: 100%;
 	max-width: 800px;
+	margin-bottom: 2rem;
 }
 
 .userDataHeader {
@@ -90,8 +91,4 @@
 
 .userDataRow:hover {
 	background-color: #f0f0f0;
-}
-
-.userDataDayBreak {
-	border-top: 3px solid #999;
 }
