@@ -429,11 +429,12 @@ export class TideChart {
 			}
 
 			.chartDayDark {
-				fill: rgb(0, 34, 43);
+				/* fill: rgb(0, 34, 43); */
+				fill: #1e3a5f
 			}
 			.chartDaylight {
-				/* fill: rgb(205, 205, 255); */
-				fill: rgb(170, 238, 255);
+				/* fill: rgb(170, 238, 255); */
+				fill: #fffacd;
 			}
 			.tideMarker {
 				fill: rgb(42, 127, 255);
