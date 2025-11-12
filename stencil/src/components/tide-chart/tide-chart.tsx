@@ -583,21 +583,8 @@ export class TideChart {
 			return `${year}-${month}-${day}`;
 		};
 
-		// Helper function to determine if time is during daytime
-		const isDaytime = (eventDate: Date) => {
-			// Find the daylight data for this date
-			const dayData = this.daylight.find(day => {
-				const dayLocal = new Date(day.when.getFullYear(), day.when.getMonth(), day.when.getDate());
-				const eventLocal = new Date(eventDate.getFullYear(), eventDate.getMonth(), eventDate.getDate());
-				return dayLocal.getTime() === eventLocal.getTime();
-			});
-
-			if (dayData) {
-				// Use UTC dates directly - comparison will work correctly
-				return eventDate >= dayData.rise && eventDate <= dayData.set;
-			}
-			return false;
-		};
+		// Initialize sun tracking - start with sun up if first event is Sunrise
+		let isSunUp = events.length > 0 && events[0].activity === 'Sunrise';
 
 		return (
 			<div id="userDataTableContainer">
@@ -610,8 +597,17 @@ export class TideChart {
 						<div class="userDataCell">Date</div>
 					</div>
 					{events.map((event, index) => {
-						const rowClass = isDaytime(event.when) ? 'userDataSunup' : 'userDataSundown';
-						
+						// Update sun state based on Sunrise or Sunset
+						if (event.activity === 'Sunrise') {
+							isSunUp = true;
+						} else if (event.activity === 'Sunset') {
+							isSunUp = false;
+						}
+
+						// Determine row class - Sunrise and Sunset rows are always light (sunup)
+						const isSunEvent = event.activity === 'Sunrise' || event.activity === 'Sunset';
+						const rowClass = (isSunUp || isSunEvent) ? 'userDataSunup' : 'userDataSundown';
+
 						// Check if this is the first event of a new day
 						let isNewDay = false;
 						if (index > 0) {
@@ -620,9 +616,9 @@ export class TideChart {
 							const currentDate = formatDate(event.when);
 							isNewDay = prevDate !== currentDate;
 						}
-						
+
 						const dayBreakClass = isNewDay ? 'userDataDayBreak' : '';
-						
+
 						return (
 							<div class={`userDataRow ${rowClass} ${dayBreakClass}`} key={index}>
 								<div class="userDataCell">{dayNames[event.when.getDay()]}</div>
