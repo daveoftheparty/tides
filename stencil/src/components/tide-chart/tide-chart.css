@@ -42,3 +42,53 @@
 	max-width: 100%;
 	overflow: auto;
 }
+
+
+/* User Data Table Styles */
+#userDataTableContainer {
+	margin-top: 2rem;
+}
+
+.userDataTable {
+	display: table;
+	border-collapse: collapse;
+	width: 100%;
+	max-width: 800px;
+	margin-bottom: 2rem;
+}
+
+.userDataHeader {
+	display: table-header-group;
+	font-weight: bold;
+	background-color: #333;
+	color: white;
+}
+
+.userDataRow {
+	display: table-row;
+}
+
+.userDataCell {
+	display: table-cell;
+	padding: 0.5rem;
+	border: 1px solid #ccc;
+	text-align: left;
+}
+
+.userDataHeader .userDataCell {
+	padding: 0.75rem 0.5rem;
+	border: 1px solid #555;
+}
+
+.userDataSunup {
+	background-color: #fffacd;
+}
+
+.userDataSundown {
+	background-color: #1e3a5f;
+	color: #e0e0e0;
+}
+
+.userDataRow:hover {
+	background-color: #f0f0f0;
+}

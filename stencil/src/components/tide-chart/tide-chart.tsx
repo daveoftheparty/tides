@@ -193,14 +193,14 @@ export class TideChart {
 	_mockTides() : TideResponse[] {
 
 		return [
-			{when: new Date(this.beginDate.getFullYear(), this.beginDate.getMonth(), this.beginDate.getDate() + 1, 10, 0, 0), level: 5},
-			{when: new Date(this.beginDate.getFullYear(), this.beginDate.getMonth(), this.beginDate.getDate() + 1, 16, 0, 0), level: 1},
+			{when: new Date(this.beginDate.getFullYear(), this.beginDate.getMonth(), this.beginDate.getDate() + 1, 10, 0, 0), level: 5, type: 'H'},
+			{when: new Date(this.beginDate.getFullYear(), this.beginDate.getMonth(), this.beginDate.getDate() + 1, 16, 0, 0), level: 1, type: 'L'},
 
-			{when: new Date(this.beginDate.getFullYear(), this.beginDate.getMonth(), this.beginDate.getDate() + 2, 8, 0, 0), level: 5},
-			{when: new Date(this.beginDate.getFullYear(), this.beginDate.getMonth(), this.beginDate.getDate() + 2, 10, 0, 0), level: 4},
-			{when: new Date(this.beginDate.getFullYear(), this.beginDate.getMonth(), this.beginDate.getDate() + 2, 12, 0, 0), level: 3},
-			{when: new Date(this.beginDate.getFullYear(), this.beginDate.getMonth(), this.beginDate.getDate() + 2, 14, 0, 0), level: 2},
-			{when: new Date(this.beginDate.getFullYear(), this.beginDate.getMonth(), this.beginDate.getDate() + 2, 16, 0, 0), level: 1},
+			{when: new Date(this.beginDate.getFullYear(), this.beginDate.getMonth(), this.beginDate.getDate() + 2, 8, 0, 0), level: 5, type: 'H'},
+			{when: new Date(this.beginDate.getFullYear(), this.beginDate.getMonth(), this.beginDate.getDate() + 2, 10, 0, 0), level: 4, type: 'H'},
+			{when: new Date(this.beginDate.getFullYear(), this.beginDate.getMonth(), this.beginDate.getDate() + 2, 12, 0, 0), level: 3, type: 'L'},
+			{when: new Date(this.beginDate.getFullYear(), this.beginDate.getMonth(), this.beginDate.getDate() + 2, 14, 0, 0), level: 2, type: 'L'},
+			{when: new Date(this.beginDate.getFullYear(), this.beginDate.getMonth(), this.beginDate.getDate() + 2, 16, 0, 0), level: 1, type: 'L'},
 		]
 	}
 
@@ -429,11 +429,12 @@ export class TideChart {
 			}
 
 			.chartDayDark {
-				fill: rgb(0, 34, 43);
+				/* fill: rgb(0, 34, 43); */
+				fill: #1e3a5f
 			}
 			.chartDaylight {
-				/* fill: rgb(205, 205, 255); */
-				fill: rgb(170, 238, 255);
+				/* fill: rgb(170, 238, 255); */
+				fill: #fffacd;
 			}
 			.tideMarker {
 				fill: rgb(42, 127, 255);
@@ -465,6 +466,181 @@ export class TideChart {
 		this.loaded = false;
 		this.hostElement.dispatchEvent(new CustomEvent('resetStation', {bubbles: true, composed: true }));
 		console.log('clearing station data and dispatching resetStation event');
+	}
+
+
+	_getUserDataEvents() : {when: Date, activity: string, data: string}[] {
+		const result: {when: Date, activity: string, data: string}[] = [];
+
+		// Helper function to check if a date falls within our local date range
+		// Compare only the date portion (year, month, day) in local time
+		const isInRange = (date: Date) => {
+			// Get the local date components of the event
+			const eventYear = date.getFullYear();
+			const eventMonth = date.getMonth();
+			const eventDay = date.getDate();
+
+			// Get the UTC date components of our range (since beginDate/endDate are stored as UTC midnight)
+			const beginYear = this.beginDate.getUTCFullYear();
+			const beginMonth = this.beginDate.getUTCMonth();
+			const beginDay = this.beginDate.getUTCDate();
+
+			const endYear = this.endDate.getUTCFullYear();
+			const endMonth = this.endDate.getUTCMonth();
+			const endDay = this.endDate.getUTCDate();
+
+			// Create Date objects at midnight for comparison (all in local time)
+			const eventMidnight = new Date(eventYear, eventMonth, eventDay);
+			const beginMidnight = new Date(beginYear, beginMonth, beginDay);
+			const endMidnight = new Date(endYear, endMonth, endDay);
+
+			return eventMidnight >= beginMidnight && eventMidnight <= endMidnight;
+		};
+
+		// Filter daylight events to selected date range
+		this.daylight.forEach(day => {
+			if (isInRange(day.rise)) {
+				result.push({
+					when: day.rise,
+					activity: 'Sunrise',
+					data: ''
+				});
+			}
+
+			if (isInRange(day.set)) {
+				result.push({
+					when: day.set,
+					activity: 'Sunset',
+					data: ''
+				});
+			}
+		});
+
+		// Filter tide events to selected date range
+		this.tides.forEach(tide => {
+			if (isInRange(tide.when)) {
+				result.push({
+					when: tide.when,
+					activity: tide.type === 'H' ? 'High Tide' : 'Low Tide',
+					data: `${tide.level.toFixed(3)} ft`
+				});
+			}
+		});
+
+		const illumination = " illumination";
+		// Filter moon events to selected date range
+		this.moonData.forEach(moon => {
+			if (isInRange(moon.rise)) {
+				result.push({
+					when: moon.rise,
+					activity: 'Moonrise',
+					data: moon.illumination + illumination
+				});
+			}
+
+			if (isInRange(moon.set)) {
+				result.push({
+					when: moon.set,
+					activity: 'Moonset',
+					data: moon.illumination + illumination
+				});
+			}
+		});
+
+		// Sort all events by time
+		result.sort((a, b) => a.when.valueOf() - b.when.valueOf());
+
+		console.log('getUserDataEvents result', result);
+		return result;
+	}
+
+
+	_getUserDataTable() {
+		const events = this._getUserDataEvents();
+		const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+		// Helper function to get icon based on activity
+		const getIcon = (activity: string) => {
+			if (activity === 'Sunrise' || activity === 'Sunset') return '\u2600';
+			if (activity === 'Moonrise' || activity === 'Moonset') return '\u{1F319}';
+			if (activity === 'High Tide' || activity === 'Low Tide') return '\u{1F4A7}';
+			return '';
+		};
+
+		// Helper function to format time as "h:mm am/pm" in local time
+		const formatTime = (date: Date) => {
+			// Use toLocaleTimeString with specific options to get local time
+			return date.toLocaleTimeString('en-US', {
+				hour: 'numeric',
+				minute: '2-digit',
+				hour12: true
+			});
+		};
+
+		// Helper function to format date as "YYYY-MM-DD" in local time
+		const formatDate = (date: Date) => {
+			const year = date.getFullYear();
+			const month = String(date.getMonth() + 1).padStart(2, '0');
+			const day = String(date.getDate()).padStart(2, '0');
+			return `${year}-${month}-${day}`;
+		};
+
+		// Group events by day
+		const eventsByDay: {[key: string]: typeof events} = {};
+		events.forEach(event => {
+			const dateKey = formatDate(event.when);
+			if (!eventsByDay[dateKey]) {
+				eventsByDay[dateKey] = [];
+			}
+			eventsByDay[dateKey].push(event);
+		});
+
+		// Get sorted list of dates
+		const dates = Object.keys(eventsByDay).sort();
+
+		return (
+			<div id="userDataTableContainer">
+				{dates.map((dateKey, dayIndex) => {
+					const dayEvents = eventsByDay[dateKey];
+					// Initialize sun tracking for each day - start with sun up if first event is Sunrise
+					let isSunUp = dayEvents.length > 0 && dayEvents[0].activity === 'Sunrise';
+
+					return (
+						<div class="userDataTable" key={dayIndex}>
+							<div class="userDataHeader">
+								<div class="userDataCell">Day</div>
+								<div class="userDataCell">Time</div>
+								<div class="userDataCell">Activity</div>
+								<div class="userDataCell">Data</div>
+								<div class="userDataCell">Date</div>
+							</div>
+							{dayEvents.map((event, index) => {
+								// Update sun state based on Sunrise or Sunset
+								if (event.activity === 'Sunrise') {
+									isSunUp = true;
+								} else if (event.activity === 'Sunset') {
+									isSunUp = false;
+								}
+
+								// Determine row class - Sunrise and Sunset rows are always light (sunup)
+								const isSunEvent = event.activity === 'Sunrise' || event.activity === 'Sunset';
+								const rowClass = (isSunUp || isSunEvent) ? 'userDataSunup' : 'userDataSundown';
+
+								return (
+									<div class={`userDataRow ${rowClass}`} key={index}>
+										<div class="userDataCell">{dayNames[event.when.getDay()]}</div>
+										<div class="userDataCell">{formatTime(event.when)}</div>
+										<div class="userDataCell">{getIcon(event.activity)} {event.activity}</div>
+										<div class="userDataCell">{event.data}</div>
+										<div class="userDataCell">{formatDate(event.when)}</div>
+									</div>
+								);
+							})}
+						</div>
+					);
+				})}
+			</div>
+		);
 	}
 
 
@@ -755,6 +931,7 @@ export class TideChart {
 					<p><button onClick={() => this.hostElement.dispatchEvent(new CustomEvent('showUserGuide', {bubbles: true }))}>Show Help on Reading This Chart</button></p>
 
 					{this._getSvg()}
+					{this._getUserDataTable()}
 					<p><button onClick={this._toggleDebug.bind(this)}>Toggle Debug Info</button></p>
 					{debugContent}
 				</div>
@@ -765,6 +942,7 @@ export class TideChart {
 			<Host>
 				<div id="userInput">
 					<h2>Tide Predictions for {this.station.name}</h2>
+					<h6>NOAA Station Id: {this.station.id}</h6>
 					<button onClick={this._clearStationData.bind(this)}>Choose Another Station</button>
 
 

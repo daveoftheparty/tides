@@ -11,7 +11,8 @@ type NoaaHighLow = {
 */
 export type TideResponse = {
 	when: Date,
-	level: number
+	level: number,
+	type: string
 };
 
 export function GetTides(start: Date, end: Date, station: string): Promise<TideResponse[]> {
@@ -39,7 +40,8 @@ function _getTides(start: Date, end: Date, station: string): Promise<TideRespons
 			let results = parsedRes['predictions'].map(tide => {
 				return {
 					when: _noaaStringToDate(tide.t),
-					level: +tide.v
+					level: +tide.v,
+					type: tide.type
 				};
 			});
 			console.log('tide api results', results);
