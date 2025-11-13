@@ -942,6 +942,7 @@ export class TideChart {
 			<Host>
 				<div id="userInput">
 					<h2>Tide Predictions for {this.station.name}</h2>
+					<h6>NOAA Station Id: {this.station.id}</h6>
 					<button onClick={this._clearStationData.bind(this)}>Choose Another Station</button>
 
 
